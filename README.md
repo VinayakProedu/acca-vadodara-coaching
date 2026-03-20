@@ -1,2 +1,259 @@
-# acca-vadodara-coaching
-Best ACCA Classes Vadodara
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name"Vinayak" content="width=device-width, initial-scale=1.0">
+    <title>Best ACCA Classes in Vadodara | Top Faculty | Affordable Fees</title>
+    <meta name="Vinayakproedu" content="Join the best ACCA coaching in Vadodara, Gujarat. Expert faculty, affordable fees. Enquire now!">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .logo-placeholder {
+            width: 150px; height: 150px; 
+            background: rgba(255,255,255,0.1);
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2em; border: 3px solid white;
+        }
+        h1 { font-size: 3.5em; margin-bottom: 20px; }
+        .hero p { font-size: 1.4em; margin-bottom: 30px; opacity: 0.95; }
+        .btn {
+            background: #ff6b35; color: white;
+            padding: 18px 40px; font-size: 1.2em;
+            border: none; border-radius: 50px;
+            cursor: pointer; text-decoration: none;
+            display: inline-block; transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255,107,53,0.4);
+        }
+        .btn:hover { background: #e55a2b; transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section {
+            padding: 90
+          px 0; background: #f8f9fa;
+        }
+        .section:nth-child(even) { background: white; }
+        h2 {
+            font-size: 2.8em; text-align: center;
+            color: #1e3c72; margin-bottom: 50px;
+        }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-top: 50px;
+        }
+        .feature {
+            background: white; padding: 40px 30px;
+            text-align: center; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .feature:hover { transform: translateY(-10px); }
+        .feature-icon {
+            font-size: 3em; color: #ff6b35; margin-bottom: 20px;
+        }
+        .faculty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .faculty-card {
+            background: white; border-radius: 15px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center; padding: 30px;
+        }
+        .faculty-img {
+            width: 120px; height: 120px;
+            background: #ddd; border-radius: 50%;
+            margin: 0 auto 20px; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .fee-table {
+            background: white; border-radius: 15px;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px; margin: 50px auto;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 20px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #1e3c72; color: white; font-size: 1.2em; }
+        .highlight { background: #ff6b35; color: white !important; }
+        .form-section { background: #1e3c72; color: white; }
+        form {
+            max-width: 600px; margin: 0 auto;
+            background: rgba(255,255,255,0.1); padding: 40px;
+            border-radius: 15px; backdrop-filter: blur(10px);
+        }
+        input, textarea, select {
+            width: 100%; padding: 15px; margin: 10px 0;
+            border: none; border-radius: 8px; font-size: 1em;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="logo-placeholder">
+    <img src="https://myimgs.org/storage/images/19158/WhatsApp Image 2026-03-19 at 6.jpeg" alt="Your Institute Logo" style="width:130%; height:130%; border-radius:50%; object-fit:contain;">
+</div>
+        <h1>Vinayakproedu </h1>
+         <h2>Pure offline classes</h2>
+        <p>✅ 100% Pass Rate Guaranteed | Top-Ranked Faculty | Most Affordable Fees<br>
+        Transform Your Career with Gujarat's Top ACCA Faculty
+       </p>
+        <a href="#enquiry" class="btn">Enquire Now - Limited Seats!</a>
+    </section>
+
+    <!-- Key Selling Points -->
+    <section class="section">
+        <div class="container">
+            <h3>Why Choose Us?</h3>
+            <div class="features-grid">
+  </p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h4>Expert Faculty</h4>
+                    <p>ACCA qualified trainers with 5+ years experience. Real-world professionals.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h4>Affordable Fees</h4>
+                    <p>Best value in Gujarat. EMI options available. No hidden charges.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📅</div>
+                    <h3>Flexible Batches</h3>
+                    <p>Weekday, weekend & online classes. Morning, evening & crash courses available.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏆</div>
+                    <h3>100% Job Assistance</h3>
+                    <p>Placement support with top CA firms, MNCs & Big 4 companies.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h4>Modern Infrastructure</h4>
+                    <p>AC classrooms, high-speed WiFi, digital library & doubt-clearing sessions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty -->
+    <section class="section">
+        <div class="container">
+            <h2>Our Star Faculty</h2>
+            <div class="faculty-grid">
+                <div class="faculty-card">
+                    <div class="faculty-img">👨‍💼</div>
+                    <h4>Aditya Vyas</h4>
+                    <p>5+ years experience | Big 4 Alumnus<br>Specializes: FinanciaL Accounting, Audit</p>
+                </div>
+                <div class="faculty-card">
+                   <img src="https://myimgs.org/storage/images/19157/Screenshot (159).png" alt="CA Rahul Patel">
+                    <h4>Vrajesh Joshi</h4>
+                    <p>12 years teaching | 500+ students cleared<br>Specializes: Taxation, Performance Management</p>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-img">👨‍💼</div>
+                    <h4>CA,CS Chirag Vyas</h4>
+                    <p>Vadodara native | 10+ years<br>Specializes: Strategic Business Leader, Reporting</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fee Structure -->
+    <section class="section">
+        <div class="container">
+            <h2>Transparent Fee Structure</h2>
+            <div class="fee-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Duration</th>
+                            <th>Regular Fees</th>
+                            <th>Special Offer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Foundation Level (3+1 skill(Law) Papers)</td>
+                            <td>8 Months</td>
+                            <td>₹80,000</td>
+                            <td class="highlight">₹75000(Vaild till 14 April)</td>
+                         
+                   </tr>
+                        <tr>
+                            <td>Skills Level (6 Papers)</td>
+                            <td>16 Months</td>
+                            <td>Soon to be introduced</td>
+                            <td class="highlight">-</td>
+                        </tr>
+                        <tr>
+                            <td>Strategic Level (4 Papers)</td>
+                            <td>16 Months</td>
+                            <td>Soon to be Introduced</td>
+                            <td class="highlight">-</td>
+                        </tr>
+                        <tr>
+                            <td>COMPLETE ACCA (13 Papers)</td>
+                            <td>24 Months</td>
+                            <td>-</td>
+                            <td class="highlight">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="padding: 20px; background: #e8f5e8; text-align: center;">
+                    <p><strong>🎁 FREE:</strong> Study materials (BPP or Kaplan) + Mock tests + ACCA registration assistance<br>
+                    💳 EMI Available | Early Bird Discount | Limited seats only!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enquiry Form -->
+    <section id="enquiry" class="section form-section">
+        <div class="container">
+            <h2 style="color: white;">Ready to Start Your ACCA Journey?</h2>
+            <p style="text-align: center; font-size: 1.3em; margin-bottom: 40px;">
+                Fill this form - Get callback within 120 mins + Free counseling session!
+            </p>
+            <form action="https://formspree.io/f/xbdzwyol" method="POST">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Full Name *" required>
+                    <input type="tel" name="phone" placeholder="Phone Number *" required>
+                </div>
+                <input type="email" name="email" placeholder="Email ID">
+                <select name="course" required>
+                    <option value="">Select Course</option>
+                    <option>Foundation Level</option>
+                    <option>Skills Level</option>
+                    <option>Foundation + Skill</option>
+                   
+                </select>
+                <textarea name="message" rows="3" placeholder="Any questions? (Optional)"></textarea>
+                <input type="hidden" name="_subject" value="New ACCA Enquiry - Vadodara">
+                <input type="hidden" name="_next" value="https://yourwebsite.com/thankyou.html">
+                <button type="submit" class="btn" style="background: white; color: #1e3c72; width: 100%; font-size: 1.3em;">
+                    🚀 Get Free Counseling Now!
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 20px; opacity: 0.9;">
+                📍 Vadodara, Gujarat | ☎️ Call: +91-63530252880 | 📧 vinayakedupro.gmail.com
+            </p>
+        </div>
+    </section>
+</body>
+</html>
