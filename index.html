@@ -4,101 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vinayak ProEdu ACCA | Best Offline Classes Vadodara</title>
-<meta name="description" content="Vinayak ProEdu - Pure Offline ACCA Classes in Vadodara. 100% Results | Expert Faculty | Affordable Fees. Enquire Now!">
+<meta name="description" content="Vinayak ProEdu - Pure Offline ACCA Classes Vadodara. Global Recognition | Practical Learning | Career Success. Enquire Now!">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Tahoma,sans-serif;line-height:1.6;color:#333;background:#f8f9fa;}
 
+/* HERO */
 .hero{
 background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);
-color:white;text-align:center;padding:120px 20px;position:relative;overflow:hidden;
+color:white;text-align:center;padding:clamp(80px,15vh,140px) 20px;position:relative;overflow:hidden;
 }
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.1);}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.1);z-index:1;}
+.hero > *{position:relative;z-index:2;}
 
-.logo-placeholder{
-width:160px;height:160px;margin:0 auto 25px;background:rgba(255,255,255,0.1);
-border-radius:50%;display:flex;align-items:center;justify-content:center;
-backdrop-filter:blur(10px);border:3px solid rgba(255,255,255,0.3);
-}
-.logo-placeholder img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+   
 
-h1{font-size:clamp(2.2em,5vw,3.5em);margin:20px 0;font-weight:700;letter-spacing:-1px;}
-.hero p{font-size:clamp(1.1em,3vw,1.4em);margin:15px 0 30px;opacity:0.95;}
+h1{font-size:clamp(2.2em,6vw,3.8em);margin:20px 0;font-weight:700;letter-spacing:-0.5px;}
+.hero p{font-size:clamp(1.1em,4vw,1.4em);margin:12px 0 30px;opacity:0.95;max-width:600px;margin-left:auto;margin-right:auto;}
 
 .btn{
-background:linear-gradient(135deg,#ff6b35,#e55a2b);color:white;padding:18px 45px;
-border-radius:50px;text-decoration:none;display:inline-block;font-size:1.1em;
-font-weight:600;box-shadow:0 8px 25px rgba(255,107,53,0.4);
-transition:all 0.3s ease;letter-spacing:0.5px;
+background:linear-gradient(135deg,#ff6b35,#e55a2b);color:white;
+padding:clamp(14px,3vw,18px) clamp(30px,6vw,45px);
+border:none;border-radius:50px;text-decoration:none;display:inline-block;
+font-weight:600;font-size:clamp(1em,3vw,1.15em);cursor:pointer;
+box-shadow:0 8px 25px rgba(255,107,53,0.4);transition:all 0.3s ease;letter-spacing:0.5px;
 }
-.btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(255,107,53,0.6);}
+.btn:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(255,107,53,0.6);}
+.btn:active{transform:translateY(-2px);}
 
-.section{padding:90px 20px;}
+/* SECTIONS */
+.section{padding:clamp(60px,12vw,100px) 20px;}
 .container{max-width:1200px;margin:auto;padding:0 15px;}
 .section:nth-child(even){background:#fff;}
 
 h2{
-font-size:clamp(2em,5vw,2.8em);text-align:center;margin-bottom:50px;
+font-size:clamp(1.8em,6vw,2.8em);text-align:center;margin-bottom:45px;
 color:#1e3c72;font-weight:700;position:relative;
 }
-h2::after{content:'';display:block;width:80px;height:4px;background:#ff6b35;margin:15px auto 0;border-radius:2px;}
+h2::after{content:'';width:70px;height:4px;background:#ff6b35;margin:20px auto 0;border-radius:2px;display:block;}
 
-.grid{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:30px;margin-top:20px;
-}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin-top:10px;}
+@media (max-width:600px){.grid{gap:20px;}}
 
+/* CARDS */
 .card{
-background:white;padding:35px 25px;border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,0.08);
-transition:all 0.3s ease;text-align:center;
+background:linear-gradient(145deg,#ffffff,#f8f9fa);padding:35px 25px;
+border-radius:20px;box-shadow:0 12px 35px rgba(0,0,0,0.08);
+transition:all 0.3s cubic-bezier(0.4,0,0.2,1);text-align:center;border:1px solid rgba(255,255,255,0.8);
 }
-.card:hover{transform:translateY(-8px);box-shadow:0 25px 50px rgba(0,0,0,0.15);}
-.card h3{font-size:1.4em;color:#1e3c72;margin-bottom:15px;}
-.card p{font-size:1em;color:#666;line-height:1.6;}
+.card:hover{transform:translateY(-10px);box-shadow:0 25px 50px rgba(0,0,0,0.15);}
+.card h3{font-size:clamp(1.2em,4vw,1.45em);color:#1e3c72;margin-bottom:15px;font-weight:700;}
+.card p{color:#666;line-height:1.6;font-size:0.98em;}
 
-ul{padding-left:25px;margin-top:15px;}
-ul li{margin-bottom:8px;color:#555;font-size:0.95em;}
-ul li::marker{color:#ff6b35;}
+/* LISTS */
+ul{padding-left:25px;margin-top:15px;text-align:left;}
+ul li{margin:10px 0;color:#555;font-size:0.97em;position:relative;padding-left:10px;}
+ul li::before{content:"✓";color:#ff6b35;font-weight:bold;font-size:1.1em;position:absolute;left:-25px;}
 
-.form-section{background:linear-gradient(135deg,#1e3c72,#2a5298);color:white;position:relative;}
-.form-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.05);}
+/* FORM */
+.form-section{background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:white;position:relative;overflow:hidden;}
+.form-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.05);z-index:1;}
+.form-section > *{position:relative;z-index:2;}
 
-form{max-width:600px;margin:0 auto 40px;background:rgba(255,255,255,0.1);
-padding:40px;border-radius:20px;backdrop-filter:blur(15px);box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+form{max-width:650px;margin:0 auto 40px;background:rgba(255,255,255,0.12);
+padding:40px;border-radius:25px;backdrop-filter:blur(20px);box-shadow:0 25px 70px rgba(0,0,0,0.3);
+border:1px solid rgba(255,255,255,0.2);}
+form h2{margin-bottom:20px;}
 
 input,select,textarea{
-width:100%;padding:15px;margin:12px 0;border-radius:12px;border:none;
-font-size:1em;background:rgba(255,255,255,0.9);color:#333;
-transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.1);
+width:100%;padding:16px;margin:12px 0 0;border-radius:12px;border:none;
+font-size:1em;background:rgba(255,255,255,0.95);color:#333;box-shadow:0 5px 20px rgba(0,0,0,0.1);
+transition:all 0.3s;font-family:inherit;
 }
-input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(255,107,53,0.3);background:white;}
-textarea{height:100px;resize:vertical;}
+input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 4px rgba(255,107,53,0.2),0 5px 20px rgba(0,0,0,0.15);background:white;}
+textarea{min-height:110px;resize:vertical;}
 
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
-label{display:block;margin-bottom:8px;font-weight:600;color:rgba(255,255,255,0.95);}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;}
+label{display:block;margin:5px 0 3px;font-weight:600;color:rgba(255,255,255,0.95);font-size:0.95em;}
 
-.contact-info{text-align:center;padding:20px;background:rgba(255,255,255,0.1);border-radius:15px;margin-top:30px;}
-.contact-info p{font-size:1.1em;margin:10px 0;}
-
-/* HOVER ANIMATIONS */
-.card:hover h3{color:#ff6b35;}
+.contact-info{
+text-align:center;padding:25px;background:rgba(255,255,255,0.1);border-radius:18px;
+margin-top:30px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
+}
+.contact-info p {
+  font-size: 1.15em;
+  margin: 12px 0;
+  color: #ff6b35; /* added brand color */
+}
+.contact-info a{color:#ff6b35;font-weight:600;text-decoration:none;}
+.contact-info a:hover{text-decoration:underline;}
 
 /* RESPONSIVE */
+@media (max-width:900px){
+.container{padding:0 10px;}
+.section{padding:60px 10px;}
+.grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+}
+
 @media (max-width:768px){
-.hero{padding:80px 15px;}
-.section{padding:60px 15px;}
-.grid{grid-template-columns:1fr;gap:20px;}
+.hero{padding:70px 15px;}
 .form-row{grid-template-columns:1fr;}
-h1{font-size:2.5em;}
-.btn{padding:16px 35px;font-size:1em;}
+.btn{width:100%;margin-top:10px;}
+h2{margin-bottom:30px;}
 }
 
 @media (max-width:480px){
-.hero{padding:60px 15px;}
-h1{font-size:2.2em;}
-h2{font-size:2.2em;}
+.section{padding:50px 15px;}
 .card{padding:25px 20px;}
+.logo-placeholder{width:130px;height:130px;}
 }
 </style>
 </head>
@@ -108,10 +123,10 @@ h2{font-size:2.2em;}
 <!-- HERO -->
 <section class="hero">
 <div class="logo-placeholder">
-<img src="https://myimgs.org/storage/images/19158/WhatsApp Image 2026-03-19 at 6.jpeg" alt="Vinayak ProEdu Logo">
+<img src="https://www.hostimage.org/image/XekE" alt="Vinayak ProEdu Logo" loading="lazy">
 </div>
 <h1>Vinayak ProEdu</h1>
-<p style="font-size:1.3em;">Pure Offline ACCA Classes</p>
+<p style="font-size:1.25em;">Pure Offline ACCA Classes</p>
 <p>Global Recognition | Practical Learning | Career Momentum</p>
 <a href="#enquiry" class="btn">🎯 Enquire Now - Limited Seats</a>
 </section>
@@ -123,19 +138,19 @@ h2{font-size:2.2em;}
 <div class="grid">
 <div class="card">
 <h3>🌍 Trusted Worldwide</h3>
-<p>Recognised across 180+ countries and industries.</p>
+<p>Recognised in 180+ countries across all industries</p>
 </div>
 <div class="card">
 <h3>📈 Clear Progression</h3>
-<p>13 Exams + Ethics + 36 Months Practical Experience.</p>
+<p>13 Exams + Ethics Module + 36 Months Experience</p>
 </div>
 <div class="card">
 <h3>💼 Real-World Learning</h3>
-<p>Business, finance & technology focus.</p>
+<p>Business, finance & technology focused syllabus</p>
 </div>
 <div class="card">
 <h3>⏳ Flexible Journey</h3>
-<p>Study at your own pace, lifetime access.</p>
+<p>Study your pace with lifetime access</p>
 </div>
 </div>
 </div>
@@ -152,100 +167,16 @@ h2{font-size:2.2em;}
 </div>
 <div class="card">
 <h3>🧠 Applied Skills</h3>
-<p>Apply concepts practically (6 papers)</p>
+<p>Practical application (6 papers)</p>
 </div>
 <div class="card">
-<h3>👔 Strategic Level</h3>
-<p>Think like a leader (4 papers)</p>
+<h3>👔 Strategic Professional</h3>
+<p>Leadership thinking (4 papers)</p>
 </div>
 </div>
-<p style="margin-top:40px;text-align:center;font-size:1.2em;color:#666;">
-+ <strong>Ethics Module</strong> + <strong>36 Months Practical Experience (PER)</strong>
+<p style="text-align:center;margin-top:35px;font-size:1.2em;color:#666;font-weight:500;">
+<span style="color:#1e3c72;">+ Ethics Module</span> <span style="color:#ff6b35;">+</span> <span style="color:#1e3c72;">36 Months Practical Experience</span>
 </p>
-</div>
-</section>
-
-<!-- HOW WE HELP -->
-<section class="section">
-<div class="container">
-<h2>How Vinayak ProEdu Helps You Win</h2>
-<div class="grid">
-<div class="card">
-<h3>📊 Regular Mock Exams</h3>
-<p>Weekly tests + performance tracking</p>
-</div>
-<div class="card">
-<h3>📚 Premium Study Material</h3>
-<p>BPP / Kaplan books included</p>
-</div>
-<div class="card">
-<h3>🎯 Exam Focus Sessions</h3>
-<p>High-weightage topics revision</p>
-</div>
-<div class="card">
-<h3>🤝 Personal Support</h3>
-<p>1:1 doubt solving + career guidance</p>
-</div>
-</div>
-<div style="text-align:center;margin-top:40px;">
-<p style="font-size:1.3em;color:#ff6b35;font-weight:700;">
-💰 <strong>Referral Bonus: ₹5,000</strong>
-</p>
-</div>
-</div>
-</section>
-
-<!-- CLASS SYSTEM -->
-<section class="section">
-<div class="container">
-<h2>How Our System Works</h2>
-<div class="grid">
-<div class="card">
-<h3>🏫 What We Provide</h3>
-<ul>
-<li>✅ Regular mock exams</li>
-<li>✅ Concept clarity sessions</li>
-<li>✅ BPP / Kaplan material</li>
-<li>✅ Pre-exam revision</li>
-</ul>
-</div>
-<div class="card">
-<h3>🎓 What We Expect</h3>
-<ul>
-<li>✅ 80%+ attendance</li>
-<li>✅ Daily practice</li>
-<li>✅ 75% in mocks</li>
-<li>✅ Discipline & consistency</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="section">
-<div class="container">
-<h2>Your Next Step</h2>
-<div class="grid">
-<div class="card">
-<h3>📖 Learn</h3>
-<p>Deep understanding with clarity</p>
-</div>
-<div class="card">
-<h3>✍️ Practice</h3>
-<p>Mastery through repetition</p>
-</div>
-<div class="card">
-<h3>🚀 Progress</h3>
-<p>ACCA qualification + global career</p>
-</div>
-</div>
-<div style="text-align:center;margin-top:50px;">
-<p style="font-size:1.4em;color:#666;font-weight:500;">
-<span style="color:#ff6b35;font-size:1.6em;">Join the batch.</span><br>
-Start your journey today.
-</p>
-</div>
 </div>
 </section>
 
@@ -253,31 +184,36 @@ Start your journey today.
 <section id="enquiry" class="section form-section">
 <div class="container">
 <h2>Start Your ACCA Journey Today</h2>
-<p style="text-align:center;font-size:1.2em;margin-bottom:30px;opacity:0.95;">
-Get Free Counseling + Batch Details in 30 Minutes!</p>
+<p style="text-align:center;font-size:1.2em;margin-bottom:30px;opacity:0.95;">Free Counseling | Batch Details | Limited Seats</p>
 
 <form action="https://formspree.io/f/xbdzwyol" method="POST">
 <div class="form-row">
 <input type="text" name="name" placeholder="Full Name *" required>
 <input type="tel" name="phone" placeholder="WhatsApp Number *" required>
 </div>
-<input type="email" name="email" placeholder="Email (Optional)">
+<input type="email" name="email" placeholder="Email ID (Optional)">
 <select name="course" required>
 <option value="">Select Course</option>
-<option>Foundation Level</option>
-<option>Skills Level</option>
+<option>Foundation Level (3 Papers)</option>
+<option>Skills Level (6 Papers)</option>
 <option>Foundation + Skills</option>
-<option>Complete ACCA</option>
+<option>Complete ACCA (13 Papers)</option>
 </select>
-<textarea name="message" placeholder="Any questions about ACCA? (Optional)"></textarea>
-<input type="hidden" name="_subject" value="Vinayak ProEdu ACCA Enquiry">
+<textarea name="message" placeholder="Any questions about ACCA batches? (Optional)"></textarea>
+<input type="hidden" name="_subject" value="Vinayak ProEdu ACCA Enquiry - Vadodara">
 <button type="submit" class="btn">🚀 Get Free Counseling Now</button>
 </form>
 
 <div class="contact-info">
-<p>📍 Vadodara, Gujarat</p>
-<p>📱 <a href="tel:+918320035390" style="color:#ff6b35;">+91 8320035390</a></p>
-<p>💬 <a href="https://wa.me/9163530252880?text=Hi%20Vinayak%20ProEdu%2C%20ACCA%20details%20please" style="color:#25D366;">WhatsApp Now</a></p>
+<p>📍
+Vinayak ProEdu <br>
+304, Vip View Complex,<br>
+Opposite Bright School, VIP Road<br>
+Karelibaug, Vadodara.
+</p>
+
+<p>📞 <a href="tel:+91 83200 35390">+91 83200 35390</a></p>
+<p>💬 <a href="https://wa.me/918320035390?text=Hi%20Vinayak%20ProEdu%2C%20ACCA%20batch%20details%20please!">WhatsApp Now</a></p>
 </div>
 </div>
 </section>
