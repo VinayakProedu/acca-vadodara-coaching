@@ -1813,6 +1813,7 @@ document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
 
 <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 
@@ -4214,10 +4215,10 @@ window.__deleteStudentX = async function(userId){
   if(!userId) return;
   const user = state.users.find(u => u.id === userId);
   const name = user ? (user.name || user.email || 'this student') : 'this student';
-  if(!confirm(`Are you sure you want to delete ${name}?\\n\\nThis will remove their profile from the database. Their Firebase Auth account will remain — you can delete that manually from the Firebase Console if needed.`)) return;
+  if(!confirm(`Permanently delete ${name}? This removes their Firebase Auth account, profile, doubts and uploaded doubt files.`)) return;
   
   try {
-    await db.collection('users').doc(userId).delete();
+    await firebase.functions().httpsCallable('deleteStudent')({uid:userId});
     
     // Remove from local state
     state.users = state.users.filter(u => u.id !== userId);
@@ -4408,5 +4409,17 @@ flex-direction:column;
   })();
 </script>
 
+<script>
+/* Batch-scoped doubts: this overrides the legacy per-user handlers above. */
+(function(){
+ const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+ const db=()=>firebase.firestore(), me=()=>firebase.auth().currentUser;
+ async function context(){const u=me();if(!u)throw Error('Please sign in first.');const s=await db().collection('users').doc(u.uid).get(),p=s.data()||{},batchId=p.batchId||(p.batchIds||[])[0];if(!batchId)throw Error('Your administrator has not assigned a batch.');return{u,p,batchId};}
+ window.__submitDoubtX=async()=>{const message=document.getElementById('doubtTextX').value.trim(),subject=document.getElementById('doubtSubjectX').value.trim()||'General',file=document.getElementById('doubtScreenshotX').files[0],status=document.getElementById('doubtStatusX');if(!message)return status.textContent='Write your doubt first.';try{const{u,p,batchId}=await context();const b=await db().collection('batches').doc(batchId).get();if(b.data()?.doubtsEnabled!==true)throw Error('Doubts are disabled for your batch.');const ref=db().collection('doubts').doc();let attachmentUrl='';if(file){if(file.size>10*1024*1024)throw Error('Attachment must be 10 MB or smaller.');const up=await firebase.storage().ref(`doubt-attachments/${batchId}/${u.uid}/${ref.id}/${file.name}`).put(file);attachmentUrl=await up.ref.getDownloadURL();}await ref.set({batchId,subject,studentId:u.uid,studentName:p.name||p.displayName||u.email,message,attachmentUrl,status:'open',createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('doubtTextX').value='';status.textContent='Posted to your batch.';window.__loadDoubtsX();}catch(e){status.textContent=e.message;}};
+ window.__loadDoubtsX=async()=>{const admin=document.querySelector('.admin-app.show'),box=document.getElementById(admin?'adminDoubtListX':'studentDoubtListX');if(!box)return;try{let q,ctx;if(admin)q=db().collection('doubts').orderBy('updatedAt','desc').limit(100);else{ctx=await context();q=db().collection('doubts').where('batchId','==',ctx.batchId).orderBy('updatedAt','desc').limit(40);}const snap=await q.get();box.innerHTML=snap.empty?'<div class="empty-box">No doubts found.</div>':snap.docs.map(x=>{const d={id:x.id,...x.data()},isMine=ctx&&d.studentId===ctx.u.uid;return `<div class="mini-item"><strong>${esc(d.subject)}</strong> <span class="test-code">${esc(d.status)}</span><p>${esc(d.message)}</p>${d.attachmentUrl?`<a target="_blank" href="${esc(d.attachmentUrl)}">View attachment</a>`:''}${d.answer?`<div class="empty-box"><b>Faculty answer:</b> ${esc(d.answer)}${d.answerAttachmentUrl?` <a target="_blank" href="${esc(d.answerAttachmentUrl)}">Faculty document</a>`:''}</div>${isMine?`<div class="practice-tools"><input id="follow-${d.id}" class="practice-search" placeholder="Reply to faculty"><button class="primary-btn" onclick="window.__followDoubtX('${d.id}')">Reply</button></div>`:''}`:admin?`<div class="practice-tools"><input id="answer-${d.id}" class="practice-search" placeholder="Faculty answer"><input id="doc-${d.id}" type="file" accept="image/*,.pdf,.doc,.docx"><button class="primary-btn" onclick="window.__answerDoubtX('${d.id}','${esc(d.batchId)}')">Reply</button></div>`:'<span class="small">Awaiting faculty response</span>'}</div>`}).join('');}catch(e){box.innerHTML=`<div class="empty-box">${esc(e.message)}</div>`;}};
+ window.__answerDoubtX=async(id,batchId)=>{const answer=document.getElementById(`answer-${id}`).value.trim(),file=document.getElementById(`doc-${id}`).files[0];if(!answer)return;let answerAttachmentUrl='';if(file){const up=await firebase.storage().ref(`faculty-doubt-attachments/${batchId}/${id}/${Date.now()}-${file.name}`).put(file);answerAttachmentUrl=await up.ref.getDownloadURL();}await db().collection('doubts').doc(id).update({answer,answerAttachmentUrl,status:'answered',answeredAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});window.__loadDoubtsX();};
+ window.__followDoubtX=async id=>{const message=document.getElementById(`follow-${id}`).value.trim();if(message)await db().collection('doubts').doc(id).collection('replies').add({authorId:me().uid,message,createdAt:firebase.firestore.FieldValue.serverTimestamp()});window.__loadDoubtsX();};
+})();
+</script>
 </body>
 </html>
