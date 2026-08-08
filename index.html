@@ -21,15 +21,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="shared/styles.css">
+<!-- FIXED PATH: styles.css is in root, not shared/ -->
+<link rel="stylesheet" href="styles.css">
 
 <style>
 /* =============================================
-   LANDING PAGE — PHASE 1 (PART 1 + PART 2)
-   Part 1: Navbar + Hero
-   Part 2: Poster + Why ACCA
-   File: index.html
+   LANDING PAGE — PHASE 1 (COMPLETE)
+   File: index.html  |  Path: root/
    ============================================= */
+
+/* ── CSS Variables (embedded fallback) ── */
+:root {
+  --garnet: #1e3c72; --mahogany: #2a5298; --strawberry: #ff6b35;
+  --blush: #fde8dc; --rose-bg: #F7F5F0; --carbon: #0D1B40;
+  --ink: #1A1A2E; --muted: #6B7280; --silver: #9ca3af;
+  --smoke: #EFF1F6; --white: #FFFFFF; --gold: #C9922A;
+  --gold-lt: #E8AA48; --amber: #F5C04A; --navy: #0D1B40;
+  --navy-mid: #1a2e5e; --blue: #1e3c72;
+  --border: rgba(201,146,42,0.25); --border-md: rgba(201,146,42,0.4);
+  --shadow-sm: 0 4px 20px rgba(13,27,64,0.08);
+  --shadow-md: 0 12px 45px rgba(13,27,64,0.14);
+  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px;
+}
 
 /* ── Navbar ── */
 .navbar{
@@ -117,6 +130,7 @@
 .section{ padding:clamp(64px,11vw,108px) 20px; }
 .section-alt{ background:var(--smoke); }
 .container{ max-width:1160px; margin:0 auto; padding:0 16px; }
+.text-center{ text-align:center; }
 .section-label{ display:inline-block; color:var(--gold); font-size:0.74em; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; }
 .section-title{ font-size:clamp(1.85em,5vw,2.9em); color:var(--navy); margin-bottom:14px; }
 .section-desc{ font-size:1.03em; color:var(--muted); max-width:560px; margin:0 auto 50px; line-height:1.75; }
@@ -183,6 +197,10 @@
 }
 .portal-fab:hover{ transform:translateY(-2px); }
 
+/* ── Fade In ── */
+.fade-in{ opacity:0; transform:translateY(22px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible{ opacity:1; transform:translateY(0); }
+
 /* ── Responsive ── */
 @media(max-width:900px){ .navbar{ padding:12px 20px; } }
 @media(max-width:640px){
@@ -199,7 +217,7 @@
 <body>
 
 <!-- =============================================
-     PART 1 — NAVBAR
+     NAVBAR
      ============================================= -->
 <nav class="navbar" id="navbar" aria-label="Main Navigation">
   <div class="nav-brand">
@@ -213,7 +231,7 @@
 </nav>
 
 <!-- =============================================
-     PART 1 — HERO
+     HERO
      ============================================= -->
 <section class="hero" aria-label="Hero">
   <div class="hero-ring hero-ring-1"></div>
@@ -242,7 +260,7 @@
 </section>
 
 <!-- =============================================
-     PART 2 — POSTER / ANNOUNCEMENT
+     POSTER / ANNOUNCEMENT
      ============================================= -->
 <section class="poster-section section-alt" aria-label="Current Batch Poster">
   <div class="container">
@@ -254,11 +272,7 @@
     </div>
     <div class="poster-wrap fade-in">
       <div class="poster-card">
-        <img
-          src="https://pasteimg.com/images/2026/04/02/image.png"
-          alt="Vinayak ProEdu — Current ACCA Batch Announcement"
-          class="poster-img"
-        >
+        <img src="https://pasteimg.com/images/2026/04/02/image.png" alt="Vinayak ProEdu — Current ACCA Batch Announcement" class="poster-img">
         <div class="poster-cta-bar">
           <p class="poster-cta-txt">Interested? Limited seats available — reach out today.</p>
           <a href="#enquiry" class="poster-btn">🎯 Enquire Now</a>
@@ -269,7 +283,7 @@
 </section>
 
 <!-- =============================================
-     PART 2 — WHY ACCA
+     WHY ACCA
      ============================================= -->
 <section class="section section-alt" aria-label="Why ACCA">
   <div class="container">
