@@ -25,7 +25,8 @@
    LANDING PAGE — PHASE 1 (COMPLETE)
    Part 1: Navbar + Hero
    Part 2: Poster + Why ACCA
-   Part 3: ACCA Pathway (Accordion)
+   Part 3: ACCA Pathway
+   Part 4: Enquiry Form + Footer + Popup
    File: index.html
    ============================================= */
 
@@ -241,6 +242,137 @@
 .pathway-footer .red{ color:var(--navy); }
 .pathway-footer .plus{ color:var(--gold); font-size:1.3em; font-weight:300; }
 
+/* ── Form Section ── */
+.form-section{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);
+  position:relative; overflow:hidden;
+}
+.form-section::before{
+  content:''; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(201,146,42,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,146,42,0.05) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
+}
+.form-section .container{ position:relative; z-index:2; }
+.form-header{ text-align:center; margin-bottom:42px; }
+.form-header .section-label{ color:var(--gold-lt); }
+.form-header .section-title{ color:var(--white); }
+.form-header .section-desc{ color:rgba(255,255,255,0.6); }
+.form-card{
+  max-width:660px; margin:0 auto;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-xl); padding:clamp(28px,6vw,50px);
+  backdrop-filter:blur(20px); box-shadow:0 40px 100px rgba(0,0,0,0.4);
+}
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-group{ display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.form-group label{ font-size:0.77em; font-weight:600; letter-spacing:0.5px; color:rgba(255,255,255,0.65); text-transform:uppercase; }
+.form-group input, .form-group select, .form-group textarea{
+  width:100%; padding:13px 16px;
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--r-sm); color:var(--white); font-size:0.95em;
+  font-family:'DM Sans',sans-serif; transition:all 0.25s; -webkit-appearance:none;
+}
+.form-group select{ background-color:rgba(13,27,64,0.95); }
+.form-group select option{ background:#0D1B40; color:#fff; }
+.form-group input::placeholder, .form-group textarea::placeholder{ color:rgba(255,255,255,0.32); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+  outline:none; border-color:rgba(201,146,42,0.6);
+  background:rgba(255,255,255,0.13);
+  box-shadow:0 0 0 3px rgba(201,146,42,0.15);
+}
+.form-group textarea{ min-height:105px; resize:vertical; }
+.form-submit{
+  width:100%; margin-top:6px; padding:16px; border-radius:50px; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--navy);
+  font-size:1em; font-weight:700; font-family:'DM Sans',sans-serif;
+  box-shadow:0 8px 28px rgba(201,146,42,0.35); transition:all 0.3s;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.form-submit:hover{ transform:translateY(-3px); box-shadow:0 16px 40px rgba(201,146,42,0.5); }
+.contact-card{
+  max-width:660px; margin:28px auto 0;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r-lg); padding:26px 30px;
+  display:flex; flex-wrap:wrap; gap:22px; justify-content:center;
+}
+.contact-item{ display:flex; align-items:flex-start; gap:13px; flex:1; min-width:185px; }
+.contact-ico{
+  width:40px; height:40px; border-radius:10px; flex-shrink:0;
+  background:rgba(201,146,42,0.15); border:1px solid rgba(201,146,42,0.25);
+  display:flex; align-items:center; justify-content:center; font-size:1.05em;
+}
+.contact-text .label{ font-size:0.69em; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-lt); margin-bottom:4px; }
+.contact-text p, .contact-text a{ font-size:0.86em; color:rgba(255,255,255,0.72); line-height:1.65; }
+.contact-text a{ color:var(--gold-lt); font-weight:600; transition:color 0.2s; }
+.contact-text a:hover{ color:#fff; }
+
+/* ── Footer ── */
+.footer{
+  background:#060d20; padding:24px 20px; text-align:center;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.footer p{ font-size:0.8em; color:rgba(255,255,255,0.3); }
+.footer span{ color:var(--gold-lt); }
+.footer-contact{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:20px; margin-bottom:12px; }
+.footer-contact-item{ display:flex; align-items:center; gap:8px; color:rgba(255,255,255,0.55); font-size:0.84em; }
+.footer-contact-item a{ color:var(--gold-lt); font-weight:500; transition:color 0.2s; }
+.footer-contact-item a:hover{ color:var(--amber); }
+.insta-link{ display:inline-flex; align-items:center; gap:7px; color:var(--gold-lt); font-size:0.84em; font-weight:500; transition:color 0.2s; }
+.insta-link:hover{ color:var(--amber); }
+.insta-icon{ width:20px; height:20px; display:inline-block; vertical-align:middle; }
+.insta-icon svg{ width:100%; height:100%; }
+
+/* ── Popup ── */
+.popup-overlay{
+  position:fixed; inset:0; z-index:9999;
+  background:rgba(22,26,29,0.78); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px; opacity:0; pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.popup-overlay.show{ opacity:1; pointer-events:all; }
+.popup-box{
+  position:relative; width:min(88vw, 340px); max-height:min(74vh, 480px);
+  overflow:hidden; border-radius:var(--r-lg);
+  box-shadow:0 40px 100px rgba(0,0,0,0.5);
+  transform:scale(0.88) translateY(24px);
+  transition:transform 0.42s cubic-bezier(0.34,1.56,0.64,1);
+  background:var(--navy);
+}
+.popup-overlay.show .popup-box{ transform:scale(1) translateY(0); }
+.popup-box img{ max-height:38vh; object-fit:contain; background:var(--navy); width:100%; display:block; }
+.popup-close{
+  position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:50%;
+  background:rgba(22,26,29,0.7); border:1.5px solid rgba(255,255,255,0.25);
+  color:#fff; font-size:1.15em; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 0.2s; backdrop-filter:blur(4px); line-height:1;
+}
+.popup-close:hover{ background:var(--navy); border-color:var(--gold); transform:scale(1.1); }
+.popup-footer{
+  background:var(--navy); padding:15px 20px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  border-top:2px solid var(--gold);
+}
+.popup-footer p{ color:rgba(255,255,255,0.88); font-size:0.84em; font-weight:500; }
+.popup-cta{
+  background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--navy);
+  font-weight:700; font-size:0.84em; padding:9px 20px; border-radius:50px; white-space:nowrap;
+  box-shadow:0 4px 14px rgba(201,146,42,0.35); transition:all 0.2s; flex-shrink:0;
+}
+.popup-cta:hover{ box-shadow:0 8px 22px rgba(201,146,42,0.5); transform:translateY(-1px); }
+@media(max-width:480px){
+  .popup-overlay{ padding:10px; }
+  .popup-box{ width:min(90vw, 300px); max-height:min(68vh, 420px); border-radius:14px; }
+  .popup-box img{ max-height:30vh; }
+  .popup-footer{ padding:10px 12px; flex-direction:column; gap:8px; align-items:stretch; }
+  .popup-footer p{ font-size:0.72rem; text-align:center; }
+  .popup-cta{ width:100%; text-align:center; }
+  .form-row{ grid-template-columns:1fr; }
+  .contact-card{ flex-direction:column; }
+  .form-card{ padding:24px 16px; }
+}
+
 /* ── Portal FAB ── */
 .portal-fab{
   position:fixed; right:18px; bottom:18px; z-index:12050;
@@ -275,6 +407,20 @@
 <base target="_blank">
 </head>
 <body>
+
+<!-- =============================================
+     POPUP MODAL
+     ============================================= -->
+<div class="popup-overlay" id="popupOverlay" role="dialog" aria-modal="true" aria-label="Special Announcement">
+  <div class="popup-box">
+    <button class="popup-close" id="popupClose" aria-label="Close">&times;</button>
+    <img src="https://pasteimg.com/images/2026/04/02/image.png" alt="Vinayak ProEdu ACCA Batch Announcement" loading="lazy">
+    <div class="popup-footer">
+      <p>Limited seats available — enquire today!</p>
+      <a href="#enquiry" class="popup-cta" id="popupCta">Enquire Now →</a>
+    </div>
+  </div>
+</div>
 
 <!-- =============================================
      PART 1 — NAVBAR
@@ -396,14 +542,13 @@
     </div>
 
     <div class="levels fade-in">
-      <!-- Applied Knowledge -->
       <div class="level-card">
         <div class="level-badge level-applied">📘 Applied Knowledge</div>
         <p>Foundational papers covering core business and accounting principles.</p>
         <div class="accordion-wrap">
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">📘</span><span>Business &amp; Technology (BT)</span></span>
+              <span class="acc-left"><span>📘</span><span>Business &amp; Technology (BT)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -413,7 +558,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">📘</span><span>Management Accounting (MA)</span></span>
+              <span class="acc-left"><span>📘</span><span>Management Accounting (MA)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -423,7 +568,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">📘</span><span>Financial Accounting (FA)</span></span>
+              <span class="acc-left"><span>📘</span><span>Financial Accounting (FA)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -434,14 +579,13 @@
         </div>
       </div>
 
-      <!-- Applied Skills -->
       <div class="level-card">
         <div class="level-badge level-skill">🧠 Applied Skills</div>
         <p>Intermediate papers building technical depth in key accounting disciplines.</p>
         <div class="accordion-wrap">
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Corporate &amp; Business Law (LW)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Corporate &amp; Business Law (LW)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -450,7 +594,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Performance Management (PM)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Performance Management (PM)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -459,7 +603,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Taxation (TX)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Taxation (TX)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -468,7 +612,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Financial Reporting (FR)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Financial Reporting (FR)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -477,7 +621,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Audit &amp; Assurance (AA)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Audit &amp; Assurance (AA)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -486,7 +630,7 @@
           </div>
           <div class="acc-item">
             <button class="acc-btn" aria-expanded="false">
-              <span class="acc-left"><span class="acc-emoji">🧠</span><span>Financial Management (FM)</span></span>
+              <span class="acc-left"><span>🧠</span><span>Financial Management (FM)</span></span>
               <span class="acc-icon">+</span>
             </button>
             <div class="acc-body"><div class="acc-body-inner">
@@ -497,14 +641,13 @@
       </div>
     </div>
 
-    <!-- Strategic Professional -->
     <div class="level-card fade-in" style="margin-top:20px;">
       <div class="level-badge level-pro">👔 Strategic Professional</div>
       <p>Advanced papers for executive-level financial leadership and strategy.</p>
       <div class="accordion-wrap">
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Strategic Business Leader (SBL)</span></span>
+            <span class="acc-left"><span>👔</span><span>Strategic Business Leader (SBL)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -513,7 +656,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Strategic Business Reporting (SBR)</span></span>
+            <span class="acc-left"><span>👔</span><span>Strategic Business Reporting (SBR)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -522,7 +665,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Advanced Financial Management (AFM)</span></span>
+            <span class="acc-left"><span>👔</span><span>Advanced Financial Management (AFM)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -531,7 +674,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Advanced Performance Management (APM)</span></span>
+            <span class="acc-left"><span>👔</span><span>Advanced Performance Management (APM)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -540,7 +683,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Advanced Taxation (ATX)</span></span>
+            <span class="acc-left"><span>👔</span><span>Advanced Taxation (ATX)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -549,7 +692,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-btn" aria-expanded="false">
-            <span class="acc-left"><span class="acc-emoji">👔</span><span>Advanced Audit &amp; Assurance (AAA)</span></span>
+            <span class="acc-left"><span>👔</span><span>Advanced Audit &amp; Assurance (AAA)</span></span>
             <span class="acc-icon">+</span>
           </button>
           <div class="acc-body"><div class="acc-body-inner">
@@ -572,6 +715,94 @@
     </div>
   </div>
 </section>
+
+<!-- =============================================
+     PART 4 — ENQUIRY FORM
+     ============================================= -->
+<section class="section form-section" id="enquiry" aria-label="Enquiry Form">
+  <div class="container">
+    <div class="form-header fade-in">
+      <span class="section-label">Get Started</span>
+      <h2 class="section-title">Start Your ACCA Journey Today</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Free Counseling · Batch Details · Limited Seats Available</p>
+    </div>
+
+    <div class="form-card fade-in">
+      <form action="https://formspree.io/f/xjgpryow" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="Vinayak ProEdu ACCA Enquiry - Vadodara">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">Full Name *</label>
+            <input type="text" id="fname" name="name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="fphone">WhatsApp Number *</label>
+            <input type="tel" id="fphone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="femail">Email ID</label>
+          <input type="email" id="femail" name="email" placeholder="your@email.com (optional)">
+        </div>
+        <div class="form-group">
+          <label for="fcourse">Select Course *</label>
+          <select id="fcourse" name="course" required>
+            <option value="">— Choose a level —</option>
+            <option>Foundation Level (3 Papers)</option>
+            <option>Skill Level (5 Papers)</option>
+            <option>All 13 Papers</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fmsg">Your Questions</label>
+          <textarea id="fmsg" name="message" placeholder="Any questions about batches, fees, or schedule? (Optional)"></textarea>
+        </div>
+        <button type="submit" class="form-submit">🚀 Get Free Counseling Now</button>
+      </form>
+    </div>
+
+    <div class="contact-card fade-in">
+      <div class="contact-item">
+        <div class="contact-ico">📍</div>
+        <div class="contact-text">
+          <div class="label">Location</div>
+          <p>304, VIP View Complex,<br>Opp. Bright School, VIP Road,<br>Karelibaug, Vadodara.</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-ico">📞</div>
+        <div class="contact-text">
+          <div class="label">Call / WhatsApp</div>
+          <a href="tel:+918320035390">+91 83200 35390</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     PART 4 — FOOTER
+     ============================================= -->
+<footer class="footer">
+  <div class="footer-contact">
+    <span class="footer-contact-item">
+      📞 <a href="tel:+918320035390">+91 83200 35390</a>
+    </span>
+    <span class="footer-contact-item" style="color:rgba(255,255,255,0.2);">|</span>
+    <a href="https://www.instagram.com/vinayak_proedu.acca?igsh=MXF4azlqZW03ZmhvNA==&utm_source=ig_contact_invite" class="insta-link" aria-label="Instagram" target="_blank" rel="noopener">
+      <span class="insta-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      Follow us on Instagram
+    </a>
+  </div>
+  <p>© 2026 <span>Vinayak ProEdu</span> · ACCA Classes Vadodara · All Rights Reserved.</p>
+</footer>
 
 <!-- Portal FAB -->
 <button id="portalFab" class="portal-fab" type="button" onclick="location.href='student/index.html'">🎓 Portal</button>
@@ -612,6 +843,26 @@ document.querySelectorAll('.acc-btn').forEach(function(btn) {
     }
   });
 });
+
+/* Popup */
+(function() {
+  var overlay = document.getElementById('popupOverlay');
+  var closeBtn = document.getElementById('popupClose');
+  var cta = document.getElementById('popupCta');
+  function open() { overlay.classList.add('show'); }
+  function close() { overlay.classList.remove('show'); }
+  setTimeout(open, 2500);
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+  cta.addEventListener('click', function(e) {
+    e.preventDefault();
+    close();
+    setTimeout(function() {
+      document.getElementById('enquiry').scrollIntoView({ behavior: 'smooth' });
+    }, 340);
+  });
+})();
 </script>
 
 </body>
