@@ -10,6 +10,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 <style>
+     /* ── Phase 3B: Test Engine Overlay ── */
+.test-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b1b3a;display:none;z-index:99999;}
+.test-overlay.show{display:block !important;}
+.test-shell{width:100%;height:100%;display:flex;flex-direction:column;}
+.test-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
+.test-kicker{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#d9e6ff;font-weight:700;}
+.test-topbar h2{font-family:'Playfair Display',serif;margin-top:2px;font-size:1.2rem;}
+.test-progress{height:6px;background:#d9e2f0;overflow:hidden;}
+.test-progress>div{height:100%;width:0;background:linear-gradient(90deg,#C9922A,#E8AA48);transition:width .3s;}
+.test-body{flex:1;overflow:auto;padding:24px 18px 18px;}
+.test-body-inner{max-width:1120px;margin:0 auto;width:100%;}
+.action-bar{position:sticky;bottom:0;background:rgba(248,250,252,.94);backdrop-filter:blur(8px);border-top:1px solid #e5e7eb;padding:14px 18px;}
+.action-bar-inner{max-width:1120px;margin:0 auto;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+.feedback{margin-top:14px;padding:16px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:.95rem;line-height:1.7;}
+.feedback.hidden{display:none !important;}
+.feedback.correct{border-color:#10b981;background:#ecfdf5;}
+.feedback.wrong{border-color:#ef4444;background:#fef2f2;}
+.question-card{background:#fff;border:1px solid #e5e7eb;border-radius:22px;box-shadow:0 4px 18px rgba(13,27,64,.06);padding:28px;}
+.question-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+.question-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#0D1B40;margin:0;}
+.question-sub{color:#6B7280;font-size:.92rem;}
+.option-btn{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 18px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:all .15s;}
+.option-btn:hover{background:#f8fafc;border-color:#cbd5e1;}
+.option-btn.selected{background:#dbe8ff;border-color:#1e3c72;}
+.drag-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+.drag-box,.drop-box{border:2px dashed #cbd5e1;border-radius:14px;padding:16px;min-height:140px;background:#fbfdff;}
+.drag-item{padding:12px 14px;margin:8px 0;border-radius:10px;background:#e8efff;cursor:grab;font-weight:600;}
+.drop-slot{padding:12px 14px;margin:8px 0;border-radius:10px;background:#fff;border:1.5px solid #dbe4f0;min-height:48px;}
+.hotspot-image{max-width:100%;border-radius:12px;border:1px solid #e5e7eb;cursor:crosshair;display:block;}
+.portal-close{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
+.portal-close:hover{background:rgba(255,255,255,.18);}
+.manual-textarea{width:100%;min-height:180px;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;resize:vertical;}
+.fill-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;}
+.dropdown-select{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;background:#fff;}
+@media(max-width:720px){.drag-wrap{grid-template-columns:1fr;}}
 /* ── Student Portal Base ── */
 .student-app{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f7fb;display:none;z-index:9999;}
 .student-app.show{display:flex;}
@@ -309,5 +344,38 @@
 </script>
 <!-- Phase 3A module loaded dynamically when Tests tab clicked -->
 <script src="modules/tests.js"></script>
+     <script src="modules/test-engine.js"></script>
+     <!-- ═══════════════════════════════════════
+     TEST OVERLAY (Phase 3B)
+     ═══════════════════════════════════════ -->
+<div class="test-overlay" id="testOverlay" aria-hidden="true">
+  <div class="test-shell">
+    <div class="test-topbar">
+      <div>
+        <div class="test-kicker">Practice Test</div>
+        <h2 id="overlayTitle">Loading...</h2>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div id="overlayProgress" style="color:#fff;font-weight:600;">Q 1 / 1</div>
+        <div id="testTimer" style="color:#fff;font-weight:700;min-width:70px;text-align:right;">⏱ 0:00</div>
+        <button class="portal-close" id="closeTestOverlayBtn" type="button">×</button>
+      </div>
+    </div>
+    <div class="test-progress"><div id="progressBar"></div></div>
+    <div class="test-body">
+      <div class="test-body-inner">
+        <div id="questionArea"></div>
+        <div id="questionFeedback" class="feedback hidden"></div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="action-bar-inner">
+        <button class="ghost-btn" id="prevBtn" type="button">← Previous</button>
+        <button class="primary-btn" id="submitBtn" type="button">Submit Answer</button>
+        <button class="ghost-btn" id="nextBtn" type="button">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
