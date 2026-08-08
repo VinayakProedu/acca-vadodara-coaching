@@ -8,235 +8,297 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
 <style>
-:root{--garnet:#1e3c72;--mahogany:#2a5298;--strawberry:#ff6b35;--blush:#fde8dc;--rose-bg:#F7F5F0;--carbon:#0D1B40;--ink:#1A1A2E;--muted:#6B7280;--silver:#9ca3af;--smoke:#EFF1F6;--white:#FFFFFF;--gold:#C9922A;--gold-lt:#E8AA48;--amber:#F5C04A;--navy:#0D1B40;--navy-mid:#1a2e5e;--blue:#1e3c72;--border:rgba(201,146,42,0.25);--shadow-sm:0 4px 20px rgba(13,27,64,0.08);--shadow-md:0 12px 45px rgba(13,27,64,0.14);--r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;}
+:root{
+  --garnet:#1e3c72; --mahogany:#2a5298; --strawberry:#ff6b35; --blush:#fde8dc;
+  --rose-bg:#F7F5F0; --carbon:#0D1B40; --ink:#1A1A2E; --muted:#6B7280;
+  --silver:#9ca3af; --smoke:#EFF1F6; --white:#FFFFFF;
+  --gold:#C9922A; --gold-lt:#E8AA48; --amber:#F5C04A;
+  --navy:#0D1B40; --navy-mid:#1a2e5e; --blue:#1e3c72;
+  --border:rgba(201,146,42,0.25); --shadow-sm:0 4px 20px rgba(13,27,64,0.08);
+  --shadow-md:0 12px 45px rgba(13,27,64,0.14);
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px;
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--rose-bg);line-height:1.65;overflow-x:hidden;}
+img{max-width:100%;display:block;} a{text-decoration:none;color:inherit;}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
+
+.login-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-card{width:min(420px,92vw);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-xl);padding:clamp(28px,6vw,44px);backdrop-filter:blur(20px);box-shadow:0 40px 100px rgba(0,0,0,0.4);color:#fff;}
+.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.login-brand img{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;}
+.login-brand h2{font-family:'Playfair Display',serif;font-size:1.25rem;}
+.login-brand p{font-size:0.72rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-lt);}
+.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.65);}
+.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.09);color:#fff;font-size:0.95em;font-family:'DM Sans',sans-serif;transition:all 0.25s;}
+.portal-field input::placeholder,.portal-field textarea::placeholder{color:rgba(255,255,255,0.32);}
+.portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:rgba(201,146,42,0.6);background:rgba(255,255,255,0.13);box-shadow:0 0 0 3px rgba(201,146,42,0.15);}
+.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.primary-btn{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);}
+.secondary-btn{background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
+.ghost-btn{background:#eef4ff;color:#1e3c72;}
+.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);}
+.login-toggle{text-align:center;margin-top:14px;font-size:0.88rem;color:rgba(255,255,255,0.6);}
+.login-toggle a{color:var(--gold-lt);font-weight:700;cursor:pointer;}
+.portal-status{font-size:0.92rem;margin-top:12px;min-height:22px;font-weight:700;}
+.portal-status.error{color:#ffb4b4;}
 
 .student-app{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f7fb;display:none;z-index:9999;}
 .student-app.show{display:flex;}
 .app-shell{display:flex;width:100%;height:100%;}
-.app-sidebar{width:260px;background:#0D1B40;color:#fff;padding:18px;overflow:auto;flex-shrink:0;}
+.app-sidebar{width:250px;background:#0D1B40;color:#fff;padding:18px;overflow:auto;flex-shrink:0;}
 .app-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .app-brand img{width:40px;height:40px;border-radius:50%;border:2px solid #C9922A;object-fit:cover;}
-.app-brand h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin:0;}
-.app-brand p{font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;color:rgba(232,170,72,.8);}
-.app-menu{display:grid;gap:8px;margin-top:10px;}
+.app-brand h3{font-family:'Playfair Display',serif;font-size:1.02rem;margin:0}
+.app-brand p{font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;color:rgba(232,170,72,.8)}
+.app-menu{display:grid;gap:8px;margin-top:10px}
 .app-menu button{width:100%;border:none;background:#1e3c72;color:#fff;padding:12px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:700;font-family:'DM Sans',sans-serif;}
-.app-menu button:hover,.app-menu button.active{background:#C9922A;color:#111;}
-.app-main{flex:1;overflow:auto;padding:24px;}
-.app-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
-.app-title{font-family:'Playfair Display',serif;color:#0D1B40;font-size:1.5rem;margin:0;}
-.app-sub{color:#6b7280;font-size:.88rem;}
-.app-card{background:#fff;border:1px solid rgba(201,146,42,.12);border-radius:20px;padding:18px;box-shadow:0 4px 18px rgba(13,27,64,.06);margin-bottom:16px;}
-.app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.app-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.metric{background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;border-radius:16px;padding:16px;}
-.metric .n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:800;}
-.metric .l{font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6);}
-.mini-list{display:grid;gap:10px;}
-.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px;}
-.empty-box{padding:14px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;}
-.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
-.portal-field label{font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
-.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid rgba(13,27,64,.14);background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;}
-.portal-field textarea{min-height:110px;resize:vertical;}
-.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.primary-btn{background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
-.secondary-btn{background:linear-gradient(135deg,#C9922A,#E8AA48);color:#12203a;}
-.ghost-btn{background:#eef4ff;color:#1e3c72;}
-.portal-status{font-size:.92rem;margin-top:12px;min-height:22px;font-weight:700;}
-.portal-status.error{color:#b42318;}
-.app-view{display:none;}
-.app-view.active{display:block;}
-.login-screen{min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
-.login-card{width:min(420px,92vw);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);padding:clamp(28px,6vw,50px);backdrop-filter:blur(20px);box-shadow:0 40px 100px rgba(0,0,0,.4);text-align:center;}
-.login-card h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.8rem;margin-bottom:8px;}
-.login-card p{color:rgba(255,255,255,.6);margin-bottom:24px;font-size:.95rem;}
-.login-field{text-align:left;margin-bottom:14px;}
-.login-field label{display:block;font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:5px;}
-.login-field input{width:100%;padding:13px 16px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-sm);color:#fff;font-size:.95em;font-family:'DM Sans',sans-serif;}
-.login-field input::placeholder{color:rgba(255,255,255,.32);}
-.login-field input:focus{outline:none;border-color:rgba(201,146,42,.6);background:rgba(255,255,255,.13);}
-.login-btn{width:100%;margin-top:6px;padding:14px;border-radius:50px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);font-size:1em;font-weight:700;font-family:'DM Sans',sans-serif;}
-.login-toggle{color:var(--gold-lt);cursor:pointer;text-decoration:underline;font-weight:600;}
-.hidden{display:none !important;}
+.app-menu button:hover,.app-menu button.active{background:#C9922A;color:#111}
+.portal-collapse-btn{width:100%;margin:0 0 14px;padding:10px 12px;border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font:inherit;font-weight:700;text-align:left;transition:.2s}
+.portal-collapse-btn:hover{background:rgba(255,255,255,.16)}
+.app-main{flex:1;overflow:auto;padding:20px}
+.app-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.app-title{font-family:'Playfair Display',serif;color:#0D1B40;font-size:1.5rem;margin:0}
+.app-sub{color:#6b7280;font-size:.88rem}
+.app-card{background:#fff;border:1px solid rgba(201,146,42,.12);border-radius:20px;padding:18px;box-shadow:0 4px 18px rgba(13,27,64,.06);margin-bottom:16px}
+.app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.app-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.metric{background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;border-radius:16px;padding:16px}
+.metric .n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:800}
+.metric .l{font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.mini-list{display:grid;gap:10px}
+.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#1e3c72;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:700;margin:4px 6px 0 0}
+.empty-box{padding:14px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83}
+.subject-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:#0D1B40;margin:4px 0 10px}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.hidden{display:none !important}
+.portal-reopen{display:none;position:fixed;left:16px;bottom:16px;z-index:10005;border:0;border-radius:999px;padding:11px 16px;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);font:inherit;font-weight:800;box-shadow:0 8px 25px rgba(13,27,64,.3);cursor:pointer}
+.portal-reopen.portal-visible{display:block}
 
-/* Phase 3A */
-.practice-tools{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 18px;}
-.practice-search{flex:1;min-width:220px;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;}
-.practice-search:focus{outline:3px solid rgba(201,146,42,.22);border-color:var(--gold);}
-.subject-group{margin-bottom:14px;border:1px solid rgba(13,27,64,.1);border-radius:14px;overflow:hidden;background:#fff;}
-.subject-group-head{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:15px 17px;border:0;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;text-align:left;font:inherit;font-weight:800;cursor:pointer;}
-.subject-group-head span:last-child{font-size:.8rem;font-weight:600;color:rgba(255,255,255,.75);}
-.subject-group-body{padding:14px;}
-.subject-group.collapsed .subject-group-body{display:none;}
-.test-code{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:var(--blush);color:var(--navy);font-size:.72rem;font-weight:800;letter-spacing:.5px;margin:7px 0;}
-.chapter-head{background:linear-gradient(135deg,#1e3c72,#315caa);color:#fff;padding:10px 12px;border-radius:12px;cursor:pointer;user-select:none;margin-top:10px;display:flex;justify-content:space-between;gap:12px;align-items:center;}
-.chapter-body{display:none;padding:10px 0 0 12px;border-left:3px solid #1e3c72;margin-left:10px;}
-.test-card{margin-top:10px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:15px;box-shadow:0 8px 22px rgba(12,20,32,.06);}
-.test-card strong{font-size:1rem;color:#15223b;}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
-.attempts-box{margin-top:12px;padding:12px;border-radius:14px;background:#fbfdff;border:1px solid #e5e7eb;}
-.attempt-item{margin-top:8px;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#1e3c72;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:700;margin:4px 6px 0 0;}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.course-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid rgba(13,27,64,.08);box-shadow:0 4px 18px rgba(13,27,64,.06);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.course-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(13,27,64,.12)}
+.course-thumb{width:100%;height:160px;background:linear-gradient(135deg,#1e3c72,#2a5298);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-size:1.3rem;position:relative;overflow:hidden}
+.course-thumb .badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#C9922A,#E8AA48);color:#0D1B40;font-size:.72rem;font-weight:800;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.course-info{padding:18px}
+.course-info h4{font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 6px;font-size:1.08rem}
+.course-info p{color:#6B7280;font-size:.88rem;margin:0 0 12px;line-height:1.5}
+.course-meta{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:#6B7280}
 
-/* Phase 3B */
-.test-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b1b3a;display:none;z-index:99999;}
-.test-overlay.show{display:block !important;}
-.test-shell{width:100%;height:100%;display:flex;flex-direction:column;}
-.test-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
-.test-kicker{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#d9e6ff;font-weight:700;}
-.test-topbar h2{font-family:'Playfair Display',serif;margin-top:2px;font-size:1.2rem;}
-.test-progress{height:6px;background:#d9e2f0;overflow:hidden;}
-.test-progress>div{height:100%;width:0;background:linear-gradient(90deg,#C9922A,#E8AA48);transition:width .3s;}
-.test-body{flex:1;overflow:auto;padding:24px 18px 18px;}
-.test-body-inner{max-width:1120px;margin:0 auto;width:100%;}
-.action-bar{position:sticky;bottom:0;background:rgba(248,250,252,.94);backdrop-filter:blur(8px);border-top:1px solid #e5e7eb;padding:14px 18px;}
-.action-bar-inner{max-width:1120px;margin:0 auto;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
-.feedback{margin-top:14px;padding:16px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:.95rem;line-height:1.7;}
-.feedback.hidden{display:none !important;}
-.feedback.correct{border-color:#10b981;background:#ecfdf5;}
-.feedback.wrong{border-color:#ef4444;background:#fef2f2;}
-.question-card{background:#fff;border:1px solid #e5e7eb;border-radius:22px;box-shadow:0 4px 18px rgba(13,27,64,.06);padding:28px;}
-.question-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
-.question-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#0D1B40;margin:0;}
-.question-sub{color:#6B7280;font-size:.92rem;}
-.option-btn{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 18px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:all .15s;}
-.option-btn:hover{background:#f8fafc;border-color:#cbd5e1;}
-.option-btn.selected{background:#dbe8ff;border-color:#1e3c72;}
-.drag-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
-.drag-box,.drop-box{border:2px dashed #cbd5e1;border-radius:14px;padding:16px;min-height:140px;background:#fbfdff;}
-.drag-item{padding:12px 14px;margin:8px 0;border-radius:10px;background:#e8efff;cursor:grab;font-weight:600;}
-.drop-slot{padding:12px 14px;margin:8px 0;border-radius:10px;background:#fff;border:1.5px solid #dbe4f0;min-height:48px;}
-.hotspot-image{max-width:100%;border-radius:12px;border:1px solid #e5e7eb;cursor:crosshair;display:block;}
-.portal-close{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
-.portal-close:hover{background:rgba(255,255,255,.18);}
-.manual-textarea{width:100%;min-height:180px;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;resize:vertical;}
-.fill-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;}
-.dropdown-select{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;background:#fff;}
+.lecture-player{display:flex;height:calc(100vh - 180px);gap:0;background:#fff;border-radius:20px;overflow:hidden;border:1px solid rgba(13,27,64,.1);box-shadow:0 8px 30px rgba(13,27,64,.08)}
+.player-main{flex:1;display:flex;flex-direction:column;background:#000;min-width:0}
+.player-video{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0}
+.player-video iframe,.player-video video{width:100%;height:100%;border:none}
+.player-info{background:#fff;padding:20px 24px;border-top:1px solid #e5e7eb}
+.player-info h3{margin:0 0 6px;color:#0D1B40;font-family:'Playfair Display',serif;font-size:1.15rem}
+.player-info p{color:#6b7280;margin:0;font-size:.9rem}
 
-@media(max-width:900px){.app-grid-2,.app-grid-3{grid-template-columns:1fr;}.app-sidebar{width:100%;height:auto;}.app-shell{flex-direction:column;height:auto;}}
-@media(max-width:640px){.app-main{padding:16px;}.drag-wrap{grid-template-columns:1fr;}}
+.syllabus-sidebar{width:380px;background:#fff;border-left:1px solid #e5e7eb;display:flex;flex-direction:column;flex-shrink:0}
+.syllabus-header{padding:20px;border-bottom:1px solid #e5e7eb}
+.syllabus-header h3{margin:0 0 12px;color:#0D1B40;font-family:'Playfair Display',serif;font-size:1.1rem}
+.progress-bar-wrap{background:#e5e7eb;height:6px;border-radius:3px;overflow:hidden;margin-bottom:8px}
+.progress-bar-fill{background:linear-gradient(90deg,#C9922A,#E8AA48);height:100%;border-radius:3px;transition:width .4s ease}
+.syllabus-body{flex:1;overflow:auto;padding:12px}
+.syllabus-section{margin-bottom:10px;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
+.syllabus-section summary{list-style:none;cursor:pointer;padding:14px 16px;background:#f8fafc;font-weight:700;color:#0D1B40;display:flex;justify-content:space-between;align-items:center;font-size:.92rem}
+.syllabus-section summary::-webkit-details-marker{display:none}
+.syllabus-section summary .sec-icon{font-size:.8rem;color:#6b7280}
+.syllabus-section[open] summary{background:#0D1B40;color:#fff}
+.syllabus-section[open] summary .sec-icon{color:#E8AA48}
+.syllabus-section[open]{border-color:#0D1B40}
+.lesson-item{padding:12px 16px;border-bottom:1px solid #f0f0f0;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.lesson-item:last-child{border-bottom:none}
+.lesson-item:hover{background:#f8fafc}
+.lesson-item.active{background:#eef4ff;border-left:3px solid #1e3c72;padding-left:13px}
+.lesson-item.locked{opacity:.55;cursor:not-allowed}
+.lesson-item.locked:hover{background:transparent}
+.lesson-item .icon{width:32px;height:32px;border-radius:8px;background:#e8efff;color:#1e3c72;display:grid;place-items:center;font-size:.85rem;flex-shrink:0}
+.lesson-item.locked .icon{background:#f3f4f6;color:#9ca3af}
+.lesson-item.completed .icon{background:#d1fae5;color:#065f46}
+.lesson-title{font-size:.9rem;color:#1f2937;font-weight:600;line-height:1.4}
+.lesson-meta{font-size:.78rem;color:#6b7280;margin-top:3px}
+
+.countdown-overlay{position:absolute;inset:0;background:rgba(13,27,64,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:24px;z-index:10}
+.countdown-overlay h4{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:8px}
+.countdown-overlay p{opacity:.8;margin-bottom:16px;font-size:.95rem}
+.countdown-box{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.countdown-box .cd-unit{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:10px 14px;border-radius:10px;text-align:center;min-width:64px;backdrop-filter:blur(4px)}
+.countdown-box .cd-unit .n{font-size:1.5rem;font-weight:800;display:block;line-height:1}
+.countdown-box .cd-unit .l{font-size:.65rem;text-transform:uppercase;opacity:.7;letter-spacing:1px}
+
+.calendar-list{display:grid;gap:10px;max-height:360px;overflow:auto}
+.calendar-item{background:#faf8f5;border:1px solid rgba(201,146,42,.15);border-radius:12px;padding:10px 12px}
+.calendar-date{font-size:.72rem;font-weight:800;color:#C9922A;letter-spacing:1px;text-transform:uppercase}
+.calendar-title{font-size:.88rem;font-weight:700;color:#0D1B40;margin-top:4px}
+.calendar-link{font-size:.78rem;color:#C9922A;font-weight:700;word-break:break-word}
+
+.portal-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.portal-tab-btn{border:none;border-radius:999px;padding:10px 15px;cursor:pointer;background:var(--smoke);color:var(--navy);font-weight:700;font-family:'DM Sans',sans-serif;}
+.portal-tab-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy)}
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;color:#0D1B40;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;margin-bottom:14px;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.back-btn:hover{background:#e2e8f0}
+
+@media(max-width:900px){
+  .app-grid-2,.app-grid-3{grid-template-columns:1fr}
+  .lecture-player{flex-direction:column;height:auto}
+  .syllabus-sidebar{width:100%;border-left:none;border-top:1px solid #e5e7eb;max-height:50vh}
+  .player-video{min-height:240px}
+}
+@media(max-width:640px){
+  .app-sidebar{width:100%;height:auto;position:absolute;z-index:100;transform:translateX(-100%);transition:transform .3s}
+  .app-sidebar.open{transform:translateX(0)}
+  .app-shell{flex-direction:column;height:auto}
+  .course-grid{grid-template-columns:1fr}
+}
 </style>
+<base target="_blank">
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-screen">
-    <div class="login-card">
-      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);margin:0 auto 16px;display:block;object-fit:cover;">
-      <h2 id="authTitle">Student Login</h2>
-      <p id="authSubtitle">Access your tests, lectures, and progress</p>
-      <div id="loginForm">
-        <div class="login-field"><label>Email</label><input type="email" id="loginEmail" placeholder="student@email.com"></div>
-        <div class="login-field"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-        <button class="login-btn" id="loginBtn" type="button">Login</button>
-        <div class="portal-status" id="loginStatus"></div>
-        <p style="margin-top:16px;color:rgba(255,255,255,.6);font-size:.9rem;">New student? <span class="login-toggle" id="showSignup">Create account</span></p>
-        <p style="margin-top:8px;"><a href="javascript:void(0);" id="forgotLink" style="color:var(--gold-lt);font-size:.85rem;">Forgot Password?</a></p>
-      </div>
-      <div id="signupForm" class="hidden">
-        <div class="login-field"><label>Full Name</label><input type="text" id="signupName" placeholder="Your name"></div>
-        <div class="login-field"><label>Email</label><input type="email" id="signupEmail" placeholder="student@email.com"></div>
-        <div class="login-field"><label>Password</label><input type="password" id="signupPassword" placeholder="Min 6 characters"></div>
-        <div class="login-field"><label>Phone</label><input type="tel" id="signupPhone" placeholder="+91 XXXXX XXXXX"></div>
-        <button class="login-btn" id="signupBtn" type="button">Create Account</button>
-        <div class="portal-status" id="signupStatus"></div>
-        <p style="margin-top:16px;color:rgba(255,255,255,.6);font-size:.9rem;">Already have an account? <span class="login-toggle" id="showLogin">Login</span></p>
-      </div>
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreenX">
+  <div class="login-card">
+    <div class="login-brand">
+      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
+      <div><h2>Student Portal</h2><p>Vinayak ProEdu · ACCA</p></div>
+    </div>
+    <div id="loginFormX">
+      <div class="portal-field"><label>Email</label><input type="email" id="loginEmailX" placeholder="student@email.com"></div>
+      <div class="portal-field"><label>Password</label><input type="password" id="loginPasswordX" placeholder="••••••••"></div>
+      <button class="secondary-btn" id="studentLoginBtnX" type="button" style="width:100%">Login</button>
+      <div class="portal-status" id="studentLoginStatusX"></div>
+      <div class="login-toggle">New student? <a onclick="toggleLoginSignup()">Create account</a></div>
+    </div>
+    <div id="signupFormX" class="hidden">
+      <div class="portal-field"><label>Full Name</label><input type="text" id="signupNameX" placeholder="Your name"></div>
+      <div class="portal-field"><label>Email</label><input type="email" id="signupEmailX" placeholder="student@email.com"></div>
+      <div class="portal-field"><label>Password</label><input type="password" id="signupPasswordX" placeholder="Min 6 characters"></div>
+      <div class="portal-field"><label>Phone</label><input type="tel" id="signupPhoneX" placeholder="+91 XXXXX XXXXX"></div>
+      <button class="secondary-btn" id="studentSignupBtnX" type="button" style="width:100%">Create Account</button>
+      <div class="portal-status" id="studentSignupStatusX"></div>
+      <div class="login-toggle">Already have an account? <a onclick="toggleLoginSignup()">Login</a></div>
     </div>
   </div>
 </div>
 
 <!-- STUDENT APP -->
-<div class="student-app" id="studentApp" aria-hidden="true">
-  <div class="app-shell">
-    <aside class="app-sidebar">
+<div class="student-app" id="studentAppX">
+  <div class="app-shell" id="appShellX">
+    <aside class="app-sidebar" id="appSidebarX">
+      <button class="portal-collapse-btn" type="button" onclick="toggleSidebar()">☰ Menu</button>
       <div class="app-brand">
         <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
-        <div><h3>Student Dashboard</h3><p id="studentHello">Welcome</p></div>
+        <div><h3>Student Portal</h3><p id="studentHelloX">Welcome</p></div>
       </div>
       <div class="app-menu">
-        <button class="active" data-view="dashView" type="button">Dashboard</button>
-        <button data-view="testsView" type="button">Practice Tests</button>
-        <button data-view="coursesView" type="button">My Courses</button>
-        <button data-view="calendarView" type="button">Calendar</button>
-        <button data-view="doubtsView" type="button">Doubts</button>
-        <button id="logoutBtn" type="button">Logout</button>
+        <button class="active" data-stu-view="studentHomeX" type="button">Dashboard</button>
+        <button data-stu-view="studentPracticeX" type="button">Practice Tests</button>
+        <button data-stu-view="studentContentX" type="button">My Courses</button>
+        <button data-stu-view="studentCalendarX" type="button">Calendar</button>
+        <button data-stu-view="studentDoubtsX" type="button">Doubts</button>
+        <button id="studentLogoutBtnX" type="button">Logout</button>
       </div>
     </aside>
     <main class="app-main">
       <div class="app-topbar">
-        <div><h2 class="app-title" id="pageTitle">Dashboard</h2><div class="app-sub" id="pageSubtitle">Overview of your progress</div></div>
+        <div><h2 class="app-title" id="pageTitleX">Dashboard</h2><div class="app-sub" id="pageSubX">Overview of your ACCA journey</div></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button id="studentCloseBtnX" class="ghost-btn" type="button">Close</button>
+        </div>
       </div>
-      <section class="app-view active" id="dashView">
+
+      <!-- Dashboard -->
+      <section class="app-view" id="studentHomeX">
         <div class="app-grid-3">
-          <div class="metric"><div class="n" id="statAttempts">0</div><div class="l">Attempts</div></div>
-          <div class="metric"><div class="n" id="statAvg">0%</div><div class="l">Average</div></div>
-          <div class="metric"><div class="n" id="statBest">0%</div><div class="l">Best Score</div></div>
+          <div class="metric"><div class="n" id="studentStatAttemptsX">0</div><div class="l">Attempts</div></div>
+          <div class="metric"><div class="n" id="studentStatAvgX">0%</div><div class="l">Average</div></div>
+          <div class="metric"><div class="n" id="studentStatBestX">0%</div><div class="l">Best Score</div></div>
         </div>
         <div class="app-grid-2" style="margin-top:16px;">
-          <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Your Performance</h3><div id="performanceList"><div class="empty-box">No tests attempted yet.</div></div></div>
-          <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Recent Attempts</h3><div id="recentAttemptsList"><div class="empty-box">No attempts yet.</div></div></div>
+          <div class="app-card"><h3 class="subject-title">Your Performance</h3><div id="studentPerformanceX"></div></div>
+          <div class="app-card"><h3 class="subject-title">Recent Attempts</h3><div id="studentRecentAttemptsX" class="mini-list"></div></div>
         </div>
       </section>
-      <section class="app-view" id="testsView">
-        <div class="app-card">
-          <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Practice Tests</h3>
-          <div class="practice-tools">
-            <input id="practiceSearch" class="practice-search" type="search" placeholder="Search by subject, chapter, title or code">
-            <button class="ghost-btn" id="clearSearchBtn" type="button">Clear</button>
+
+      <!-- Practice Tests placeholder -->
+      <section class="app-view hidden" id="studentPracticeX">
+        <div class="app-card"><h3 class="subject-title">Practice Tests</h3><div class="empty-box">Phase 3 — Practice Tests module will appear here.<br>Ask admin to upload tests first.</div></div>
+      </section>
+
+      <!-- My Courses -->
+      <section class="app-view hidden" id="studentContentX">
+        <div class="app-card" style="border:none;box-shadow:none;background:transparent;padding:0;">
+          <div class="app-topbar" style="margin-bottom:18px;"><h3 class="subject-title" style="margin:0">My Courses</h3><input id="studentContentSearchX" class="portal-field" type="search" placeholder="Search your courses..." style="max-width:320px;margin:0" oninput="filterContent()"></div>
+          <div id="studentCourseGridX" class="course-grid"></div>
+          <div id="studentContentEmptyX" class="empty-box hidden" style="margin-top:20px">No courses assigned yet. Contact admin for enrolment.</div>
+        </div>
+      </section>
+
+      <!-- Course Hub -->
+      <section class="app-view hidden" id="studentCourseHubX">
+        <div class="app-card" style="border:none;box-shadow:none;background:transparent;padding:0;">
+          <button class="back-btn" onclick="openStudentView('studentContentX')" type="button">← Back to My Courses</button>
+          <h2 class="app-title" id="courseHubTitleX" style="margin:10px 0 18px;">Course</h2>
+          <div class="portal-tabs" style="margin-bottom:18px;">
+            <button class="portal-tab-btn active" onclick="setHubTab('lectures')" type="button">Lectures</button>
+            <button class="portal-tab-btn" onclick="setHubTab('mocks')" type="button">Mocks</button>
+            <button class="portal-tab-btn" onclick="setHubTab('doubts')" type="button">Doubts</button>
+            <button class="portal-tab-btn" onclick="setHubTab('leaderboard')" type="button">Leaderboard</button>
           </div>
-          <div class="portal-status" id="testsStatus"></div>
-          <div id="testsContainer" class="mini-list"></div>
+          <div id="hubTabContentX"></div>
         </div>
       </section>
-      <section class="app-view" id="coursesView">
-        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">My Courses</h3><div class="empty-box">Your enrolled courses will appear here.</div></div>
+
+      <!-- Lecture Player -->
+      <section class="app-view hidden" id="studentLecturePlayerX">
+        <button class="back-btn" onclick="openStudentView(state.activeCourseSubject?'studentCourseHubX':'studentContentX')" type="button">← Back to Course</button>
+        <div class="lecture-player">
+          <div class="player-main">
+            <div class="player-video" id="lectureVideoContainerX">
+              <div style="color:#fff;text-align:center;padding:40px;"><div style="font-size:3rem;margin-bottom:12px">▶</div><p>Select a lesson from the syllabus to start learning</p></div>
+            </div>
+            <div class="player-info">
+              <h3 id="lecturePlayerTitleX">Welcome</h3>
+              <p id="lecturePlayerMetaX">Choose a lesson from the syllabus on the right</p>
+            </div>
+          </div>
+          <div class="syllabus-sidebar">
+            <div class="syllabus-header">
+              <h3>Syllabus</h3>
+              <div class="progress-bar-wrap"><div class="progress-bar-fill" id="courseProgressBarX" style="width:0%"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:.82rem;color:#6b7280;">
+                <span id="courseProgressTextX">0 of 0 Lessons Completed</span><span id="courseProgressPctX">0%</span>
+              </div>
+            </div>
+            <div class="syllabus-body" id="studentSyllabusX"></div>
+          </div>
+        </div>
       </section>
-      <section class="app-view" id="calendarView">
-        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Lecture Calendar</h3><div class="empty-box">Calendar coming soon.</div></div>
+
+      <!-- Calendar -->
+      <section class="app-view hidden" id="studentCalendarX">
+        <div class="app-card"><h3 class="subject-title">Lecture Calendar</h3><div id="studentCalendarListX" class="calendar-list"></div></div>
       </section>
-      <section class="app-view" id="doubtsView">
-        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Ask a Doubt</h3><div class="empty-box">Doubts module coming in Phase 5.</div></div>
+
+      <!-- Doubts placeholder -->
+      <section class="app-view hidden" id="studentDoubtsX">
+        <div class="app-card"><h3 class="subject-title">Doubts</h3><div class="empty-box">Phase 5 — Doubts module will appear here.<br>Ask faculty for updates.</div></div>
+      </section>
+
+      <!-- Attempts -->
+      <section class="app-view hidden" id="studentAttemptsX">
+        <div class="app-card"><h3 class="subject-title">All Attempts</h3><div id="studentAllAttemptsX" class="mini-list"></div></div>
       </section>
     </main>
   </div>
 </div>
 
-<!-- TEST OVERLAY -->
-<div class="test-overlay" id="testOverlay" aria-hidden="true">
-  <div class="test-shell">
-    <div class="test-topbar">
-      <div><div class="test-kicker">Practice Test</div><h2 id="overlayTitle">Loading...</h2></div>
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <div id="overlayProgress" style="color:#fff;font-weight:600;">Q 1 / 1</div>
-        <div id="testTimer" style="color:#fff;font-weight:700;min-width:70px;text-align:right;">⏱ 0:00</div>
-        <button class="portal-close" id="closeTestOverlayBtn" type="button">×</button>
-      </div>
-    </div>
-    <div class="test-progress"><div id="progressBar"></div></div>
-    <div class="test-body">
-      <div class="test-body-inner">
-        <div id="questionArea"></div>
-        <div id="questionFeedback" class="feedback hidden"></div>
-      </div>
-    </div>
-    <div class="action-bar">
-      <div class="action-bar-inner">
-        <button class="ghost-btn" id="prevBtn" type="button">← Previous</button>
-        <button class="primary-btn" id="submitBtn" type="button">Submit Answer</button>
-        <button class="ghost-btn" id="nextBtn" type="button">Next →</button>
-      </div>
-    </div>
-  </div>
-</div>
+<button class="portal-reopen" id="portalReopenX" type="button" onclick="toggleSidebar()">☰ Portal menu</button>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -244,97 +306,374 @@ body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--rose-bg)
 <script src="../firebase-config.js"></script>
 
 <script>
-(function(){
-  'use strict';
-  if(typeof auth==='undefined'||!auth){window.auth=firebase.auth();window.db=firebase.firestore();window.storage=firebase.storage();}
-  const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const fmtDate=v=>{if(!v)return'';const d=v.toDate?v.toDate():new Date(v.seconds?v.seconds*1000:v);return d.toLocaleString();};
+function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+function fmtDate(v){ if(!v) return ''; const d = v.toDate ? v.toDate() : new Date(v.seconds ? v.seconds*1000 : v); return d.toLocaleString(); }
+function getYouTubeId(input) {
+  const raw = String(input || '').trim(); if(!raw) return '';
+  const short = raw.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i); if(short) return short[1];
+  const watch = raw.match(/[?&]v=([A-Za-z0-9_-]{6,})/i); if(watch) return watch[1];
+  const embed = raw.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i); if(embed) return embed[1];
+  if(/^[A-Za-z0-9_-]{6,}$/.test(raw)) return raw; return '';
+}
 
-  const loginScreen=$('loginScreen'),studentApp=$('studentApp');
-  const loginForm=$('loginForm'),signupForm=$('signupForm');
+const state = { currentUser: null, lectures: [], activeCourseSubject: '', activeCourseLectures: [] };
+const db = firebase.firestore();
+const auth = firebase.auth();
+const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-  function showLogin(){loginForm.classList.remove('hidden');signupForm.classList.add('hidden');$('authTitle').textContent='Student Login';$('authSubtitle').textContent='Access your tests, lectures, and progress';}
-  function showSignup(){loginForm.classList.add('hidden');signupForm.classList.remove('hidden');$('authTitle').textContent='Create Account';$('authSubtitle').textContent='Join Vinayak ProEdu';}
-  $('showSignup').addEventListener('click',showSignup);
-  $('showLogin').addEventListener('click',showLogin);
+function toggleLoginSignup(){
+  document.getElementById('loginFormX').classList.toggle('hidden');
+  document.getElementById('signupFormX').classList.toggle('hidden');
+}
+function setStatus(id, msg, err=false){
+  const el = document.getElementById(id); if(!el) return;
+  el.textContent = msg; el.classList.toggle('error', !!err);
+}
 
-  $('loginBtn').addEventListener('click',async()=>{
-    const email=$('loginEmail').value.trim(),pass=$('loginPassword').value,status=$('loginStatus');
-    if(!email||!pass){status.textContent='Email and password required.';status.classList.add('error');return;}
-    try{
-      const cred=await auth.signInWithEmailAndPassword(email,pass);
-      if(cred.user.email==='vinayakproedu@gmail.com'){await auth.signOut();status.textContent='Use the admin portal instead.';status.classList.add('error');return;}
-      const ref=db.collection('users').doc(cred.user.uid),snap=await ref.get();
-      if(!snap.exists)await ref.set({uid:cred.user.uid,email:cred.user.email,name:cred.user.displayName||cred.user.email.split('@')[0],role:'student',batchCode:'',enrolledSubjects:[],assignedLectureIds:[],createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      enterDashboard(cred.user);
-    }catch(err){status.textContent=err.message;status.classList.add('error');}
+function openStudentApp(){ document.getElementById('studentAppX').classList.add('show'); document.body.style.overflow='hidden'; }
+function closeStudentApp(){ document.getElementById('studentAppX').classList.remove('show'); document.body.style.overflow=''; }
+function showView(id){
+  document.querySelectorAll('.app-view').forEach(v => v.classList.add('hidden'));
+  const view = document.getElementById(id); if(view) view.classList.remove('hidden');
+}
+function setMenuActive(key){
+  document.querySelectorAll('.app-menu button[data-stu-view]').forEach(b => b.classList.toggle('active', b.dataset.stuView === key));
+}
+function openStudentView(viewId){
+  setMenuActive(viewId);
+  showView(viewId);
+  const titles = {
+    studentHomeX: ['Dashboard','Overview of your ACCA journey'],
+    studentPracticeX: ['Practice Tests','Test your knowledge'],
+    studentContentX: ['My Courses','Your enrolled subjects'],
+    studentCourseHubX: ['Course Hub','Subject content & mocks'],
+    studentLecturePlayerX: ['Lecture Player','Watch and learn'],
+    studentCalendarX: ['Calendar','Upcoming lectures & live classes'],
+    studentDoubtsX: ['Doubts','Ask your faculty'],
+    studentAttemptsX: ['Attempts','Your test history']
+  };
+  const t = titles[viewId] || ['Portal',''];
+  document.getElementById('pageTitleX').textContent = t[0];
+  document.getElementById('pageSubX').textContent = t[1];
+}
+function toggleSidebar(){
+  const sb = document.getElementById('appSidebarX');
+  sb.classList.toggle('open');
+}
+
+/* Auth */
+document.getElementById('studentLoginBtnX').addEventListener('click', async ()=>{
+  const email = document.getElementById('loginEmailX').value.trim();
+  const password = document.getElementById('loginPasswordX').value;
+  if(!email||!password){ setStatus('studentLoginStatusX','Email and password required.',true); return; }
+  try{
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    if(cred.user.email === ADMIN_EMAIL){ await auth.signOut(); setStatus('studentLoginStatusX','Admin cannot login here.',true); return; }
+    setStatus('studentLoginStatusX','Login successful.');
+  }catch(err){ setStatus('studentLoginStatusX',err.message,true); }
+});
+
+document.getElementById('studentSignupBtnX').addEventListener('click', async ()=>{
+  const name = document.getElementById('signupNameX').value.trim();
+  const email = document.getElementById('signupEmailX').value.trim();
+  const password = document.getElementById('signupPasswordX').value;
+  const phone = document.getElementById('signupPhoneX').value.trim();
+  if(!name||!email||!password){ setStatus('studentSignupStatusX','Name, email and password required.',true); return; }
+  if(password.length<6){ setStatus('studentSignupStatusX','Password must be 6+ characters.',true); return; }
+  try{
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    await cred.user.updateProfile({displayName:name});
+    await db.collection('users').doc(cred.user.uid).set({
+      uid:cred.user.uid, name, email, phone:phone||'', role:'student',
+      batchCode:'', enrolledSubjects:[], assignedLectureIds:[],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    setStatus('studentSignupStatusX','Account created! Logging in…');
+  }catch(err){ setStatus('studentSignupStatusX',err.message,true); }
+});
+
+document.getElementById('studentLogoutBtnX').addEventListener('click', async ()=>{ await auth.signOut(); });
+document.getElementById('studentCloseBtnX').addEventListener('click', closeStudentApp);
+
+document.querySelectorAll('.app-menu button[data-stu-view]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    openStudentView(btn.dataset.stuView);
+    if(window.innerWidth<=640) document.getElementById('appSidebarX').classList.remove('open');
+  });
+});
+
+/* Dashboard */
+async function refreshDashboard(){
+  const user = auth.currentUser; if(!user) return;
+  const snap = await db.collection('attempts').where('userId','==',user.uid).orderBy('createdAt','desc').limit(50).get().catch(()=>null);
+  const attempts = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
+  const total = attempts.reduce((s,a)=>s+Number(a.total||0),0);
+  const score = attempts.reduce((s,a)=>s+Number(a.score||0),0);
+  const avg = total ? Math.round((score/total)*100) : 0;
+  const best = attempts.length ? Math.max(...attempts.map(a=>Number(a.percentage||0))) : 0;
+  document.getElementById('studentStatAttemptsX').textContent = attempts.length;
+  document.getElementById('studentStatAvgX').textContent = avg+'%';
+  document.getElementById('studentStatBestX').textContent = best+'%';
+  document.getElementById('studentPerformanceX').innerHTML = attempts.length ? attempts.slice(0,5).map(a=>`
+    <div class="mini-item"><strong>${esc(a.testTitle||'Test')}</strong><br><span style="font-size:.85rem;color:#6b7280">${esc(a.subject||'General')} · ${a.percentage||0}%</span></div>
+  `).join('') : '<div class="empty-box">No tests attempted yet.</div>';
+  document.getElementById('studentRecentAttemptsX').innerHTML = attempts.slice(0,5).map(a=>`
+    <div class="mini-item"><strong>${esc(a.testTitle||'Test')}</strong><br><span style="font-size:.85rem;color:#6b7280">${esc(a.subject||'General')} · ${a.score}/${a.total} (${a.percentage||0}%)</span></div>
+  `).join('') || '<div class="empty-box">No attempts yet.</div>';
+  document.getElementById('studentAllAttemptsX').innerHTML = attempts.map(a=>`
+    <div class="mini-item"><strong>${esc(a.testTitle||'Test')}</strong><br><span style="font-size:.85rem;color:#6b7280">${esc(a.subject||'General')} · ${esc(a.chapter||'General')}</span><br><span style="font-size:.85rem;color:#6b7280">Score: ${a.score}/${a.total} (${a.percentage||0}%) · ${fmtDate(a.createdAt)}</span></div>
+  `).join('') || '<div class="empty-box">No attempts yet.</div>';
+}
+
+/* Phase 4 — Lectures */
+async function loadLectures(){
+  const user = auth.currentUser; if(!user) return;
+  const [userDoc, lectSnap] = await Promise.all([
+    db.collection('users').doc(user.uid).get().catch(()=>null),
+    db.collection('lectures').limit(200).get().catch(()=>null)
+  ]);
+  const uData = userDoc && userDoc.exists ? userDoc.data() : {};
+  const myBatch = uData.batchCode || '';
+  const mySubjects = Array.isArray(uData.enrolledSubjects) ? uData.enrolledSubjects : [];
+  const myLectures = Array.isArray(uData.assignedLectureIds) ? uData.assignedLectureIds : [];
+  state.lectures = lectSnap ? lectSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+
+  let visible = state.lectures.filter(l => {
+    const b = l.batchCodes || [];
+    if(b.length && myBatch && !b.includes(myBatch)) return false;
+    return true;
+  });
+  visible = visible.filter(l => {
+    if(myLectures.length) return myLectures.includes(l.id);
+    if(mySubjects.length) return mySubjects.includes(l.subject);
+    return true;
   });
 
-  $('signupBtn').addEventListener('click',async()=>{
-    const name=$('signupName').value.trim(),email=$('signupEmail').value.trim(),pass=$('signupPassword').value,phone=$('signupPhone').value.trim(),status=$('signupStatus');
-    if(!name||!email||!pass){status.textContent='Name, email and password required.';status.classList.add('error');return;}
-    if(pass.length<6){status.textContent='Password must be 6+ characters.';status.classList.add('error');return;}
-    try{
-      const cred=await auth.createUserWithEmailAndPassword(email,pass);
-      await cred.user.updateProfile({displayName:name});
-      await db.collection('users').doc(cred.user.uid).set({uid:cred.user.uid,name,email,phone:phone||'',role:'student',batchCode:'',enrolledSubjects:[],assignedLectureIds:[],createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      enterDashboard(cred.user);
-    }catch(err){status.textContent=err.message;status.classList.add('error');}
+  renderStudentContent(visible);
+  renderCalendar(visible);
+}
+
+function renderStudentContent(visible){
+  const grid = document.getElementById('studentCourseGridX');
+  const empty = document.getElementById('studentContentEmptyX');
+  const subjects = [...new Set(visible.map(l => l.subject || 'General'))].sort();
+  if(!subjects.length){ grid.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  grid.innerHTML = subjects.map(sub => {
+    const subLectures = visible.filter(l => (l.subject||'General')===sub);
+    const total = subLectures.length;
+    return `<div class="course-card" onclick="openCourse('${esc(sub)}')">
+      <div class="course-thumb" style="background:linear-gradient(135deg,#1e3c72,#2a5298)">
+        <span class="badge">${esc(sub.slice(0,4).toUpperCase())}</span>
+        <span style="font-size:1.5rem">📚</span>
+      </div>
+      <div class="course-info">
+        <h4>${esc(sub)}</h4>
+        <p>${total} lesson${total!==1?'s':''} · Offline ACCA Coaching</p>
+        <div class="course-meta"><span>Vinayak ProEdu</span><span>▶ Start</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterContent(){
+  const q = (document.getElementById('studentContentSearchX')?.value||'').toLowerCase();
+  document.querySelectorAll('#studentCourseGridX .course-card').forEach(card=>{
+    card.style.display = !q || card.innerText.toLowerCase().includes(q) ? '' : 'none';
   });
+}
 
-  $('forgotLink').addEventListener('click',()=>{
-    const email=$('loginEmail').value.trim();
-    if(!email){alert('Enter your email first');return;}
-    auth.sendPasswordResetEmail(email).then(()=>alert('Reset email sent.')).catch(err=>alert(err.message));
+window.openCourse = function(subject){
+  state.activeCourseSubject = subject;
+  document.getElementById('courseHubTitleX').textContent = subject;
+  openStudentView('studentCourseHubX');
+  setHubTab('lectures');
+};
+
+window.setHubTab = async function(tab){
+  document.querySelectorAll('#studentCourseHubX .portal-tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['lectures','mocks','doubts','leaderboard'][i]===tab);
   });
+  const container = document.getElementById('hubTabContentX');
+  const subject = state.activeCourseSubject;
+  if(!subject){ container.innerHTML='<div class="empty-box">No course selected.</div>'; return; }
 
-  $('logoutBtn').addEventListener('click',async()=>{await auth.signOut();location.reload();});
+  if(tab==='lectures'){
+    container.innerHTML='<div class="empty-box">Loading lectures…</div>';
+    const lSnap = await db.collection('lectures').where('subject','==',subject).limit(100).get().catch(()=>null);
+    let lectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+    const user = auth.currentUser;
+    if(user){
+      const uDoc = await db.collection('users').doc(user.uid).get().catch(()=>null);
+      const myBatch = uDoc?.data?.()?.batchCode||'';
+      if(myBatch) lectures = lectures.filter(l=>!(l.batchCodes||[]).length || (l.batchCodes||[]).includes(myBatch));
+    }
+    if(!lectures.length){ container.innerHTML='<div class="empty-box">No lectures uploaded for this course yet.</div>'; return; }
+    container.innerHTML = '<div class="mini-list">' + lectures.sort((a,b)=>String(a.lectureDate||'').localeCompare(String(b.lectureDate||''))).map(l => `
+      <div class="mini-item" style="cursor:pointer" onclick="playLesson('${l.id}');openStudentView('studentLecturePlayerX');">
+        <strong>${esc(l.title||'Lesson')}</strong><br>
+        <span style="font-size:.85rem;color:#6b7280">${esc(l.lectureDate||'')} ${l.lectureTime?'· '+esc(l.lectureTime):''} ${l.videoURL?'· 🎥 Video':l.fileURL?'· 📄 File':l.meetingLink?'· 🔴 Live':''}</span>
+      </div>
+    `).join('') + '</div>';
+  } else if(tab==='mocks'){
+    container.innerHTML='<div class="empty-box">Phase 3 — Mock tests for this subject will appear here.</div>';
+  } else if(tab==='doubts'){
+    container.innerHTML='<div class="empty-box">Phase 5 — Subject doubts will appear here.</div>';
+  } else if(tab==='leaderboard'){
+    container.innerHTML='<div class="empty-box">Leaderboard for this subject coming soon.</div>';
+  }
+};
 
-  const menuBtns=document.querySelectorAll('.app-menu button[data-view]');
-  const views=document.querySelectorAll('.app-view');
-  const pageTitle=$('pageTitle'),pageSub=$('pageSubtitle');
-  const viewMeta={dashView:['Dashboard','Overview of your progress'],testsView:['Practice Tests','Test list and attempts'],coursesView:['My Courses','Your enrolled subjects'],calendarView:['Calendar','Upcoming lectures & live classes'],doubtsView:['Doubts','Ask faculty your questions']};
+window.playLesson = async function(lectureId){
+  const lecture = state.lectures.find(l => l.id === lectureId);
+  if(!lecture) return;
+  const videoContainer = document.getElementById('lectureVideoContainerX');
+  const titleEl = document.getElementById('lecturePlayerTitleX');
+  const metaEl = document.getElementById('lecturePlayerMetaX');
 
-  menuBtns.forEach(btn=>btn.addEventListener('click',()=>{
-    const viewId=btn.dataset.view;
-    menuBtns.forEach(b=>b.classList.toggle('active',b===btn));
-    views.forEach(v=>v.classList.toggle('active',v.id===viewId));
-    if(viewMeta[viewId]){pageTitle.textContent=viewMeta[viewId][0];pageSub.textContent=viewMeta[viewId][1];}
-    if(viewId==='testsView'&&window.__loadStudentTests)window.__loadStudentTests();
-  }));
+  document.querySelectorAll('.lesson-item').forEach(el=>el.classList.remove('active'));
+  const activeEl = document.getElementById('lesson-'+lectureId);
+  if(activeEl) activeEl.classList.add('active');
 
-  function enterDashboard(user){
-    loginScreen.style.display='none';
-    studentApp.classList.add('show');
-    document.body.style.overflow='hidden';
-    $('studentHello').textContent='Logged in as '+(user.displayName||user.email||'Student');
-    loadDashboardData(user.uid);
+  titleEl.textContent = lecture.title || 'Untitled Lesson';
+  metaEl.textContent = (lecture.subject||'')+' · '+(lecture.section||'General')+' · '+(lecture.lectureDate||'');
+
+  const releaseDate = lecture.lectureDate ? new Date(lecture.lectureDate + 'T' + (lecture.lectureTime||'00:00')) : null;
+  const isLocked = releaseDate && releaseDate > new Date();
+
+  if(isLocked){
+    const diff = releaseDate - new Date();
+    const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    videoContainer.innerHTML = `
+      <div class="countdown-overlay">
+        <h4>🔒 This lesson is scheduled</h4>
+        <p>Will be released on ${esc(lecture.lectureDate)} at ${esc(lecture.lectureTime||'00:00')}</p>
+        <div class="countdown-box">
+          <div class="cd-unit"><span class="n">${h}</span><span class="l">hours</span></div>
+          <div class="cd-unit"><span class="n">${m}</span><span class="l">minutes</span></div>
+          <div class="cd-unit"><span class="n">${s}</span><span class="l">seconds</span></div>
+        </div>
+      </div>`;
+    return;
   }
 
-  async function loadDashboardData(uid){
-    try{
-      const snap=await db.collection('attempts').where('userId','==',uid).get();
-      const attempts=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-      const total=attempts.reduce((s,a)=>s+Number(a.total||0),0);
-      const score=attempts.reduce((s,a)=>s+Number(a.score||0),0);
-      const avg=total?Math.round((score/total)*100):0;
-      const best=attempts.length?Math.max(...attempts.map(a=>Number(a.percentage||0))):0;
-      $('statAttempts').textContent=attempts.length;
-      $('statAvg').textContent=avg+'%';
-      $('statBest').textContent=best+'%';
-      $('performanceList').innerHTML=attempts.length?attempts.slice(0,5).map(a=>`<div class="mini-item"><strong>${esc(a.testTitle||'Test')}</strong><br><span style="font-size:.85rem;color:#6b7280">${esc(a.subject||'General')} · ${a.percentage||0}%</span></div>`).join(''):'<div class="empty-box">No tests attempted yet.</div>';
-      $('recentAttemptsList').innerHTML=attempts.length?attempts.slice(0,5).map(a=>`<div class="mini-item"><strong>${esc(a.testTitle||'Test')}</strong><br><span style="font-size:.85rem;color:#6b7280">${a.score}/${a.total} · ${a.percentage||0}%</span></div>`).join(''):'<div class="empty-box">No attempts yet.</div>';
-    }catch(e){console.error('dashboard load error',e);}
+  if(lecture.videoURL){
+    const vid = getYouTubeId(lecture.videoURL);
+    if(vid){ videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&modestbranding=1&rel=0" allowfullscreen></iframe>`; }
+    else { videoContainer.innerHTML = `<video controls autoplay src="${esc(lecture.videoURL)}" style="max-width:100%;max-height:100%"></video>`; }
+  } else if(lecture.fileURL){
+    videoContainer.innerHTML = `<div style="color:#fff;text-align:center;padding:40px;"><p>File-based lecture</p><a href="${esc(lecture.fileURL)}" target="_blank" class="primary-btn" style="margin-top:12px;display:inline-block">Download / Open File</a></div>`;
+  } else if(lecture.meetingLink){
+    videoContainer.innerHTML = `<div style="color:#fff;text-align:center;padding:40px;"><p>Live Class Session</p><a href="${esc(lecture.meetingLink)}" target="_blank" class="primary-btn" style="margin-top:12px;display:inline-block">Join Live Class</a></div>`;
+  } else {
+    videoContainer.innerHTML = `<div style="color:#fff;text-align:center;padding:40px;"><p>No video or file attached for this lesson.</p></div>`;
+  }
+};
+
+async function renderSyllabus(subject){
+  const container = document.getElementById('studentSyllabusX');
+  const videoContainer = document.getElementById('lectureVideoContainerX');
+  const titleEl = document.getElementById('lecturePlayerTitleX');
+  const metaEl = document.getElementById('lecturePlayerMetaX');
+  if(!container) return;
+
+  const lSnap = await db.collection('lectures').where('subject','==',subject).limit(100).get().catch(()=>null);
+  const courseLectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+  if(!courseLectures.length){
+    container.innerHTML = '<div class="empty-box">No lectures uploaded for this course yet.</div>';
+    return;
   }
 
-  auth.onAuthStateChanged(user=>{
-    if(user&&user.email!=='vinayakproedu@gmail.com'){enterDashboard(user);}
-    else{loginScreen.style.display='block';studentApp.classList.remove('show');document.body.style.overflow='';}
+  const bySection = {};
+  courseLectures.forEach(l => { const sec = l.section || 'General'; if(!bySection[sec]) bySection[sec]=[]; bySection[sec].push(l); });
+  const totalLessons = courseLectures.length;
+  const completedLessons = 0;
+  const pct = Math.round((completedLessons/totalLessons)*100);
+  document.getElementById('courseProgressBarX').style.width = pct+'%';
+  document.getElementById('courseProgressTextX').textContent = completedLessons+' of '+totalLessons+' Lessons Completed';
+  document.getElementById('courseProgressPctX').textContent = pct+'%';
+
+  container.innerHTML = Object.keys(bySection).sort().map((sec, secIdx) => {
+    const lessons = bySection[sec].sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
+    return `<details class="syllabus-section" ${secIdx===0?'open':''}>
+      <summary><span>${esc(sec)}</span><span class="sec-icon">${lessons.length} lesson(s)</span></summary>
+      ${lessons.map((l, i) => {
+        const lessonId = 'lesson-'+l.id;
+        const releaseDate = l.lectureDate ? new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00')) : null;
+        const isLocked = releaseDate && releaseDate > new Date();
+        return `<div class="lesson-item ${isLocked?'locked':''}" id="${lessonId}" onclick="${isLocked?'':`playLesson('${l.id}')`}">
+          <div class="icon">${isLocked?'🔒':'▶'}</div>
+          <div>
+            <div class="lesson-title">${esc(l.title||'Lesson')}</div>
+            <div class="lesson-meta">${esc(l.lectureDate||'')} ${l.lectureTime?'· '+esc(l.lectureTime):''} ${l.videoURL?'· Video':l.fileURL?'· File':l.meetingLink?'· Live':''}</div>
+          </div>
+        </div>
+        ${isLocked && releaseDate ? `<div id="countdown-${l.id}" class="countdown-box" style="padding:0 16px 12px;justify-content:flex-start;"></div>` : ''}`;
+      }).join('')}
+    </details>`;
+  }).join('');
+
+  Object.keys(bySection).forEach(sec => {
+    bySection[sec].forEach(l => {
+      if(l.lectureDate && new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00')) > new Date()){
+        startCountdown(l.id, l.lectureDate + 'T' + (l.lectureTime||'00:00'));
+      }
+    });
   });
-})();
+
+  const firstUnlocked = courseLectures.find(l => !l.lectureDate || new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00')) <= new Date());
+  if(firstUnlocked) playLesson(firstUnlocked.id);
+  else {
+    titleEl.textContent = subject;
+    metaEl.textContent = 'All lessons are scheduled. Select a lesson to see release time.';
+    videoContainer.innerHTML = `<div style="color:#fff;text-align:center;padding:40px;"><div style="font-size:3rem;margin-bottom:12px">🔒</div><p>Content is locked until release date</p></div>`;
+  }
+}
+
+window.startCountdown = function(lessonId, targetISO){
+  const update = () => {
+    const box = document.getElementById('countdown-'+lessonId);
+    if(!box) return;
+    const diff = new Date(targetISO) - new Date();
+    if(diff <= 0){ box.innerHTML = '<span style="color:#1f9d55;font-weight:700;font-size:.85rem">✅ Now available</span>'; return; }
+    const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
+    box.innerHTML = `<div class="countdown-box" style="justify-content:flex-start;gap:6px;"><div class="cd-unit" style="min-width:48px;padding:6px 8px;background:#0D1B40;color:#fff;border-radius:6px;text-align:center"><span class="n" style="font-size:1rem">${h}</span><span class="l" style="font-size:.6rem">hrs</span></div><div class="cd-unit" style="min-width:48px;padding:6px 8px;background:#0D1B40;color:#fff;border-radius:6px;text-align:center"><span class="n" style="font-size:1rem">${m}</span><span class="l" style="font-size:.6rem">min</span></div><div class="cd-unit" style="min-width:48px;padding:6px 8px;background:#0D1B40;color:#fff;border-radius:6px;text-align:center"><span class="n" style="font-size:1rem">${s}</span><span class="l" style="font-size:.6rem">sec</span></div></div>`;
+  };
+  update();
+  const timer = setInterval(update, 1000);
+  setTimeout(() => clearInterval(timer), 24*3600*1000);
+};
+
+function renderCalendar(visible){
+  const list = document.getElementById('studentCalendarListX');
+  if(!list) return;
+  const live = visible.filter(l => l.meetingLink);
+  list.innerHTML = live.length ? live.map(l => `
+    <div class="calendar-item">
+      <div class="calendar-date">${esc(l.lectureDate||'TBD')}</div>
+      <div class="calendar-title">🔴 LIVE: ${esc(l.title||'Lecture')}</div>
+      <div style="font-size:.8rem;color:#6b7280;margin:4px 0">🕒 ${esc(l.lectureTime||'')}</div>
+      <a href="${esc(l.meetingLink)}" target="_blank" class="primary-btn" style="margin-top:6px;display:inline-block">Join Live Class</a>
+    </div>
+  `).join('') : '<div class="empty-box">No live classes scheduled.</div>';
+}
+
+/* Auth state */
+auth.onAuthStateChanged(async user => {
+  state.currentUser = user || null;
+  if(!user){
+    document.getElementById('loginScreenX').style.display = 'flex';
+    closeStudentApp();
+    return;
+  }
+  if(user.email === ADMIN_EMAIL){ await auth.signOut(); return; }
+  document.getElementById('loginScreenX').style.display = 'none';
+  document.getElementById('studentHelloX').textContent = 'Logged in as ' + (user.displayName || user.email || 'Student');
+  openStudentApp();
+  openStudentView('studentHomeX');
+  await refreshDashboard();
+  await loadLectures();
+});
 </script>
-<script src="modules/tests.js"></script>
-<script src="modules/test-engine.js"></script>
 </body>
 </html>
