@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal | Vinayak ProEdu</title>
+<link rel="icon" type="image/png" href="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Shared styles from root -->
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+/* =============================================
+   STUDENT PORTAL — PHASE 2
+   File: student/index.html
+   ============================================= */
+
+:root {
+  --garnet: #1e3c72; --mahogany: #2a5298; --strawberry: #ff6b35;
+  --blush: #fde8dc; --rose-bg: #F7F5F0; --carbon: #0D1B40;
+  --ink: #1A1A2E; --muted: #6B7280; --silver: #9ca3af;
+  --smoke: #EFF1F6; --white: #FFFFFF; --gold: #C9922A;
+  --gold-lt: #E8AA48; --amber: #F5C04A; --navy: #0D1B40;
+  --navy-mid: #1a2e5e; --blue: #1e3c72;
+  --shadow-sm: 0 4px 20px rgba(13,27,64,0.08);
+  --shadow-md: 0 12px 45px rgba(13,27,64,0.14);
+  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--rose-bg);
+  line-height:1.65; overflow-x:hidden;
+}
+
+/* ── Login Screen ── */
+.login-screen {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);
+  padding:20px; position:relative; overflow:hidden;
+}
+.login-ring {
+  position:absolute; border-radius:50%; border:1px solid rgba(201,146,42,0.06);
+  width:600px; height:600px; top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.login-box {
+  position:relative; z-index:2; width:min(420px, 100%);
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-xl); padding:clamp(32px, 6vw, 48px);
+  backdrop-filter:blur(20px); box-shadow:0 40px 100px rgba(0,0,0,0.4);
+}
+.login-logo {
+  width:64px; height:64px; border-radius:50%; border:2px solid var(--gold);
+  margin:0 auto 20px; display:block; object-fit:cover;
+  box-shadow:0 0 0 8px rgba(201,146,42,0.1);
+}
+.login-box h2 {
+  font-family:'Playfair Display',serif; color:#fff; text-align:center;
+  font-size:1.6rem; margin-bottom:6px;
+}
+.login-box p.sub {
+  text-align:center; color:rgba(255,255,255,0.6); font-size:0.9rem; margin-bottom:28px;
+}
+.login-field {
+  display:flex; flex-direction:column; gap:6px; margin-bottom:16px;
+}
+.login-field label {
+  font-size:0.74rem; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:rgba(255,255,255,0.65);
+}
+.login-field input {
+  width:100%; padding:13px 16px;
+  background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--r-sm); color:#fff; font-size:0.95em; font-family:'DM Sans',sans-serif;
+  transition:all 0.25s;
+}
+.login-field input::placeholder { color:rgba(255,255,255,0.32); }
+.login-field input:focus {
+  outline:none; border-color:rgba(201,146,42,0.6);
+  background:rgba(255,255,255,0.13);
+  box-shadow:0 0 0 3px rgba(201,146,42,0.15);
+}
+.login-btn {
+  width:100%; padding:14px; border-radius:50px; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--navy);
+  font-size:1em; font-weight:700; font-family:'DM Sans',sans-serif;
+  box-shadow:0 8px 28px rgba(201,146,42,0.35); transition:all 0.3s;
+  margin-top:4px;
+}
+.login-btn:hover { transform:translateY(-2px); box-shadow:0 14px 40px rgba(201,146,42,0.5); }
+.login-toggle {
+  text-align:center; margin-top:18px; color:rgba(255,255,255,0.55);
+  font-size:0.88rem;
+}
+.login-toggle a {
+  color:var(--gold-lt); font-weight:600; cursor:pointer; text-decoration:underline;
+}
+.login-status {
+  text-align:center; margin-top:12px; font-size:0.85rem;
+  min-height:20px; font-weight:600;
+}
+.login-status.error { color:#fca5a5; }
+.login-status.success { color:#86efac; }
+.back-link {
+  display:block; text-align:center; margin-top:16px;
+  color:rgba(255,255,255,0.4); font-size:0.82rem;
+  text-decoration:none; transition:color 0.2s;
+}
+.back-link:hover { color:var(--gold-lt); }
+
+/* ── Dashboard Shell ── */
+.dashboard {
+  display:none; min-height:100vh;
+}
+.dashboard.show { display:flex; }
+
+/* Sidebar */
+.sidebar {
+  width:260px; background:var(--navy); color:#fff;
+  padding:20px; display:flex; flex-direction:column;
+  position:fixed; height:100vh; left:0; top:0; z-index:100;
+  transition:transform 0.3s;
+}
+.sidebar-brand {
+  display:flex; align-items:center; gap:10px; margin-bottom:24px;
+}
+.sidebar-brand img {
+  width:40px; height:40px; border-radius:50%; border:2px solid var(--gold); object-fit:cover;
+}
+.sidebar-brand h3 {
+  font-family:'Playfair Display',serif; font-size:1.05rem; margin:0;
+}
+.sidebar-brand p {
+  font-size:0.72rem; letter-spacing:1.4px; text-transform:uppercase;
+  color:rgba(232,170,72,0.8); margin:0;
+}
+.sidebar-menu { display:grid; gap:8px; }
+.sidebar-menu button {
+  width:100%; border:none; background:#1e3c72; color:#fff;
+  padding:12px 14px; border-radius:10px; cursor:pointer;
+  text-align:left; font-weight:700; font-family:'DM Sans',sans-serif;
+  font-size:0.9rem; transition:all 0.2s;
+}
+.sidebar-menu button:hover, .sidebar-menu button.active {
+  background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--navy);
+}
+.sidebar-footer {
+  margin-top:auto; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08);
+}
+.user-name {
+  font-size:0.9rem; font-weight:600; color:#fff; margin-bottom:4px;
+}
+.user-email {
+  font-size:0.75rem; color:rgba(255,255,255,0.5); margin-bottom:14px;
+}
+.logout-btn {
+  width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.05); color:#fff; cursor:pointer;
+  font-family:'DM Sans',sans-serif; font-weight:600; transition:all 0.2s;
+}
+.logout-btn:hover { background:rgba(255,255,255,0.12); }
+
+/* Main Content */
+.main {
+  flex:1; margin-left:260px; padding:24px 28px;
+  min-height:100vh;
+}
+.topbar {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:24px; flex-wrap:wrap; gap:12px;
+}
+.page-title {
+  font-family:'Playfair Display',serif; color:var(--navy);
+  font-size:1.5rem; margin:0;
+}
+.page-sub { color:var(--muted); font-size:0.88rem; }
+
+/* Metrics */
+.metrics-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:16px; margin-bottom:24px;
+}
+.metric-card {
+  background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff;
+  border-radius:16px; padding:20px;
+}
+.metric-card .n {
+  font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:800;
+}
+.metric-card .l {
+  font-size:0.75rem; letter-spacing:1px; text-transform:uppercase;
+  color:rgba(255,255,255,0.6); margin-top:4px;
+}
+
+/* Cards */
+.card {
+  background:#fff; border:1px solid rgba(201,146,42,0.12);
+  border-radius:20px; padding:20px;
+  box-shadow:0 4px 18px rgba(13,27,64,0.06); margin-bottom:16px;
+}
+.card h3 {
+  font-family:'Playfair Display',serif; color:var(--navy);
+  font-size:1.1rem; margin:0 0 14px;
+}
+.empty-state {
+  padding:20px; border:1px dashed #d9e2ef; border-radius:14px;
+  background:#fbfdff; color:#5d6e83; text-align:center; font-size:0.92rem;
+}
+.mini-item {
+  background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+  padding:14px; margin-bottom:10px;
+}
+.mini-item strong { color:var(--navy); font-size:0.95rem; }
+.mini-item .small { font-size:0.82rem; color:var(--muted); }
+
+/* Mobile */
+.menu-toggle {
+  display:none; position:fixed; top:16px; left:16px; z-index:200;
+  width:40px; height:40px; border-radius:10px;
+  background:var(--navy); color:#fff; border:none;
+  font-size:1.2rem; cursor:pointer;
+}
+@media(max-width:900px){
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; padding:70px 16px 24px; }
+  .menu-toggle { display:block; }
+  .metrics-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:640px){
+  .metrics-grid { grid-template-columns:1fr; }
+  .login-box { padding:28px 20px; }
+}
+
+/* View switching */
+.view { display:none; }
+.view.active { display:block; animation:fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- =============================================
+     LOGIN SCREEN
+     ============================================= -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-ring"></div>
+  <div class="login-box">
+    <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" class="login-logo">
+    <h2 id="formTitle">Student Login</h2>
+    <p class="sub" id="formSub">Access your tests, lectures, and progress</p>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <div class="login-field">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="student@email.com">
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      <button class="login-btn" onclick="handleLogin()">Login</button>
+      <div class="login-toggle">
+        New student? <a onclick="showSignup()">Create account</a>
+      </div>
+      <div class="login-status" id="loginStatus"></div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" style="display:none;">
+      <div class="login-field">
+        <label>Full Name *</label>
+        <input type="text" id="signupName" placeholder="Your full name">
+      </div>
+      <div class="login-field">
+        <label>Email *</label>
+        <input type="email" id="signupEmail" placeholder="student@email.com">
+      </div>
+      <div class="login-field">
+        <label>Password *</label>
+        <input type="password" id="signupPassword" placeholder="Min 6 characters">
+      </div>
+      <div class="login-field">
+        <label>Phone</label>
+        <input type="tel" id="signupPhone" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <button class="login-btn" onclick="handleSignup()">Create Account</button>
+      <div class="login-toggle">
+        Already have an account? <a onclick="showLogin()">Login</a>
+      </div>
+      <div class="login-status" id="signupStatus"></div>
+    </div>
+
+    <a href="../index.html" class="back-link">← Back to Vinayak ProEdu</a>
+  </div>
+</div>
+
+<!-- =============================================
+     DASHBOARD
+     ============================================= -->
+<div class="dashboard" id="dashboard">
+  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
+      <div>
+        <h3>Vinayak ProEdu</h3>
+        <p>Student Portal</p>
+      </div>
+    </div>
+    <nav class="sidebar-menu">
+      <button class="active" onclick="showView('homeView')">🏠 Dashboard</button>
+      <button onclick="showView('testsView')">📝 Practice Tests</button>
+      <button onclick="showView('lecturesView')">🎓 My Courses</button>
+      <button onclick="showView('calendarView')">📅 Calendar</button>
+      <button onclick="showView('doubtsView')">❓ Doubts</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-name" id="userName">Student</div>
+      <div class="user-email" id="userEmail">student@email.com</div>
+      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- Home View -->
+    <div class="view active" id="homeView">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <div class="page-sub">Track your progress and performance</div>
+        </div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="n" id="statAttempts">0</div>
+          <div class="l">Test Attempts</div>
+        </div>
+        <div class="metric-card">
+          <div class="n" id="statAvg">0%</div>
+          <div class="l">Average Score</div>
+        </div>
+        <div class="metric-card">
+          <div class="n" id="statBest">0%</div>
+          <div class="l">Best Score</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Recent Attempts</h3>
+        <div id="recentAttempts">
+          <div class="empty-state">No attempts yet. Start a practice test to see your progress here.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tests View -->
+    <div class="view" id="testsView">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Practice Tests</h1>
+          <div class="page-sub">Available mock exams and practice papers</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="empty-state">Tests will appear here once admin uploads them.</div>
+      </div>
+    </div>
+
+    <!-- Lectures View -->
+    <div class="view" id="lecturesView">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">My Courses</h1>
+          <div class="page-sub">Your enrolled subjects and lectures</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="empty-state">Courses will appear here once admin assigns them to you.</div>
+      </div>
+    </div>
+
+    <!-- Calendar View -->
+    <div class="view" id="calendarView">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Calendar</h1>
+          <div class="page-sub">Upcoming live classes and events</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="empty-state">No upcoming events scheduled.</div>
+      </div>
+    </div>
+
+    <!-- Doubts View -->
+    <div class="view" id="doubtsView">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Ask a Doubt</h1>
+          <div class="page-sub">Get help from faculty</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="empty-state">Doubt section coming in next update.</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- =============================================
+     FIREBASE + SCRIPTS
+     ============================================= -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="../firebase-config.js"></script>
+<script src="../utils.js"></script>
+
+<script>
+/* ── Auth State ── */
+const loginScreen = document.getElementById('loginScreen');
+const dashboard = document.getElementById('dashboard');
+const loginStatus = document.getElementById('loginStatus');
+const signupStatus = document.getElementById('signupStatus');
+
+function setStatus(el, msg, isError) {
+  el.textContent = msg;
+  el.className = 'login-status ' + (isError ? 'error' : 'success');
+}
+
+function showSignup() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('signupForm').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'Create Account';
+  document.getElementById('formSub').textContent = 'Join Vinayak ProEdu today';
+  loginStatus.textContent = '';
+}
+
+function showLogin() {
+  document.getElementById('signupForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'Student Login';
+  document.getElementById('formSub').textContent = 'Access your tests, lectures, and progress';
+  signupStatus.textContent = '';
+}
+
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) { setStatus(loginStatus, 'Email and password required', true); return; }
+  try {
+    setStatus(loginStatus, 'Logging in...', false);
+    await auth.signInWithEmailAndPassword(email, password);
+  } catch (err) {
+    setStatus(loginStatus, err.message, true);
+  }
+}
+
+async function handleSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const phone = document.getElementById('signupPhone').value.trim();
+  if (!name || !email || !password) { setStatus(signupStatus, 'Name, email and password required', true); return; }
+  if (password.length < 6) { setStatus(signupStatus, 'Password must be 6+ characters', true); return; }
+  try {
+    setStatus(signupStatus, 'Creating account...', false);
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    await cred.user.updateProfile({ displayName: name });
+    await db.collection('users').doc(cred.user.uid).set({
+      uid: cred.user.uid, name, email, phone: phone || '',
+      role: 'student', batchCode: '', enrolledSubjects: [],
+      assignedLectureIds: [], createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    setStatus(signupStatus, 'Account created! Logging in...', false);
+  } catch (err) {
+    setStatus(signupStatus, err.message, true);
+  }
+}
+
+async function handleLogout() {
+  await auth.signOut();
+}
+
+/* ── Dashboard ── */
+function showDashboard(user) {
+  loginScreen.style.display = 'none';
+  dashboard.classList.add('show');
+  document.getElementById('userName').textContent = user.displayName || 'Student';
+  document.getElementById('userEmail').textContent = user.email;
+  loadStudentData(user.uid);
+}
+
+function showLoginScreen() {
+  loginScreen.style.display = 'flex';
+  dashboard.classList.remove('show');
+  showLogin();
+}
+
+/* ── Views ── */
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  document.querySelectorAll('.sidebar-menu button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (window.innerWidth <= 900) toggleSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ── Data Loading ── */
+async function loadStudentData(uid) {
+  try {
+    const snap = await db.collection('attempts').where('userId', '==', uid)
+      .orderBy('createdAt', 'desc').limit(20).get();
+    const attempts = snap.docs.map(d => d.data());
+    const total = attempts.reduce((s, a) => s + (a.total || 0), 0);
+    const score = attempts.reduce((s, a) => s + (a.score || 0), 0);
+    const avg = total ? Math.round((score / total) * 100) : 0;
+    const best = attempts.length ? Math.max(...attempts.map(a => a.percentage || 0)) : 0;
+
+    document.getElementById('statAttempts').textContent = attempts.length;
+    document.getElementById('statAvg').textContent = avg + '%';
+    document.getElementById('statBest').textContent = best + '%';
+
+    const container = document.getElementById('recentAttempts');
+    if (!attempts.length) {
+      container.innerHTML = '<div class="empty-state">No attempts yet. Start a practice test!</div>';
+      return;
+    }
+    container.innerHTML = attempts.slice(0, 5).map(a => `
+      <div class="mini-item">
+        <strong>${a.testTitle || 'Test'}</strong><br>
+        <span class="small">${a.subject || 'General'} · ${a.score || 0}/${a.total || 0} (${a.percentage || 0}%)</span>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error('loadStudentData error:', e);
+  }
+}
+
+/* ── Auth Listener ── */
+auth.onAuthStateChanged(user => {
+  if (user) {
+    // Prevent admin from accessing student portal
+    if (user.email === 'vinayakproedu@gmail.com') {
+      auth.signOut();
+      setStatus(loginStatus, 'Admin cannot login here. Use /admin/', true);
+      return;
+    }
+    showDashboard(user);
+  } else {
+    showLoginScreen();
+  }
+});
+</script>
+
+</body>
+</html>
