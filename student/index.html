@@ -10,42 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
 <style>
-     /* ── Phase 3B: Test Engine Overlay ── */
-.test-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b1b3a;display:none;z-index:99999;}
-.test-overlay.show{display:block !important;}
-.test-shell{width:100%;height:100%;display:flex;flex-direction:column;}
-.test-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
-.test-kicker{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#d9e6ff;font-weight:700;}
-.test-topbar h2{font-family:'Playfair Display',serif;margin-top:2px;font-size:1.2rem;}
-.test-progress{height:6px;background:#d9e2f0;overflow:hidden;}
-.test-progress>div{height:100%;width:0;background:linear-gradient(90deg,#C9922A,#E8AA48);transition:width .3s;}
-.test-body{flex:1;overflow:auto;padding:24px 18px 18px;}
-.test-body-inner{max-width:1120px;margin:0 auto;width:100%;}
-.action-bar{position:sticky;bottom:0;background:rgba(248,250,252,.94);backdrop-filter:blur(8px);border-top:1px solid #e5e7eb;padding:14px 18px;}
-.action-bar-inner{max-width:1120px;margin:0 auto;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
-.feedback{margin-top:14px;padding:16px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:.95rem;line-height:1.7;}
-.feedback.hidden{display:none !important;}
-.feedback.correct{border-color:#10b981;background:#ecfdf5;}
-.feedback.wrong{border-color:#ef4444;background:#fef2f2;}
-.question-card{background:#fff;border:1px solid #e5e7eb;border-radius:22px;box-shadow:0 4px 18px rgba(13,27,64,.06);padding:28px;}
-.question-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
-.question-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#0D1B40;margin:0;}
-.question-sub{color:#6B7280;font-size:.92rem;}
-.option-btn{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 18px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:all .15s;}
-.option-btn:hover{background:#f8fafc;border-color:#cbd5e1;}
-.option-btn.selected{background:#dbe8ff;border-color:#1e3c72;}
-.drag-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
-.drag-box,.drop-box{border:2px dashed #cbd5e1;border-radius:14px;padding:16px;min-height:140px;background:#fbfdff;}
-.drag-item{padding:12px 14px;margin:8px 0;border-radius:10px;background:#e8efff;cursor:grab;font-weight:600;}
-.drop-slot{padding:12px 14px;margin:8px 0;border-radius:10px;background:#fff;border:1.5px solid #dbe4f0;min-height:48px;}
-.hotspot-image{max-width:100%;border-radius:12px;border:1px solid #e5e7eb;cursor:crosshair;display:block;}
-.portal-close{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
-.portal-close:hover{background:rgba(255,255,255,.18);}
-.manual-textarea{width:100%;min-height:180px;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;resize:vertical;}
-.fill-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;}
-.dropdown-select{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;background:#fff;}
-@media(max-width:720px){.drag-wrap{grid-template-columns:1fr;}}
-/* ── Student Portal Base ── */
+:root{--garnet:#1e3c72;--mahogany:#2a5298;--strawberry:#ff6b35;--blush:#fde8dc;--rose-bg:#F7F5F0;--carbon:#0D1B40;--ink:#1A1A2E;--muted:#6B7280;--silver:#9ca3af;--smoke:#EFF1F6;--white:#FFFFFF;--gold:#C9922A;--gold-lt:#E8AA48;--amber:#F5C04A;--navy:#0D1B40;--navy-mid:#1a2e5e;--blue:#1e3c72;--border:rgba(201,146,42,0.25);--shadow-sm:0 4px 20px rgba(13,27,64,0.08);--shadow-md:0 12px 45px rgba(13,27,64,0.14);--r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--rose-bg);line-height:1.65;overflow-x:hidden;}
+
 .student-app{position:fixed;top:0;left:0;width:100%;height:100%;background:#f5f7fb;display:none;z-index:9999;}
 .student-app.show{display:flex;}
 .app-shell{display:flex;width:100%;height:100%;}
@@ -95,7 +64,7 @@
 .login-toggle{color:var(--gold-lt);cursor:pointer;text-decoration:underline;font-weight:600;}
 .hidden{display:none !important;}
 
-/* ── Phase 3A: Test List Styles ── */
+/* Phase 3A */
 .practice-tools{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 18px;}
 .practice-search{flex:1;min-width:220px;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;}
 .practice-search:focus{outline:3px solid rgba(201,146,42,.22);border-color:var(--gold);}
@@ -114,22 +83,54 @@
 .attempt-item{margin-top:8px;padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;}
 .chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#1e3c72;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:700;margin:4px 6px 0 0;}
 
+/* Phase 3B */
+.test-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b1b3a;display:none;z-index:99999;}
+.test-overlay.show{display:block !important;}
+.test-shell{width:100%;height:100%;display:flex;flex-direction:column;}
+.test-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;}
+.test-kicker{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#d9e6ff;font-weight:700;}
+.test-topbar h2{font-family:'Playfair Display',serif;margin-top:2px;font-size:1.2rem;}
+.test-progress{height:6px;background:#d9e2f0;overflow:hidden;}
+.test-progress>div{height:100%;width:0;background:linear-gradient(90deg,#C9922A,#E8AA48);transition:width .3s;}
+.test-body{flex:1;overflow:auto;padding:24px 18px 18px;}
+.test-body-inner{max-width:1120px;margin:0 auto;width:100%;}
+.action-bar{position:sticky;bottom:0;background:rgba(248,250,252,.94);backdrop-filter:blur(8px);border-top:1px solid #e5e7eb;padding:14px 18px;}
+.action-bar-inner{max-width:1120px;margin:0 auto;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+.feedback{margin-top:14px;padding:16px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:.95rem;line-height:1.7;}
+.feedback.hidden{display:none !important;}
+.feedback.correct{border-color:#10b981;background:#ecfdf5;}
+.feedback.wrong{border-color:#ef4444;background:#fef2f2;}
+.question-card{background:#fff;border:1px solid #e5e7eb;border-radius:22px;box-shadow:0 4px 18px rgba(13,27,64,.06);padding:28px;}
+.question-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+.question-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:#0D1B40;margin:0;}
+.question-sub{color:#6B7280;font-size:.92rem;}
+.option-btn{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 18px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:all .15s;}
+.option-btn:hover{background:#f8fafc;border-color:#cbd5e1;}
+.option-btn.selected{background:#dbe8ff;border-color:#1e3c72;}
+.drag-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+.drag-box,.drop-box{border:2px dashed #cbd5e1;border-radius:14px;padding:16px;min-height:140px;background:#fbfdff;}
+.drag-item{padding:12px 14px;margin:8px 0;border-radius:10px;background:#e8efff;cursor:grab;font-weight:600;}
+.drop-slot{padding:12px 14px;margin:8px 0;border-radius:10px;background:#fff;border:1.5px solid #dbe4f0;min-height:48px;}
+.hotspot-image{max-width:100%;border-radius:12px;border:1px solid #e5e7eb;cursor:crosshair;display:block;}
+.portal-close{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
+.portal-close:hover{background:rgba(255,255,255,.18);}
+.manual-textarea{width:100%;min-height:180px;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;resize:vertical;}
+.fill-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;}
+.dropdown-select{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e7eb;font-family:'DM Sans',sans-serif;font-size:.95rem;background:#fff;}
+
 @media(max-width:900px){.app-grid-2,.app-grid-3{grid-template-columns:1fr;}.app-sidebar{width:100%;height:auto;}.app-shell{flex-direction:column;height:auto;}}
-@media(max-width:640px){.app-main{padding:16px;}}
+@media(max-width:640px){.app-main{padding:16px;}.drag-wrap{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     LOGIN SCREEN
-     ═══════════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-screen">
     <div class="login-card">
       <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" style="width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);margin:0 auto 16px;display:block;object-fit:cover;">
       <h2 id="authTitle">Student Login</h2>
       <p id="authSubtitle">Access your tests, lectures, and progress</p>
-
       <div id="loginForm">
         <div class="login-field"><label>Email</label><input type="email" id="loginEmail" placeholder="student@email.com"></div>
         <div class="login-field"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
@@ -138,7 +139,6 @@
         <p style="margin-top:16px;color:rgba(255,255,255,.6);font-size:.9rem;">New student? <span class="login-toggle" id="showSignup">Create account</span></p>
         <p style="margin-top:8px;"><a href="javascript:void(0);" id="forgotLink" style="color:var(--gold-lt);font-size:.85rem;">Forgot Password?</a></p>
       </div>
-
       <div id="signupForm" class="hidden">
         <div class="login-field"><label>Full Name</label><input type="text" id="signupName" placeholder="Your name"></div>
         <div class="login-field"><label>Email</label><input type="email" id="signupEmail" placeholder="student@email.com"></div>
@@ -152,18 +152,13 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     STUDENT APP
-     ═══════════════════════════════════════ -->
+<!-- STUDENT APP -->
 <div class="student-app" id="studentApp" aria-hidden="true">
   <div class="app-shell">
     <aside class="app-sidebar">
       <div class="app-brand">
         <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
-        <div>
-          <h3>Student Dashboard</h3>
-          <p id="studentHello">Welcome</p>
-        </div>
+        <div><h3>Student Dashboard</h3><p id="studentHello">Welcome</p></div>
       </div>
       <div class="app-menu">
         <button class="active" data-view="dashView" type="button">Dashboard</button>
@@ -174,16 +169,10 @@
         <button id="logoutBtn" type="button">Logout</button>
       </div>
     </aside>
-
     <main class="app-main">
       <div class="app-topbar">
-        <div>
-          <h2 class="app-title" id="pageTitle">Dashboard</h2>
-          <div class="app-sub" id="pageSubtitle">Overview of your progress</div>
-        </div>
+        <div><h2 class="app-title" id="pageTitle">Dashboard</h2><div class="app-sub" id="pageSubtitle">Overview of your progress</div></div>
       </div>
-
-      <!-- DASHBOARD -->
       <section class="app-view active" id="dashView">
         <div class="app-grid-3">
           <div class="metric"><div class="n" id="statAttempts">0</div><div class="l">Attempts</div></div>
@@ -191,18 +180,10 @@
           <div class="metric"><div class="n" id="statBest">0%</div><div class="l">Best Score</div></div>
         </div>
         <div class="app-grid-2" style="margin-top:16px;">
-          <div class="app-card">
-            <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Your Performance</h3>
-            <div id="performanceList"><div class="empty-box">No tests attempted yet.</div></div>
-          </div>
-          <div class="app-card">
-            <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Recent Attempts</h3>
-            <div id="recentAttemptsList"><div class="empty-box">No attempts yet.</div></div>
-          </div>
+          <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Your Performance</h3><div id="performanceList"><div class="empty-box">No tests attempted yet.</div></div></div>
+          <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Recent Attempts</h3><div id="recentAttemptsList"><div class="empty-box">No attempts yet.</div></div></div>
         </div>
       </section>
-
-      <!-- PRACTICE TESTS (Phase 3A) -->
       <section class="app-view" id="testsView">
         <div class="app-card">
           <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Practice Tests</h3>
@@ -214,37 +195,48 @@
           <div id="testsContainer" class="mini-list"></div>
         </div>
       </section>
-
-      <!-- MY COURSES -->
       <section class="app-view" id="coursesView">
-        <div class="app-card">
-          <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">My Courses</h3>
-          <div class="empty-box">Your enrolled courses will appear here.</div>
-        </div>
+        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">My Courses</h3><div class="empty-box">Your enrolled courses will appear here.</div></div>
       </section>
-
-      <!-- CALENDAR -->
       <section class="app-view" id="calendarView">
-        <div class="app-card">
-          <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Lecture Calendar</h3>
-          <div class="empty-box">Calendar coming soon.</div>
-        </div>
+        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Lecture Calendar</h3><div class="empty-box">Calendar coming soon.</div></div>
       </section>
-
-      <!-- DOUBTS -->
       <section class="app-view" id="doubtsView">
-        <div class="app-card">
-          <h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Ask a Doubt</h3>
-          <div class="empty-box">Doubts module coming in Phase 5.</div>
-        </div>
+        <div class="app-card"><h3 style="font-family:'Playfair Display',serif;color:#0D1B40;margin:0 0 12px;">Ask a Doubt</h3><div class="empty-box">Doubts module coming in Phase 5.</div></div>
       </section>
     </main>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     FIREBASE & LOGIC
-     ═══════════════════════════════════════ -->
+<!-- TEST OVERLAY -->
+<div class="test-overlay" id="testOverlay" aria-hidden="true">
+  <div class="test-shell">
+    <div class="test-topbar">
+      <div><div class="test-kicker">Practice Test</div><h2 id="overlayTitle">Loading...</h2></div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div id="overlayProgress" style="color:#fff;font-weight:600;">Q 1 / 1</div>
+        <div id="testTimer" style="color:#fff;font-weight:700;min-width:70px;text-align:right;">⏱ 0:00</div>
+        <button class="portal-close" id="closeTestOverlayBtn" type="button">×</button>
+      </div>
+    </div>
+    <div class="test-progress"><div id="progressBar"></div></div>
+    <div class="test-body">
+      <div class="test-body-inner">
+        <div id="questionArea"></div>
+        <div id="questionFeedback" class="feedback hidden"></div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <div class="action-bar-inner">
+        <button class="ghost-btn" id="prevBtn" type="button">← Previous</button>
+        <button class="primary-btn" id="submitBtn" type="button">Submit Answer</button>
+        <button class="ghost-btn" id="nextBtn" type="button">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -322,8 +314,8 @@
 
   async function loadDashboardData(uid){
     try{
-      const snap=await db.collection('attempts').where('userId','==',uid).orderBy('createdAt','desc').limit(50).get();
-      const attempts=snap.docs.map(d=>({id:d.id,...d.data()}));
+      const snap=await db.collection('attempts').where('userId','==',uid).get();
+      const attempts=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
       const total=attempts.reduce((s,a)=>s+Number(a.total||0),0);
       const score=attempts.reduce((s,a)=>s+Number(a.score||0),0);
       const avg=total?Math.round((score/total)*100):0;
@@ -342,40 +334,7 @@
   });
 })();
 </script>
-<!-- Phase 3A module loaded dynamically when Tests tab clicked -->
 <script src="modules/tests.js"></script>
-     <script src="modules/test-engine.js"></script>
-     <!-- ═══════════════════════════════════════
-     TEST OVERLAY (Phase 3B)
-     ═══════════════════════════════════════ -->
-<div class="test-overlay" id="testOverlay" aria-hidden="true">
-  <div class="test-shell">
-    <div class="test-topbar">
-      <div>
-        <div class="test-kicker">Practice Test</div>
-        <h2 id="overlayTitle">Loading...</h2>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <div id="overlayProgress" style="color:#fff;font-weight:600;">Q 1 / 1</div>
-        <div id="testTimer" style="color:#fff;font-weight:700;min-width:70px;text-align:right;">⏱ 0:00</div>
-        <button class="portal-close" id="closeTestOverlayBtn" type="button">×</button>
-      </div>
-    </div>
-    <div class="test-progress"><div id="progressBar"></div></div>
-    <div class="test-body">
-      <div class="test-body-inner">
-        <div id="questionArea"></div>
-        <div id="questionFeedback" class="feedback hidden"></div>
-      </div>
-    </div>
-    <div class="action-bar">
-      <div class="action-bar-inner">
-        <button class="ghost-btn" id="prevBtn" type="button">← Previous</button>
-        <button class="primary-btn" id="submitBtn" type="button">Submit Answer</button>
-        <button class="ghost-btn" id="nextBtn" type="button">Next →</button>
-      </div>
-    </div>
-  </div>
-</div>
+<script src="modules/test-engine.js"></script>
 </body>
 </html>
