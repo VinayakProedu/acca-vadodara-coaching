@@ -284,9 +284,31 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         <div class="app-card"><h3 class="subject-title">Lecture Calendar</h3><div id="studentCalendarListX" class="calendar-list"></div></div>
       </section>
 
-      <!-- Doubts placeholder -->
+      <!-- Doubts (Phase 5) -->
       <section class="app-view hidden" id="studentDoubtsX">
-        <div class="app-card"><h3 class="subject-title">Doubts</h3><div class="empty-box">Phase 5 — Doubts module will appear here.<br>Ask faculty for updates.</div></div>
+        <div class="app-grid-2">
+          <div class="app-card">
+            <h3 class="subject-title">Ask a Doubt</h3>
+            <div class="portal-field" style="margin-bottom:12px">
+              <label>Subject / Paper Code</label>
+              <input id="doubtSubjectX" placeholder="e.g. FM, AA, PM" style="color:#1A1A2E;background:#fff;border:1px solid rgba(13,27,64,.14)">
+            </div>
+            <div class="portal-field" style="margin-bottom:12px">
+              <label>Your doubt</label>
+              <textarea id="doubtTextX" placeholder="Explain what you need help with..." style="color:#1A1A2E;background:#fff;border:1px solid rgba(13,27,64,.14);min-height:110px;resize:vertical"></textarea>
+            </div>
+            <div class="portal-field" style="margin-bottom:12px">
+              <label>Screenshot (optional, max 5MB)</label>
+              <input id="doubtScreenshotX" type="file" accept="image/*" style="color:#1A1A2E;background:#fff;border:1px solid rgba(13,27,64,.14);padding:10px">
+            </div>
+            <button class="primary-btn" type="button" onclick="submitDoubt()">Send doubt to faculty</button>
+            <div id="doubtStatusX" class="portal-status" style="color:#0D1B40;margin-top:10px"></div>
+          </div>
+          <div class="app-card">
+            <h3 class="subject-title">My Doubts</h3>
+            <div id="studentDoubtListX" class="mini-list"></div>
+          </div>
+        </div>
       </section>
 
       <!-- Attempts -->
@@ -398,6 +420,7 @@ document.getElementById('studentCloseBtnX').addEventListener('click', closeStude
 document.querySelectorAll('.app-menu button[data-stu-view]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     openStudentView(btn.dataset.stuView);
+    if(btn.dataset.stuView === 'studentDoubtsX') loadStudentDoubts();
     if(window.innerWidth<=640) document.getElementById('appSidebarX').classList.remove('open');
   });
 });
@@ -658,6 +681,88 @@ function renderCalendar(visible){
   `).join('') : '<div class="empty-box">No live classes scheduled.</div>';
 }
 
+
+/* ================= PHASE 5 — DOUBTS ================= */
+window.submitDoubt = async function(){
+  const subject = document.getElementById('doubtSubjectX')?.value.trim() || 'General';
+  const message = document.getElementById('doubtTextX')?.value.trim();
+  const file = document.getElementById('doubtScreenshotX')?.files?.[0];
+  const statusEl = document.getElementById('doubtStatusX');
+  const user = auth.currentUser;
+  if(!user || !message){ if(statusEl) statusEl.textContent = 'Please sign in and write your doubt first.'; return; }
+  try{
+    if(statusEl) statusEl.textContent = 'Sending your doubt…';
+    let screenshotUrl = '';
+    if(file){
+      if(file.size > 5 * 1024 * 1024) throw new Error('Please upload an image smaller than 5 MB.');
+      const ref = firebase.storage().ref('doubt-screenshots/'+user.uid+'/'+Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_'));
+      const uploaded = await ref.put(file);
+      screenshotUrl = await uploaded.ref.getDownloadURL();
+    }
+    const userDoc = await db.collection('users').doc(user.uid).get();
+    const batchCode = userDoc.data()?.batchCode || '';
+    await db.collection('studentDoubts').add({
+      userId: user.uid,
+      studentName: user.displayName || user.email || 'Student',
+      batchCode: batchCode,
+      courseSubject: subject,
+      message: message,
+      screenshotUrl: screenshotUrl,
+      status: 'open',
+      replies: [],
+      attachments: [],
+      isPublicToBatch: true,
+      autoCloseAt: null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('doubtTextX').value = '';
+    document.getElementById('doubtScreenshotX').value = '';
+    if(statusEl) statusEl.textContent = 'Sent to the faculty successfully.';
+    loadStudentDoubts();
+  }catch(err){ if(statusEl) statusEl.textContent = err.message || 'Could not send doubt.'; }
+};
+
+window.loadStudentDoubts = async function(){
+  const user = auth.currentUser; if(!user) return;
+  const box = document.getElementById('studentDoubtListX'); if(!box) return;
+  try{
+    const snap = await db.collection('studentDoubts').where('userId','==',user.uid).orderBy('createdAt','desc').limit(50).get();
+    const doubts = snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!doubts.length){ box.innerHTML = '<div class="empty-box">No doubts asked yet.</div>'; return; }
+    box.innerHTML = doubts.map(d => {
+      const replies = Array.isArray(d.replies) ? d.replies : [];
+      const isClosed = d.status === 'closed' || (d.autoCloseAt && d.autoCloseAt.toDate ? d.autoCloseAt.toDate() < new Date() : false);
+      return `<div class="mini-item" style="${isClosed?'opacity:0.6;':''}">
+        <strong>${esc(d.courseSubject || 'General')}</strong> <span style="display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:${d.status==='open'?'#d1fae5;color:#065f46':d.status==='answered'?'#dbe8ff;color:#1e3c72':'#fee2e2;color:#991b1b'};font-size:.72rem;font-weight:800;margin-left:6px">${esc(d.status || 'open')}${isClosed?' (closed)':''}</span><br>
+        <span style="font-size:.85rem;color:#6b7280">${esc(d.studentName || '')} · ${fmtDate(d.createdAt)}</span>
+        <p style="margin-top:8px;font-size:.92rem">${esc(d.message || '')}</p>
+        ${d.screenshotUrl ? `<a class="ghost-btn" target="_blank" href="${esc(d.screenshotUrl)}" style="margin-top:6px;display:inline-block">View screenshot</a>` : ''}
+        ${replies.length ? `<div style="margin-top:10px;border-left:3px solid #C9922A;padding-left:10px;">
+          ${replies.map(r => `<div style="margin-bottom:8px;">
+            <span style="font-size:.75rem;color:#6b7280">${esc(r.by || 'Faculty')} · ${r.at ? new Date(r.at.seconds*1000).toLocaleString() : ''}</span>
+            <p style="margin:4px 0;font-size:.9rem">${esc(r.text || '')}</p>
+            ${r.attachmentUrl ? `<a class="ghost-btn" target="_blank" href="${esc(r.attachmentUrl)}">📎 ${esc(r.attachmentName || 'Attachment')}</a>` : ''}
+          </div>`).join('')}
+        </div>` : '<div style="margin-top:8px;font-size:.85rem;color:#9ca3af">Awaiting faculty reply…</div>'}
+      </div>`;
+    }).join('');
+  }catch(err){ box.innerHTML = '<div class="empty-box">Unable to load doubts.</div>'; }
+};
+
+window.studentReplyToDoubt = async function(doubtId){
+  const text = prompt('Write your follow-up:'); if(!text) return;
+  try{
+    const docRef = db.collection('studentDoubts').doc(doubtId);
+    const snap = await docRef.get();
+    const data = snap.data() || {};
+    const replies = Array.isArray(data.replies) ? data.replies : [];
+    replies.push({ text: text, by: 'student', at: firebase.firestore.FieldValue.serverTimestamp() });
+    await docRef.update({ replies: replies, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    loadStudentDoubts();
+  }catch(err){ alert('Reply failed: ' + (err.message || err)); }
+};
+
 /* Auth state */
 auth.onAuthStateChanged(async user => {
   state.currentUser = user || null;
@@ -673,6 +778,7 @@ auth.onAuthStateChanged(async user => {
   openStudentView('studentHomeX');
   await refreshDashboard();
   await loadLectures();
+  await loadStudentDoubts();
 });
 </script>
 </body>
