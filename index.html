@@ -405,6 +405,7 @@
 @media(max-width:400px){ .hero-pills{ gap:7px; } }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -804,8 +805,40 @@
   <p>© 2026 <span>Vinayak ProEdu</span> · ACCA Classes Vadodara · All Rights Reserved.</p>
 </footer>
 
+<!-- Portal Choice Modal -->
+<div id="portalChoiceOverlay" style="position:fixed;inset:0;z-index:9998;background:rgba(13,27,64,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity 0.3s ease;">
+  <div style="width:min(420px,92vw);background:linear-gradient(180deg,#fff,#f7f5f0);border-radius:28px;box-shadow:0 40px 120px rgba(0,0,0,0.45);border:1px solid rgba(201,146,42,0.22);padding:36px 28px;text-align:center;position:relative;transform:scale(0.92) translateY(16px);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);">
+    <button onclick="closePortalChoice()" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(13,27,64,0.12);background:#f1f5f9;color:#0D1B40;cursor:pointer;font-size:1.2rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:all 0.2s;">×</button>
+    <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" style="width:64px;height:64px;border-radius:50%;border:3px solid #C9922A;margin:0 auto 16px;object-fit:cover;box-shadow:0 4px 14px rgba(201,146,42,0.3);">
+    <h2 style="font-family:'Playfair Display',serif;color:#0D1B40;margin-bottom:6px;font-size:1.35rem;">Choose Portal</h2>
+    <p style="color:#6b7280;font-size:0.9rem;margin-bottom:28px;">Select where you want to go</p>
+    <div style="display:grid;gap:12px;">
+      <a href="student/index.html" style="display:block;padding:14px 20px;border-radius:14px;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;font-weight:700;text-decoration:none;transition:all 0.2s;font-size:0.95rem;box-shadow:0 4px 14px rgba(13,27,64,0.2);">📚 Student Portal</a>
+      <a href="admin/index.html" style="display:block;padding:14px 20px;border-radius:14px;background:linear-gradient(135deg,#C9922A,#E8AA48);color:#0D1B40;font-weight:700;text-decoration:none;transition:all 0.2s;font-size:0.95rem;box-shadow:0 4px 14px rgba(201,146,42,0.3);">🔐 Admin Portal</a>
+    </div>
+    <p style="margin-top:20px;font-size:0.78rem;color:#9ca3af;">Vinayak ProEdu · ACCA Institute · Vadodara</p>
+  </div>
+</div>
+
 <!-- Portal FAB -->
-<button id="portalFab" class="portal-fab" type="button" onclick="location.href='student/index.html'">🎓 Portal</button>
+<button id="portalFab" class="portal-fab" type="button" onclick="openPortalChoice()">🎓 Portal</button>
+
+<script>
+function openPortalChoice(){
+  var el = document.getElementById('portalChoiceOverlay');
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ el.style.opacity = '1'; el.querySelector('div').style.transform = 'scale(1) translateY(0)'; }, 10);
+}
+function closePortalChoice(){
+  var el = document.getElementById('portalChoiceOverlay');
+  el.style.opacity = '0';
+  el.querySelector('div').style.transform = 'scale(0.92) translateY(16px)';
+  setTimeout(function(){ el.style.display = 'none'; document.body.style.overflow = ''; }, 300);
+}
+document.getElementById('portalChoiceOverlay').addEventListener('click', function(e){ if(e.target === this) closePortalChoice(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closePortalChoice(); });
+</script>
 
 <!-- =============================================
      SCRIPTS
