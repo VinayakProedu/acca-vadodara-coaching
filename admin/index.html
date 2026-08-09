@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vinayak ProEdu | Admin Portal</title>
+<title>Admin — Dashboard | Vinayak ProEdu</title>
 <link rel="icon" type="image/png" href="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
   --gold:#C9922A;--gold-lt:#E8AA48;--amber:#F5C04A;
   --navy:#0D1B40;--navy-mid:#1a2e5e;--blue:#1e3c72;--blue-lt:#2a5298;
   --ink:#1A1A2E;--muted:#6B7280;--silver:#9ca3af;--smoke:#EFF1F6;--white:#FFFFFF;
-  --rose:#F7F5F0;--blush:#fde8dc;--strawberry:#ff6b35;
+  --rose:#F7F5F0;--blush:#fde8dc;
   --shadow-sm:0 4px 20px rgba(13,27,64,0.08);--shadow-md:0 12px 45px rgba(13,27,64,0.14);
   --r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;
 }
@@ -46,9 +46,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .app-brand h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin:0;color:#fff}
 .app-brand p{font-size:0.7rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-lt);margin:2px 0 0}
 .app-menu{display:flex;flex-direction:column;gap:6px;flex:1}
-.app-menu button{width:100%;border:none;background:transparent;color:rgba(255,255,255,0.85);padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:600;font-size:0.9rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:10px}
-.app-menu button:hover{background:rgba(255,255,255,0.08);color:#fff}
-.app-menu button.active{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);box-shadow:0 4px 14px rgba(201,146,42,0.35)}
+.app-menu a,.app-menu button{width:100%;border:none;background:transparent;color:rgba(255,255,255,0.85);padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:600;font-size:0.9rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:10px;text-decoration:none}
+.app-menu a:hover,.app-menu button:hover{background:rgba(255,255,255,0.08);color:#fff}
+.app-menu a.active,.app-menu button.active{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);box-shadow:0 4px 14px rgba(201,146,42,0.35)}
 .app-menu .logout-btn{margin-top:auto;background:rgba(180,35,24,0.15);color:#fca5a5;border:1px solid rgba(180,35,24,0.3)}
 .app-menu .logout-btn:hover{background:rgba(180,35,24,0.25)}
 .sidebar-toggle{display:none;width:100%;margin-bottom:14px;padding:10px 12px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;font:inherit;font-weight:700;text-align:left}
@@ -62,10 +62,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .app-card{background:#fff;border:1px solid rgba(201,146,42,0.12);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm);margin-bottom:18px}
 .app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .app-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.app-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .metric{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:18px;text-align:center}
 .metric .n{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800}
 .metric .l{font-size:0.75rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:4px}
-.section-label{display:inline-block;color:var(--gold);font-size:0.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
 .subject-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);margin:0 0 14px}
 .empty-box{padding:18px;border:1.5px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.92rem}
 .mini-list{display:flex;flex-direction:column;gap:10px}
@@ -81,62 +81,14 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);opacity:0.95}
 .danger-btn:hover{background:#fee2e2}
 
-.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted)}
-.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(13,27,64,0.14);background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:all 0.2s}
-.portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,42,0.12)}
-.portal-field textarea{min-height:100px;resize:vertical}
-.portal-field select option{background:#fff;color:var(--ink)}
-.portal-status{font-size:0.92rem;margin-top:10px;min-height:22px;font-weight:700}
-.portal-status.error{color:#b42318}
-.portal-status.success{color:#166534}
-
-.app-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:0.88rem}
-.app-table th,.app-table td{padding:10px 12px;border-bottom:1px solid #eef2f7;text-align:left}
-.app-table th{background:#f8fafc;color:var(--navy);font-weight:700;font-size:0.8rem;letter-spacing:0.5px;text-transform:uppercase}
-.app-table tr:last-child td{border-bottom:none}
-.app-table tr:hover td{background:#f8fafc}
-
-.option-row{display:flex;gap:10px;align-items:center;margin-bottom:8px}
-.option-row input{flex:1}
-.option-row .remove-opt{color:#b42318;cursor:pointer;font-size:1.1rem;padding:4px}
-.add-opt-btn{display:inline-flex;align-items:center;gap:6px;background:#e8efff;color:var(--blue);border:none;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:0.85rem}
-
-.lecture-subject-frame{margin:14px 0;border:1px solid #dfe6f2;border-radius:16px;overflow:hidden;background:#fff}
-.lecture-subject-frame summary{list-style:none;cursor:pointer;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#122956,#1e4b93);color:#fff;font-weight:800;font-size:0.95rem}
-.lecture-subject-frame summary::-webkit-details-marker{display:none}
-.lecture-subject-frame summary small{color:var(--amber);font-weight:700}
-.lecture-subject-frame[open] summary{border-bottom:3px solid var(--gold)}
-.lecture-subject-frame .lecture-course-list{padding:10px 16px}
-.lecture-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-
-.doubt-item{padding:16px;border-radius:14px;background:#fff;border:1px solid #e5e7eb;margin-bottom:10px}
-.doubt-item.answered{border-left:4px solid var(--gold)}
-.doubt-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.doubt-meta{font-size:0.78rem;color:var(--muted)}
-.reply-box{margin-top:12px;padding:12px;background:#f8fafc;border-radius:10px;border-left:3px solid var(--gold)}
-
-.student-detail-header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:20px;border-radius:16px;margin-bottom:16px}
-.student-detail-header h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:4px}
-.enrolment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0 14px}
-.enrolment-option{display:flex;gap:8px;align-items:center;padding:10px 12px;background:var(--smoke);border:1px solid #e1e7f0;border-radius:10px;font-size:0.88rem;color:var(--navy);font-weight:600;cursor:pointer}
-.enrolment-option input{cursor:pointer}
-.lecture-access-list{display:grid;gap:8px;max-height:280px;overflow:auto;padding:4px;margin:10px 0 14px;border:1px solid #e1e7f0;border-radius:10px}
-.lecture-access-list .enrolment-option{justify-content:flex-start}
-
-.leaderboard-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid #eef2f7}
-.leaderboard-row:last-child{border-bottom:none}
-.rank-badge{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800}
-.rank-badge.gold{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy)}
-.rank-badge.silver{background:#cbd5e1;color:var(--navy)}
-.rank-badge.bronze{background:#fed7aa;color:var(--navy)}
-
-.calendar-item{background:#faf8f5;border:1px solid rgba(201,146,42,0.15);border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.calendar-date{font-size:0.72rem;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
-.calendar-title{font-size:0.95rem;font-weight:700;color:var(--navy);margin-top:4px}
+.quick-card{background:#fff;border:1px solid rgba(201,146,42,0.12);border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:all 0.25s;box-shadow:var(--shadow-sm)}
+.quick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.quick-card .icon{font-size:2rem;margin-bottom:10px}
+.quick-card h4{font-family:'Playfair Display',serif;color:var(--navy);font-size:1rem;margin-bottom:6px}
+.quick-card p{font-size:0.82rem;color:var(--muted)}
 
 @media(max-width:980px){
-  .app-grid-2,.app-grid-3{grid-template-columns:1fr}
+  .app-grid-2,.app-grid-3,.app-grid-4{grid-template-columns:1fr}
   .app-sidebar{position:fixed;left:0;top:0;bottom:0;z-index:9000;transform:translateX(-100%);transition:transform 0.3s}
   .app-sidebar.open{transform:translateX(0)}
   .sidebar-toggle{display:block}
@@ -152,11 +104,12 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" class="login-logo">
     <h2>Admin Portal</h2>
-    <p>Vinayak ProEdu · ACCA Institute</p>
+    <p>Dashboard · Vinayak ProEdu</p>
     <div class="login-field"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="admin@email.com"></div>
     <div class="login-field"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••"></div>
     <button class="login-btn" id="adminLoginBtn">Login as Admin</button>
@@ -164,6 +117,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
   </div>
 </div>
 
+<!-- APP -->
 <div class="app-shell hidden" id="adminApp">
   <aside class="app-sidebar" id="appSidebar">
     <button class="sidebar-toggle" id="sidebarToggle" type="button">☰ Menu</button>
@@ -172,238 +126,102 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
       <div><h3>Vinayak ProEdu</h3><p>Admin Panel</p></div>
     </div>
     <nav class="app-menu">
-      <button class="active" data-view="dashView" type="button"><span>📊</span> Dashboard</button>
-      <button data-view="testsView" type="button"><span>📝</span> Tests</button>
-      <button data-view="lecturesView" type="button"><span>🎬</span> Lectures</button>
-      <button data-view="liveView" type="button"><span>🔴</span> Live Classes</button>
-      <button data-view="studentsView" type="button"><span>👨‍🎓</span> Students</button>
-      <button data-view="leaderboardView" type="button"><span>🏆</span> Leaderboard</button>
-      <button data-view="doubtsView" type="button"><span>💬</span> Doubts</button>
+      <a href="index.html" class="active"><span>📊</span> Dashboard</a>
+      <a href="tests.html"><span>📝</span> Tests</a>
+      <a href="lectures.html"><span>🎬</span> Lectures</a>
+      <a href="live.html"><span>🔴</span> Live Classes</a>
+      <a href="students.html"><span>👨‍🎓</span> Students</a>
+      <a href="leaderboard.html"><span>🏆</span> Leaderboard</a>
+      <a href="doubts.html"><span>💬</span> Doubts</a>
       <button class="logout-btn" id="adminLogoutBtn" type="button"><span>🚪</span> Logout</button>
     </nav>
   </aside>
 
   <main class="app-main">
     <div class="app-topbar">
-      <div><h2 class="app-title" id="pageTitle">Dashboard</h2><div class="app-sub" id="pageSub">Overview of your institute</div></div>
+      <div><h2 class="app-title">Dashboard</h2><div class="app-sub">Overview of your institute</div></div>
       <div class="topbar-actions">
         <button class="ghost-btn" id="refreshBtn" type="button">🔄 Refresh</button>
         <button class="ghost-btn" id="closeAdminBtn" type="button">✕ Close</button>
       </div>
     </div>
 
-    <section class="app-view" id="dashView">
-      <div class="app-grid-3">
-        <div class="metric"><div class="n" id="countTests">0</div><div class="l">Tests</div></div>
-        <div class="metric"><div class="n" id="countQuestions">0</div><div class="l">Questions</div></div>
-        <div class="metric"><div class="n" id="countLectures">0</div><div class="l">Lectures</div></div>
-      </div>
-      <div class="app-grid-2" style="margin-top:18px">
-        <div class="app-card">
-          <h3 class="subject-title">Recent Activity</h3>
-          <div id="recentActivity" class="mini-list"><div class="empty-box">Loading...</div></div>
-        </div>
-        <div class="app-card">
-          <h3 class="subject-title">Quick Actions</h3>
-          <div class="app-grid-2">
-            <button class="primary-btn" id="quickCreateTest" type="button">➕ Create Test</button>
-            <button class="secondary-btn" id="quickUploadLecture" type="button">➕ Upload Lecture</button>
-          </div>
-          <div style="margin-top:14px;padding-top:14px;border-top:1px solid #e2e8f0"><div class="empty-box" style="margin:0">All data updates live from Firebase.</div></div>
-        </div>
-      </div>
-    </section>
+    <!-- Metrics -->
+    <div class="app-grid-4">
+      <div class="metric"><div class="n" id="countTests">0</div><div class="l">Tests</div></div>
+      <div class="metric"><div class="n" id="countQuestions">0</div><div class="l">Questions</div></div>
+      <div class="metric"><div class="n" id="countLectures">0</div><div class="l">Lectures</div></div>
+      <div class="metric"><div class="n" id="countStudents">0</div><div class="l">Students</div></div>
+    </div>
 
-    <section class="app-view hidden" id="testsView">
-      <div class="app-grid-2">
-        <div class="app-card">
-          <span class="section-label">Step 1</span>
-          <h3 class="subject-title">Create / Load Test</h3>
-          <div class="portal-field"><label>Test Title</label><input type="text" id="testTitle" placeholder="e.g. FR Chapter 1 - Conceptual Framework"></div>
-          <div class="portal-field"><label>Subject / Paper</label><input type="text" id="testSubject" placeholder="e.g. Financial Reporting"></div>
-          <div class="portal-field"><label>Chapter / Topic</label><input type="text" id="testChapter" placeholder="e.g. Conceptual Framework"></div>
-          <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="testBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
-          <div class="btn-row">
-            <button class="primary-btn" id="createTestBtn" type="button">Create / Load Test</button>
-            <button class="ghost-btn" id="clearTestBtn" type="button">Clear</button>
-          </div>
-          <div class="portal-status" id="testStatus"></div>
-          <div style="margin-top:16px">
-            <input class="ghost-btn" style="width:100%;margin-bottom:10px;background:#fff;border:1px solid #d7ddea" type="search" id="testSearch" placeholder="Search tests..." oninput="filterTests()">
-            <div id="testList" class="mini-list"></div>
-          </div>
-        </div>
-        <div class="app-card">
-          <span class="section-label">Step 2</span>
-          <h3 class="subject-title">Add Question</h3>
-          <div class="portal-field"><label>Selected Test</label><select id="selectedTest"><option value="">Select a test first</option></select></div>
-          <div class="portal-field"><label>Question Type</label>
-            <select id="questionType">
-              <option value="mcq">MCQ (Single Answer)</option>
-              <option value="multi">Multiple Response</option>
-              <option value="fill">Fill in the Blank</option>
-              <option value="drag">Drag & Drop</option>
-              <option value="dropdown">Dropdown</option>
-              <option value="hotspot">Hot Spot</option>
-              <option value="hotarea">Hot Area</option>
-              <option value="otcase">OT Case</option>
-              <option value="word">Constructed Response – Word</option>
-              <option value="sheet">Constructed Response – Spreadsheet</option>
-            </select>
-          </div>
-          <div class="portal-field"><label>Question Text</label><textarea id="questionText" placeholder="Enter your question here..."></textarea></div>
-          <div class="portal-field"><label>Marks</label><input type="number" id="questionMarks" placeholder="2" min="1" max="100"></div>
-          <div id="dynamicFields"></div>
-          <div class="portal-field"><label>Explanation (shown after answering)</label><textarea id="questionExplanation" placeholder="Explain the correct answer..."></textarea></div>
-          <button class="primary-btn" id="uploadQuestionBtn" type="button">Upload Question</button>
-          <div class="portal-status" id="questionStatus"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="app-view hidden" id="lecturesView">
-      <div class="app-grid-2">
-        <div class="app-card">
-          <span class="section-label">Upload</span>
-          <h3 class="subject-title">Upload Lecture</h3>
-          <div class="portal-field"><label>Lecture Title</label><input type="text" id="lecTitle" placeholder="e.g. FM - Time Value of Money"></div>
-          <div class="portal-field"><label>Subject / Paper Code</label><input type="text" id="lecSubject" placeholder="e.g. FM"></div>
-          <div class="portal-field"><label>Section / Chapter</label><input type="text" id="lecSection" placeholder="e.g. 01 Investment Appraisal"></div>
-          <div class="portal-field"><label>Lecture Date</label><input type="date" id="lecDate"></div>
-          <div class="portal-field"><label>Lecture Time</label><input type="time" id="lecTime"></div>
-          <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="lecBatch" placeholder="e.g. ACCA-2026-A"></div>
-          <div class="portal-field"><label>YouTube Link</label><input type="text" id="lecYoutube" placeholder="https://youtube.com/watch?v=..."></div>
-          <div class="portal-field"><label>OR Upload File</label><input type="hidden" role="uploadcare-uploader" data-public-key="9dcf4ee1bc520691123a" id="uploadcareInput"></div>
-          <div class="portal-field"><label>Attachment / Notes Link (optional)</label><input type="text" id="lecAttachment" placeholder="Google Drive or PDF link"></div>
-          <button class="primary-btn" id="uploadLectureBtn" type="button">Upload Lecture</button>
-          <div class="portal-status" id="lectureStatus"></div>
-        </div>
-        <div class="app-card">
-          <span class="section-label">Manage</span>
-          <h3 class="subject-title">Lecture Library</h3>
-          <div style="display:flex;gap:10px;margin-bottom:12px">
-            <input type="search" class="ghost-btn" style="flex:1;background:#fff;border:1px solid #d7ddea" id="lecSearch" placeholder="Search lectures..." oninput="filterLectures()">
-            <input type="date" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" id="lecFilterDate" onchange="filterLectures()">
-          </div>
-          <div id="lectureList"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="app-view hidden" id="liveView">
-      <div class="app-grid-2">
-        <div class="app-card">
-          <span class="section-label">Schedule</span>
-          <h3 class="subject-title">Schedule Live Class</h3>
-          <div class="portal-field"><label>Class Title</label><input type="text" id="liveTitle" placeholder="e.g. FM Doubt Solving Session"></div>
-          <div class="portal-field"><label>Subject</label><input type="text" id="liveSubject" placeholder="e.g. FM"></div>
-          <div class="portal-field"><label>Date</label><input type="date" id="liveDate"></div>
-          <div class="portal-field"><label>Time</label><input type="time" id="liveTime"></div>
-          <div class="portal-field"><label>Meeting Link (Zoom / Google Meet / FreeConferenceCall)</label><input type="text" id="liveLink" placeholder="https://..."></div>
-          <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="liveBatch" placeholder="e.g. ACCA-2026-A"></div>
-          <button class="primary-btn" id="addLiveBtn" type="button">Schedule Live Class</button>
-          <div class="portal-status" id="liveStatus"></div>
-        </div>
-        <div class="app-card">
-          <span class="section-label">Upcoming</span>
-          <h3 class="subject-title">Live Classes</h3>
-          <div id="liveList"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="app-view hidden" id="studentsView">
-      <div class="app-card" style="padding:0;overflow:hidden">
-        <div style="padding:18px 20px;border-bottom:1px solid #e5e7eb;background:#f8fafc">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
-            <h3 class="subject-title" style="margin:0">All Students</h3>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input type="search" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea;min-width:200px" id="studentSearch" placeholder="Search name, email, phone..." oninput="renderStudents()">
-              <select id="filterState" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All States</option></select>
-              <select id="filterCity" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Cities</option></select>
-              <button class="ghost-btn" type="button" onclick="refreshStudents()">🔄 Refresh</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:0.82rem;color:#6b7280">
-            <span id="studentCountBadge">0 students</span>
-            <span style="color:#d1d5db">|</span>
-            <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="showUnenrolled" onchange="renderStudents()"> Unassigned only</label>
-          </div>
-        </div>
-        <div style="overflow:auto;max-height:calc(100vh - 300px)">
-          <table class="app-table" id="studentTable">
-            <thead><tr><th style="width:40px">#</th><th>Name</th><th>Email</th><th>Phone</th><th>State</th><th>City</th><th>Course</th><th>Subjects</th><th style="width:100px">Actions</th></tr></thead>
-            <tbody id="studentTableBody"><tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div id="studentDetailPanel" style="display:none;margin-top:16px">
-        <div class="app-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-            <h3 class="subject-title" style="margin:0" id="detailName">Student Detail</h3>
-            <button class="ghost-btn" type="button" onclick="closeStudentDetail()">Close Detail</button>
-          </div>
-          <div id="detailContent"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="app-view hidden" id="leaderboardView">
+    <!-- Recent Activity + Quick Actions -->
+    <div class="app-grid-2" style="margin-top:18px">
       <div class="app-card">
-        <h3 class="subject-title">🏆 Leaderboard</h3>
-        <div id="leaderboardContent"></div>
+        <h3 class="subject-title">Recent Activity</h3>
+        <div id="recentActivity" class="mini-list"><div class="empty-box">Loading...</div></div>
       </div>
-    </section>
-
-    <section class="app-view hidden" id="doubtsView">
       <div class="app-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-          <h3 class="subject-title" style="margin:0">💬 Student Doubts</h3>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <input type="search" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea;min-width:220px" id="doubtSearch" placeholder="Search student, subject or doubt..." oninput="loadDoubts()">
-            <button class="secondary-btn" type="button" onclick="purgeOldDoubts()">🧹 Purge Closed &gt;7 Days</button>
+        <h3 class="subject-title">Quick Actions</h3>
+        <div class="app-grid-2">
+          <div class="quick-card" onclick="location.href='tests.html'">
+            <div class="icon">📝</div>
+            <h4>Create Test</h4>
+            <p>Build new practice tests with questions</p>
+          </div>
+          <div class="quick-card" onclick="location.href='lectures.html'">
+            <div class="icon">🎬</div>
+            <h4>Upload Lecture</h4>
+            <p>Add video lectures for students</p>
+          </div>
+          <div class="quick-card" onclick="location.href='live.html'">
+            <div class="icon">🔴</div>
+            <h4>Schedule Live</h4>
+            <p>Set up live class sessions</p>
+          </div>
+          <div class="quick-card" onclick="location.href='students.html'">
+            <div class="icon">👨‍🎓</div>
+            <h4>Manage Students</h4>
+            <p>Enrolments and access control</p>
           </div>
         </div>
-        <div id="doubtsList"></div>
       </div>
-    </section>
+    </div>
+
+    <!-- Upcoming Live Classes -->
+    <div class="app-card">
+      <h3 class="subject-title">🔴 Upcoming Live Classes</h3>
+      <div id="upcomingLive"></div>
+    </div>
+
+    <!-- Open Doubts -->
+    <div class="app-card">
+      <h3 class="subject-title">💬 Open Doubts</h3>
+      <div id="openDoubts"></div>
+    </div>
   </main>
 </div>
 
-<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
 <script>
 const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e){ return {}; } })();
 if(!firebase.apps.length) firebase.initializeApp(_fc);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 const ADMIN_EMAIL = "vinayakproedu@gmail.com";
-
-let currentUser = null;
-let allTests = [];
-let allQuestions = [];
-let allLectures = [];
-let allStudents = [];
-let allAttempts = [];
-let uploadedFileURL = null;
 
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtDate = v => { if(!v) return ''; const d = v.toDate ? v.toDate() : new Date(v.seconds ? v.seconds*1000 : v); return d.toLocaleString('en-IN'); };
-const setStatus = (el, msg, err=false) => { if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); };
-const getYT = url => { if(!url) return ''; const m = url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{6,})/); return m ? m[1] : ''; };
 
+/* Auth */
 auth.onAuthStateChanged(user => {
   if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
-    currentUser = user;
     $('loginScreen').classList.add('hidden');
     $('adminApp').classList.remove('hidden');
-    initApp();
+    loadDashboard();
   } else {
     if(user && user.email !== ADMIN_EMAIL) auth.signOut();
     sessionStorage.removeItem('adminUnlocked');
@@ -415,611 +233,82 @@ auth.onAuthStateChanged(user => {
 $('adminLoginBtn').onclick = async () => {
   const email = $('adminEmail').value.trim();
   const pass = $('adminPassword').value;
-  if(!email || !pass) return setStatus($('adminLoginStatus'), 'Email and password required', true);
+  if(!email || !pass) return setLoginStatus('Email and password required', true);
   try{
     const cred = await auth.signInWithEmailAndPassword(email, pass);
-    if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); return setStatus($('adminLoginStatus'), 'Not an admin account', true); }
+    if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); return setLoginStatus('Not an admin account', true); }
     sessionStorage.setItem('adminUnlocked', '1');
-    currentUser = cred.user;
     $('loginScreen').classList.add('hidden');
     $('adminApp').classList.remove('hidden');
-    initApp();
-  }catch(e){ setStatus($('adminLoginStatus'), e.message, true); }
+    loadDashboard();
+  }catch(e){ setLoginStatus(e.message, true); }
 };
 
+function setLoginStatus(msg, err){ const el=$('adminLoginStatus'); el.textContent=msg; el.className='login-status '+(err?'error':''); }
+
 $('adminLogoutBtn').onclick = async () => { sessionStorage.removeItem('adminUnlocked'); await auth.signOut(); location.reload(); };
-$('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href = '../index.html'; };
+$('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href='../index.html'; };
+$('refreshBtn').onclick = () => loadDashboard();
 
-const views = ['dashView','testsView','lecturesView','liveView','studentsView','leaderboardView','doubtsView'];
-const titles = { dashView:'Dashboard', testsView:'Tests', lecturesView:'Lectures', liveView:'Live Classes', studentsView:'Students', leaderboardView:'Leaderboard', doubtsView:'Student Doubts' };
-const subs = { dashView:'Overview of your institute', testsView:'Create tests and manage questions', lecturesView:'Upload and manage lectures', liveView:'Schedule live sessions', studentsView:'Manage enrolled students', leaderboardView:'Top performers', doubtsView:'Reply to student questions' };
-
-function showView(id){
-  views.forEach(v => $(v).classList.toggle('hidden', v !== id));
-  document.querySelectorAll('.app-menu button[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === id));
-  $('pageTitle').textContent = titles[id];
-  $('pageSub').textContent = subs[id];
-  if(id === 'dashView') refreshDashboard();
-  if(id === 'testsView') loadTests();
-  if(id === 'lecturesView') loadLectures();
-  if(id === 'liveView') loadLiveClasses();
-  if(id === 'studentsView') refreshStudents();
-  if(id === 'leaderboardView') loadLeaderboard();
-  if(id === 'doubtsView') loadDoubts();
-}
-
-document.querySelectorAll('.app-menu button[data-view]').forEach(b => b.onclick = () => showView(b.dataset.view));
-$('quickCreateTest').onclick = () => showView('testsView');
-$('quickUploadLecture').onclick = () => showView('lecturesView');
-$('refreshBtn').onclick = () => showView(views.find(v => !$(v).classList.contains('hidden')));
-
+/* Sidebar */
 $('sidebarToggle').onclick = () => $('appSidebar').classList.toggle('open');
 document.addEventListener('click', e => { if(window.innerWidth <= 980 && !e.target.closest('.app-sidebar')) $('appSidebar').classList.remove('open'); });
 
-async function initApp(){
-  const widget = uploadcare.Widget($('uploadcareInput'));
-  widget.onUploadComplete(info => { uploadedFileURL = info.cdnUrl; setStatus($('lectureStatus'), 'File uploaded. Click Upload Lecture to save.', false); });
-  refreshDashboard();
-}
-
-async function refreshDashboard(){
-  const [tSnap, qSnap, lSnap, aSnap] = await Promise.allSettled([
-    db.collection('tests').get(), db.collection('questions').get(),
-    db.collection('lectures').get(), db.collection('attempts').orderBy('createdAt','desc').limit(6).get()
+/* Dashboard Data */
+async function loadDashboard(){
+  const [tSnap, qSnap, lSnap, sSnap, aSnap, dSnap] = await Promise.allSettled([
+    db.collection('tests').get(),
+    db.collection('questions').get(),
+    db.collection('lectures').get(),
+    db.collection('users').where('role','==','student').get(),
+    db.collection('attempts').orderBy('createdAt','desc').limit(6).get(),
+    db.collection('studentDoubts').where('status','==','open').orderBy('createdAt','desc').limit(5).get()
   ]);
-  allTests = tSnap.value ? tSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
-  allQuestions = qSnap.value ? qSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
-  allLectures = lSnap.value ? lSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
-  allAttempts = aSnap.value ? aSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
 
-  $('countTests').textContent = allTests.length;
-  $('countQuestions').textContent = allQuestions.length;
-  $('countLectures').textContent = allLectures.length;
+  const tests = tSnap.value ? tSnap.value.size : 0;
+  const questions = qSnap.value ? qSnap.value.size : 0;
+  const lectures = lSnap.value ? lSnap.value.size : 0;
+  const students = sSnap.value ? sSnap.value.size : 0;
+  const attempts = aSnap.value ? aSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
+  const doubts = dSnap.value ? dSnap.value.docs.map(d=>({id:d.id,...d.data()})) : [];
 
-  const recent = allAttempts.slice(0,6).map(a => `
+  $('countTests').textContent = tests;
+  $('countQuestions').textContent = questions;
+  $('countLectures').textContent = lectures;
+  $('countStudents').textContent = students;
+
+  // Recent Activity
+  const recent = attempts.slice(0,6).map(a => `
     <div class="mini-item">
       <strong>${esc(a.testTitle || 'Test')}</strong><br>
       <span style="font-size:0.82rem;color:#6b7280">${esc(a.userName || a.userEmail || 'Student')} · ${a.percentage || 0}%</span>
     </div>`).join('');
   $('recentActivity').innerHTML = recent || '<div class="empty-box">No recent activity</div>';
-}
 
-async function loadTests(){
-  const tSnap = await db.collection('tests').get().catch(()=>null);
-  const qSnap = await db.collection('questions').get().catch(()=>null);
-  allTests = tSnap ? tSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  allQuestions = qSnap ? qSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  const merged = new Map();
-  allTests.forEach(t => merged.set(t.id, {...t, questionCount:0}));
-  allQuestions.forEach(q => { const tid = String(q.testId || q.testID || q.test_id || '').trim(); if(tid && merged.has(tid)) merged.get(tid).questionCount++; });
-  allTests = [...merged.values()];
-  renderTestList();
-  renderQuestionFields();
-}
-
-function renderTestList(){
-  const q = ($('testSearch').value || '').toLowerCase();
-  let list = allTests;
-  if(q) list = list.filter(t => [t.title,t.subject,t.chapter,t.id].join(' ').toLowerCase().includes(q));
-  if(!list.length){ $('testList').innerHTML = '<div class="empty-box">No tests yet</div>'; }
-  else {
-    $('testList').innerHTML = list.map(t => `
-      <div class="mini-item">
-        <strong>${esc(t.title || 'Untitled')}</strong>
-        <div style="font-size:0.82rem;color:#6b7280;margin:4px 0">${esc(t.subject || '')}${t.chapter ? ' · ' + esc(t.chapter) : ''}</div>
-        <div style="font-size:0.82rem">${t.questionCount || 0} questions</div>
-        <div class="btn-row" style="margin-top:8px">
-          <button class="ghost-btn" style="padding:6px 12px;font-size:0.78rem" onclick="selectTest('${t.id}')">Select</button>
-          <button class="danger-btn" style="padding:6px 12px;font-size:0.78rem" onclick="deleteTest('${t.id}')">Delete</button>
-        </div>
-      </div>`).join('');
-  }
-  $('selectedTest').innerHTML = '<option value="">Select a test</option>' + allTests.map(t => `<option value="${t.id}">${esc(t.title || 'Untitled')}</option>`).join('');
-}
-
-function filterTests(){ renderTestList(); }
-
-window.selectTest = function(id){
-  $('selectedTest').value = id;
-  const t = allTests.find(x => x.id === id);
-  if(t){ $('testTitle').value = t.title || ''; $('testSubject').value = t.subject || ''; $('testChapter').value = t.chapter || ''; setStatus($('testStatus'), `Loaded: ${t.title}`); }
-};
-
-window.deleteTest = async function(id){
-  if(!confirm('Delete this test and ALL its questions?')) return;
-  const batch = db.batch();
-  const qSnap = await db.collection('questions').where('testId','==',id).get();
-  qSnap.forEach(d => batch.delete(d.ref));
-  batch.delete(db.collection('tests').doc(id));
-  await batch.commit();
-  loadTests();
-  refreshDashboard();
-};
-
-$('createTestBtn').onclick = async () => {
-  const title = $('testTitle').value.trim();
-  const subject = $('testSubject').value.trim();
-  const chapter = $('testChapter').value.trim();
-  if(!title || !subject || !chapter) return setStatus($('testStatus'), 'Fill title, subject and chapter', true);
-  try{
-    const existing = await db.collection('tests').where('title','==',title).where('subject','==',subject).where('chapter','==',chapter).limit(1).get();
-    if(!existing.empty){ $('selectedTest').value = existing.docs[0].id; return setStatus($('testStatus'), 'Test loaded (already exists)'); }
-    const ref = await db.collection('tests').add({
-      title, subject, chapter,
-      batchCodes: ($('testBatch').value || '').split(',').map(s=>s.trim()).filter(Boolean),
-      questionCount: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    $('selectedTest').value = ref.id;
-    setStatus($('testStatus'), 'Test created successfully');
-    loadTests();
-    refreshDashboard();
-  }catch(e){ setStatus($('testStatus'), e.message, true); }
-};
-
-$('clearTestBtn').onclick = () => { $('testTitle').value=''; $('testSubject').value=''; $('testChapter').value=''; $('testBatch').value=''; $('selectedTest').value=''; setStatus($('testStatus'),''); };
-
-$('questionType').onchange = renderQuestionFields;
-
-function renderQuestionFields(){
-  const type = $('questionType').value;
-  const box = $('dynamicFields');
-  box.innerHTML = '';
-  if(['mcq','multi','dropdown'].includes(type)){
-    box.innerHTML = `
-      <div class="portal-field"><label>Options</label>
-        <div id="optionsContainer">
-          ${[1,2,3,4].map(i => `<div class="option-row"><input type="text" id="opt${i}" placeholder="Option ${i}"><span class="remove-opt" onclick="this.parentElement.remove()">×</span></div>`).join('')}
-        </div>
-        <button class="add-opt-btn" type="button" onclick="addOption()">+ Add Option</button>
-      </div>
-      <div class="portal-field"><label>Correct Answer ${type==='multi' ? '(comma separated indices, 0-based)' : '(0-based index)'}</label><input type="text" id="correctAnswer" placeholder="${type==='multi' ? 'e.g. 0,2' : 'e.g. 2'}"></div>`;
-  } else if(type === 'fill'){
-    box.innerHTML = `<div class="portal-field"><label>Correct Answer</label><input type="text" id="correctAnswer" placeholder="Expected answer"></div>`;
-  } else if(type === 'drag'){
-    box.innerHTML = `<div class="portal-field"><label>Drag & Drop Pairs (JSON)</label><textarea id="dragPairs" placeholder='[{"drag":"Asset","drop":"Balance Sheet"}]'></textarea></div>`;
-  } else if(type === 'hotspot' || type === 'hotarea'){
-    box.innerHTML = `
-      <div class="portal-field"><label>Upload Image</label><input type="file" id="hotspotImage" accept="image/*"></div>
-      <div class="portal-field"><label>Correct Coordinates / Area</label><input type="text" id="correctAnswer" placeholder="x,y or area name"></div>`;
-  } else if(type === 'otcase'){
-    box.innerHTML = `
-      <div class="portal-field"><label>Case Scenario</label><textarea id="caseScenario" placeholder="Case text..."></textarea></div>
-      <div class="portal-field"><label>Correct Answer / Notes</label><textarea id="correctAnswer" placeholder="Answer..."></textarea></div>`;
-  } else {
-    box.innerHTML = `
-      <div class="portal-field"><label>Template File</label><input type="file" id="templateFile"></div>
-      <div class="portal-field"><label>Marking Guide</label><textarea id="correctAnswer" placeholder="How to mark this..."></textarea></div>`;
-  }
-}
-
-window.addOption = function(){
-  const div = document.createElement('div'); div.className = 'option-row';
-  div.innerHTML = `<input type="text" placeholder="Option"><span class="remove-opt" onclick="this.parentElement.remove()">×</span>`;
-  $('optionsContainer').appendChild(div);
-};
-
-$('uploadQuestionBtn').onclick = async () => {
-  const testId = $('selectedTest').value;
-  const type = $('questionType').value;
-  const text = $('questionText').value.trim();
-  const marks = Number($('questionMarks').value || 1);
-  const explanation = $('questionExplanation').value.trim();
-  if(!testId) return setStatus($('questionStatus'), 'Select a test first', true);
-  if(!text) return setStatus($('questionStatus'), 'Question text required', true);
-
-  const qData = { type, question: text, marks, explanation, testId, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
-
-  if(['mcq','dropdown'].includes(type)){
-    const opts = [...document.querySelectorAll('#optionsContainer input')].map(i => i.value.trim()).filter(Boolean);
-    if(opts.length < 2) return setStatus($('questionStatus'), 'Need at least 2 options', true);
-    qData.options = opts;
-    qData.correct = Number($('correctAnswer').value);
-  } else if(type === 'multi'){
-    const opts = [...document.querySelectorAll('#optionsContainer input')].map(i => i.value.trim()).filter(Boolean);
-    if(opts.length < 2) return setStatus($('questionStatus'), 'Need at least 2 options', true);
-    qData.options = opts;
-    qData.correct = ($('correctAnswer').value || '').split(',').map(v => Number(v.trim())).filter(v => !isNaN(v));
-  } else if(type === 'fill'){
-    qData.answer = $('correctAnswer').value.trim();
-  } else if(type === 'drag'){
-    try{ qData.pairs = JSON.parse($('dragPairs').value || '[]'); }catch(e){ return setStatus($('questionStatus'), 'Invalid JSON for pairs', true); }
-  } else if(type === 'hotspot' || type === 'hotarea'){
-    const file = $('hotspotImage').files[0];
-    if(file){ const ref = storage.ref(`tests/images/${Date.now()}-${file.name}`); await ref.put(file); qData.imageUrl = await ref.getDownloadURL(); }
-    qData.coords = $('correctAnswer').value.trim();
-  } else if(type === 'otcase'){
-    qData.caseScenario = $('caseScenario').value.trim();
-    qData.caseAnswer = $('correctAnswer').value.trim();
-  } else {
-    const file = $('templateFile').files[0];
-    if(file){ const ref = storage.ref(`tests/templates/${Date.now()}-${file.name}`); await ref.put(file); qData.templateUrl = await ref.getDownloadURL(); }
-    qData.templateAnswer = $('correctAnswer').value.trim();
-  }
-
-  try{
-    await db.collection('questions').add(qData);
-    await db.collection('tests').doc(testId).update({
-      questionCount: firebase.firestore.FieldValue.increment(1),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    setStatus($('questionStatus'), 'Question uploaded successfully');
-    $('questionText').value = ''; $('questionExplanation').value = ''; $('questionMarks').value = '';
-    renderQuestionFields();
-    loadTests();
-    refreshDashboard();
-  }catch(e){ setStatus($('questionStatus'), e.message, true); }
-};
-
-$('uploadLectureBtn').onclick = async () => {
-  const title = $('lecTitle').value.trim();
-  const subject = $('lecSubject').value.trim();
-  const section = $('lecSection').value.trim() || 'General';
-  const date = $('lecDate').value;
-  const time = $('lecTime').value;
-  const batchCodes = ($('lecBatch').value || '').split(',').map(s=>s.trim()).filter(Boolean);
-  const youtube = $('lecYoutube').value.trim();
-  const attachment = $('lecAttachment').value.trim();
-  if(!title || !subject || !date) return setStatus($('lectureStatus'), 'Title, subject and date required', true);
-  const hasVideo = youtube || uploadedFileURL;
-  if(!hasVideo && !attachment) return setStatus($('lectureStatus'), 'Provide YouTube link, file, or attachment', true);
-  const videoId = getYT(youtube);
-  const videoURL = videoId ? `https://youtube.com/watch?v=${videoId}` : (youtube || null);
-  try{
-    await db.collection('lectures').add({
-      title, subject, section, lectureDate: date, lectureTime: time || '',
-      videoURL, fileURL: uploadedFileURL, attachment,
-      batchCodes, uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    setStatus($('lectureStatus'), 'Lecture uploaded successfully');
-    $('lecTitle').value=''; $('lecSubject').value=''; $('lecSection').value=''; $('lecDate').value=''; $('lecTime').value='';
-    $('lecBatch').value=''; $('lecYoutube').value=''; $('lecAttachment').value='';
-    uploadedFileURL = null;
-    loadLectures();
-    refreshDashboard();
-  }catch(e){ setStatus($('lectureStatus'), e.message, true); }
-};
-
-async function loadLectures(){
-  const snap = await db.collection('lectures').orderBy('uploadedAt','desc').get().catch(()=>null);
-  allLectures = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  filterLectures();
-}
-
-function filterLectures(){
-  const q = ($('lecSearch').value || '').toLowerCase();
-  const d = $('lecFilterDate').value;
-  let list = allLectures;
-  if(q) list = list.filter(l => [l.title,l.subject,l.section].join(' ').toLowerCase().includes(q));
-  if(d) list = list.filter(l => l.lectureDate === d);
-  if(!list.length){ $('lectureList').innerHTML = '<div class="empty-box">No lectures found</div>'; return; }
-  const bySub = {};
-  list.forEach(l => { const s = l.subject || 'General'; if(!bySub[s]) bySub[s] = {}; const sec = l.section || 'General'; if(!bySub[s][sec]) bySub[s][sec] = []; bySub[s][sec].push(l); });
-  $('lectureList').innerHTML = Object.keys(bySub).sort().map(sub => `
-    <details class="lecture-subject-frame" open>
-      <summary><span>${esc(sub)}</span><small>${list.filter(x=>x.subject===sub).length} lecture(s)</small></summary>
-      <div class="lecture-course-list">
-        ${Object.keys(bySub[sub]).sort().map(sec => `
-          <div style="margin:10px 0;padding:12px;background:#f8fafc;border-radius:10px">
-            <strong style="color:var(--navy);font-size:0.9rem;display:block;margin-bottom:8px">${esc(sec)}</strong>
-            ${bySub[sub][sec].sort((a,b)=>String(a.lectureDate||'').localeCompare(String(b.lectureDate||''))).map(l=>`
-              <div class="mini-item" style="margin:6px 0">
-                <strong>${esc(l.title)}</strong>
-                <div style="font-size:0.8rem;color:#6b7280;margin:4px 0">${esc(l.lectureDate)} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</div>
-                <div style="font-size:0.78rem">${l.videoURL ? '<span style="color:#1e3c72">🎥 Video</span>' : ''} ${l.fileURL ? '<span style="color:#1e3c72">📄 File</span>' : ''}</div>
-                <div class="lecture-actions">
-                  ${l.videoURL ? `<button class="ghost-btn" style="padding:6px 12px;font-size:0.78rem" onclick="previewVideo('${esc(l.videoURL)}')">Preview</button>` : ''}
-                  <button class="danger-btn" style="padding:6px 12px;font-size:0.78rem" onclick="deleteLecture('${l.id}')">Delete</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `).join('')}
-      </div>
-    </details>
-  `).join('');
-}
-
-window.previewVideo = function(url){
-  const id = getYT(url);
-  if(id) window.open(`https://youtube.com/embed/${id}`, '_blank');
-  else window.open(url, '_blank');
-};
-window.deleteLecture = async function(id){ if(!confirm('Delete this lecture?')) return; await db.collection('lectures').doc(id).delete(); loadLectures(); refreshDashboard(); };
-
-$('addLiveBtn').onclick = async () => {
-  const title = $('liveTitle').value.trim();
-  const subject = $('liveSubject').value.trim();
-  const date = $('liveDate').value;
-  const time = $('liveTime').value;
-  const link = $('liveLink').value.trim();
-  const batchCodes = ($('liveBatch').value || '').split(',').map(s=>s.trim()).filter(Boolean);
-  if(!title || !date || !link) return setStatus($('liveStatus'), 'Title, date and meeting link required', true);
-  try{
-    await db.collection('lectures').add({
-      title, subject, lectureDate: date, lectureTime: time || '',
-      meetingLink: link, batchCodes,
-      uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    setStatus($('liveStatus'), 'Live class scheduled');
-    $('liveTitle').value=''; $('liveSubject').value=''; $('liveDate').value=''; $('liveTime').value=''; $('liveLink').value=''; $('liveBatch').value='';
-    loadLiveClasses();
-  }catch(e){ setStatus($('liveStatus'), e.message, true); }
-};
-
-async function loadLiveClasses(){
-  const snap = await db.collection('lectures').where('meetingLink','!=','').get().catch(()=>null);
-  const lives = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => l.meetingLink) : [];
-  lives.sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
-  if(!lives.length){ $('liveList').innerHTML = '<div class="empty-box">No live classes scheduled</div>'; return; }
-  $('liveList').innerHTML = lives.map(l => `
-    <div class="calendar-item">
-      <div class="calendar-date">${esc(l.lectureDate)} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</div>
-      <div class="calendar-title">${esc(l.title)} ${l.subject ? '· ' + esc(l.subject) : ''}</div>
+  // Upcoming Live
+  const liveSnap = await db.collection('lectures').where('meetingLink','!=','').orderBy('lectureDate').limit(5).get().catch(()=>null);
+  const lives = liveSnap ? liveSnap.docs.map(d=>({id:d.id,...d.data()})).filter(l=>l.meetingLink) : [];
+  lives.sort((a,b)=>String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
+  $('upcomingLive').innerHTML = lives.length ? lives.map(l=>`
+    <div style="background:#faf8f5;border:1px solid rgba(201,146,42,0.15);border-radius:12px;padding:14px 16px;margin-bottom:10px">
+      <div style="font-size:0.72rem;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase">${esc(l.lectureDate)} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</div>
+      <div style="font-size:0.95rem;font-weight:700;color:var(--navy);margin-top:4px">${esc(l.title)} ${l.subject ? '· ' + esc(l.subject) : ''}</div>
       <a href="${esc(l.meetingLink)}" target="_blank" style="font-size:0.82rem;color:var(--gold);font-weight:700;word-break:break-all">${esc(l.meetingLink)}</a>
-      <div class="btn-row" style="margin-top:8px">
-        <button class="danger-btn" style="padding:6px 12px;font-size:0.78rem" onclick="deleteLecture('${l.id}')">Cancel Class</button>
-      </div>
     </div>
-  `).join('');
-}
+  `).join('') : '<div class="empty-box">No upcoming live classes</div>';
 
-async function refreshStudents(){
-  const snap = await db.collection('users').where('role','==','student').limit(500).get().catch(()=>null);
-  allStudents = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  renderStudents();
-}
-
-function renderStudents(){
-  const search = ($('studentSearch').value || '').toLowerCase();
-  const selState = $('filterState').value;
-  const selCity = $('filterCity').value;
-  const showUnenrolled = $('showUnenrolled').checked;
-
-  const states = [...new Set(allStudents.map(s=>s.state).filter(Boolean))].sort();
-  const cities = [...new Set(allStudents.map(s=>s.city).filter(Boolean))].sort();
-  $('filterState').innerHTML = '<option value="">All States</option>' + states.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
-  $('filterCity').innerHTML = '<option value="">All Cities</option>' + cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
-  if(selState) $('filterState').value = selState;
-  if(selCity) $('filterCity').value = selCity;
-
-  let filtered = allStudents.filter(s => {
-    const text = [s.name,s.email,s.phone,s.state,s.city,s.courseInterest].join(' ').toLowerCase();
-    if(search && !text.includes(search)) return false;
-    if(selState && s.state !== selState) return false;
-    if(selCity && s.city !== selCity) return false;
-    if(showUnenrolled && (s.enrolledSubjects || []).length > 0) return false;
-    return true;
-  });
-
-  $('studentCountBadge').textContent = `${filtered.length} of ${allStudents.length} students`;
-
-  if(!filtered.length){
-    $('studentTableBody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">No students match your filters.</td></tr>';
-    return;
-  }
-
-  $('studentTableBody').innerHTML = filtered.map((s, i) => {
-    const subjCount = (s.enrolledSubjects || []).length;
-    const lectCount = (s.assignedLectureIds || []).length;
-    return `<tr style="cursor:pointer" onclick="showStudentDetail('${s.id}')">
-      <td style="color:#9ca3af;font-size:0.85rem">${i+1}</td>
-      <td><strong style="color:var(--navy);font-size:0.9rem">${esc(s.name || '—')}</strong></td>
-      <td style="font-size:0.85rem;color:#4b5563">${esc(s.email || '—')}</td>
-      <td style="font-size:0.85rem;color:#4b5563">${esc(s.phone || '—')}</td>
-      <td><span class="chip">${esc(s.state || '—')}</span></td>
-      <td><span class="chip">${esc(s.city || '—')}</span></td>
-      <td style="font-size:0.85rem">${esc(s.courseInterest || '—')}</td>
-      <td style="font-size:0.85rem">${subjCount} subject${subjCount!==1?'s':''}${lectCount ? ', '+lectCount+' lect' : ''}</td>
-      <td><button class="ghost-btn" style="padding:6px 10px;font-size:0.78rem" onclick="event.stopPropagation();showStudentDetail('${s.id}')">Manage</button></td>
-    </tr>`;
-  }).join('');
-}
-
-window.showStudentDetail = function(userId){
-  $('studentDetailPanel').style.display = 'block';
-  $('studentDetailPanel').scrollIntoView({behavior:'smooth'});
-  renderStudentDetail(userId);
-};
-
-window.closeStudentDetail = function(){ $('studentDetailPanel').style.display = 'none'; };
-
-function renderStudentDetail(userId){
-  const user = allStudents.find(u=>u.id===userId);
-  if(!user){ $('detailContent').innerHTML = '<div class="empty-box">Student not found</div>'; return; }
-  const attempts = allAttempts.filter(a => String(a.userId || '') === String(userId));
-  const totalScore = attempts.reduce((sum,a)=>sum + Number(a.score || 0), 0);
-  const totalMarks = attempts.reduce((sum,a)=>sum + Number(a.total || 0), 0);
-  const avg = totalMarks ? Math.round((totalScore/totalMarks)*100) : 0;
-  const availableSubjects = [...new Set([...allTests.map(t=>t.subject), ...allLectures.map(l=>l.subject)].filter(Boolean))].sort();
-
-  $('detailName').textContent = user.name || user.email || 'Student';
-  $('detailContent').innerHTML = `
-    <div class="student-detail-header">
-      <div style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:4px">${esc(user.name || user.email || 'Student')}</div>
-      <div style="font-size:0.8rem;opacity:0.8">${esc(user.email || '')}</div>
-      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-        <input id="editBatch-${user.id}" value="${esc(user.batchCode || '')}" placeholder="Batch Code" style="padding:6px 10px;border-radius:6px;border:none;color:var(--navy);font-weight:700;flex:1">
-        <button class="secondary-btn" type="button" onclick="saveBatch('${user.id}')" style="padding:6px 12px;font-size:0.8rem">Save Batch</button>
-      </div>
-    </div>
-    <div class="app-grid-2" style="margin-bottom:14px">
-      <div class="metric"><div class="n">${attempts.length}</div><div class="l">Attempts</div></div>
-      <div class="metric"><div class="n">${avg}%</div><div class="l">Average</div></div>
-    </div>
-    <div class="app-card" style="margin-bottom:14px">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">📚 Subject Enrolments</h4>
-      <p style="margin-bottom:10px;color:var(--muted);font-size:0.85rem">Tick subjects to auto-unlock ALL lectures under that subject.</p>
-      <div class="enrolment-grid">
-        ${availableSubjects.length ? availableSubjects.map(subject=>`
-          <label class="enrolment-option" style="cursor:pointer">
-            <input type="checkbox" class="enrol-subj" value="${esc(subject)}" ${(user.enrolledSubjects || []).includes(subject) ? 'checked' : ''}>
-            <span>${esc(subject)}</span>
-          </label>
-        `).join('') : '<span style="font-size:0.85rem;color:var(--muted)">Add subjects to lectures or tests first.</span>'}
-      </div>
-    </div>
-    <div class="app-card" style="margin-bottom:14px">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">🎬 Individual Lecture Access</h4>
-      <p style="margin-bottom:10px;color:var(--muted);font-size:0.85rem">Override subject access — pick specific lectures. If none checked, subject enrolment above decides visibility.</p>
-      <div class="lecture-access-list">
-        ${allLectures.length ? allLectures.map(lecture=>`
-          <label class="enrolment-option" style="cursor:pointer;justify-content:flex-start;text-align:left">
-            <input type="checkbox" class="enrol-lec" value="${esc(lecture.id)}" ${(user.assignedLectureIds || []).includes(lecture.id) ? 'checked' : ''}>
-            <span style="word-break:break-word"><strong style="color:var(--navy)">${esc(lecture.subject || 'General')}</strong> — ${esc(lecture.title || 'Lecture')} <span style="color:var(--muted);font-size:0.75rem">(${esc(lecture.lectureDate || 'no date')})</span></span>
-          </label>
-        `).join('') : '<span style="font-size:0.85rem;color:var(--muted)">No lectures uploaded yet.</span>'}
-      </div>
-      <button class="primary-btn" type="button" onclick="saveStudentAccess('${user.id}')" style="margin-top:12px;width:100%">💾 Save Access Settings</button>
-      <div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">
-        <button class="danger-btn" type="button" onclick="deleteStudent('${user.id}')" style="width:100%">🗑 Delete Student</button>
-      </div>
-    </div>
-    <div class="app-card">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">📊 Paper Breakdown</h4>
-      ${getPaperBreakdown(attempts)}
-    </div>
-  `;
-}
-
-function getPaperBreakdown(attempts){
-  const byPaper = {};
-  attempts.forEach(a=>{ const p = a.subject || 'General'; if(!byPaper[p]) byPaper[p]={attempts:0,score:0,total:0}; byPaper[p].attempts++; byPaper[p].score+=Number(a.score||0); byPaper[p].total+=Number(a.total||0); });
-  return Object.keys(byPaper).length ? Object.keys(byPaper).sort().map(p=>`
+  // Open Doubts
+  $('openDoubts').innerHTML = doubts.length ? doubts.map(d=>`
     <div class="mini-item">
-      <strong>${esc(p)}</strong><br>
-      <span style="font-size:0.82rem;color:#6b7280">Attempts: ${byPaper[p].attempts} · Marks: ${byPaper[p].score}/${byPaper[p].total}</span>
-    </div>
-  `).join('') : '<div class="empty-box">No attempts yet for this student.</div>';
-}
-
-window.saveBatch = async function(userId){
-  const batch = $(`editBatch-${userId}`).value.trim();
-  await db.collection('users').doc(userId).update({batchCode: batch});
-  const u = allStudents.find(x=>x.id===userId); if(u) u.batchCode = batch;
-  alert('Batch code saved');
-};
-
-window.saveStudentAccess = async function(userId){
-  const enrolledSubjects = [...document.querySelectorAll('.enrol-subj:checked')].map(i=>i.value);
-  const assignedLectureIds = [...document.querySelectorAll('.enrol-lec:checked')].map(i=>i.value);
-  await db.collection('users').doc(userId).update({enrolledSubjects, assignedLectureIds, accessUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()});
-  const u = allStudents.find(x=>x.id===userId); if(u){ u.enrolledSubjects = enrolledSubjects; u.assignedLectureIds = assignedLectureIds; }
-  alert('Access settings saved');
-  renderStudents();
-};
-
-window.deleteStudent = async function(userId){
-  if(!confirm('Permanently delete this student and all their data?')) return;
-  await db.collection('users').doc(userId).delete();
-  allStudents = allStudents.filter(s=>s.id!==userId);
-  renderStudents();
-  closeStudentDetail();
-};
-
-async function loadLeaderboard(){
-  const ranking = {};
-  allAttempts.forEach(a=>{
-    const key = String(a.userId || a.userEmail || 'unknown');
-    if(!ranking[key]) ranking[key] = {name: a.userName || a.userEmail || 'Student', score:0, total:0, attempts:0};
-    ranking[key].score += Number(a.score || 0);
-    ranking[key].total += Number(a.total || 0);
-    ranking[key].attempts++;
-  });
-  const arr = Object.values(ranking).sort((a,b)=>(b.score - a.score) || (b.total - a.total));
-  if(!arr.length){ $('leaderboardContent').innerHTML = '<div class="empty-box">No leaderboard data yet</div>'; return; }
-  $('leaderboardContent').innerHTML = arr.map((r, i)=>`
-    <div class="leaderboard-row">
-      <div style="display:flex;gap:10px;align-items:center">
-        <span class="rank-badge ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</span>
-        <div><strong>${esc(r.name)}</strong><br><span style="font-size:0.82rem;color:#6b7280">Attempts: ${r.attempts}</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <strong>${esc(d.courseSubject || d.subject || 'General')}</strong>
+        <span class="chip">${esc(d.studentName || 'Student')}</span>
       </div>
-      <div style="font-weight:800;color:var(--navy)">${r.total ? Math.round((r.score/r.total)*100) : 0}%</div>
+      <p style="font-size:0.9rem;margin:4px 0">${esc((d.message || '').substring(0,120))}${(d.message||'').length>120?'...':''}</p>
+      <a href="doubts.html" style="font-size:0.82rem;color:var(--gold);font-weight:700">Reply →</a>
     </div>
-  `).join('');
+  `).join('') : '<div class="empty-box">No open doubts</div>';
 }
-
-async function loadDoubts(){
-  const snap = await db.collection('studentDoubts').orderBy('createdAt','desc').limit(100).get().catch(()=>null);
-  let doubts = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  const q = ($('doubtSearch').value || '').toLowerCase();
-  if(q) doubts = doubts.filter(d => [d.studentName,d.courseSubject,d.message].join(' ').toLowerCase().includes(q));
-  if(!doubts.length){ $('doubtsList').innerHTML = '<div class="empty-box">No doubts found</div>'; return; }
-
-  $('doubtsList').innerHTML = doubts.map(d => {
-    const replies = Array.isArray(d.replies) ? d.replies : [];
-    const lastReply = replies[replies.length-1];
-    const isClosed = d.status === 'closed' || (d.autoCloseAt && d.autoCloseAt.toDate ? d.autoCloseAt.toDate() < new Date() : false);
-    return `<div class="doubt-item ${isClosed?'closed':d.status==='answered'?'answered':''}">
-      <div class="doubt-header">
-        <div><strong>${esc(d.courseSubject || d.subject || 'General')}</strong> <span class="chip">${esc(d.status || 'open')}${isClosed?' (auto-closed)':''}</span></div>
-        <div class="doubt-meta">${esc(d.studentName || '')} · Batch: ${esc(d.batchCode || '—')}</div>
-      </div>
-      <p style="margin:8px 0;font-size:0.92rem">${esc(d.message || '')}</p>
-      ${d.screenshotUrl ? `<a class="ghost-btn" target="_blank" href="${esc(d.screenshotUrl)}" style="font-size:0.8rem">View screenshot</a>` : ''}
-      ${replies.length ? `<div style="margin-top:10px;border-left:3px solid var(--gold);padding-left:10px">
-        ${replies.map(r => `<div style="margin-bottom:8px">
-          <span style="font-size:0.78rem;color:#6b7280">${esc(r.by || 'Faculty')} · ${r.at ? fmtDate(r.at) : ''}</span>
-          <p style="margin:4px 0;font-size:0.9rem">${esc(r.text || '')}</p>
-          ${r.attachmentUrl ? `<a class="ghost-btn" target="_blank" href="${esc(r.attachmentUrl)}" style="font-size:0.8rem">📎 ${esc(r.attachmentName || 'Attachment')}</a>` : ''}
-        </div>`).join('')}
-      </div>` : ''}
-      ${!isClosed ? `<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-        <input id="reply-${d.id}" placeholder="Write a clear answer" style="flex:1;padding:10px 12px;border:1px solid #d7ddea;border-radius:10px;font:inherit">
-        <input id="replyFile-${d.id}" type="file" style="font-size:0.8rem;max-width:160px">
-        <button class="primary-btn" onclick="replyDoubt('${d.id}')" style="font-size:0.8rem">Reply</button>
-      </div>` : ''}
-    </div>`;
-  }).join('');
-}
-
-window.replyDoubt = async function(id){
-  const text = $(`reply-${id}`).value.trim();
-  const file = $(`replyFile-${id}`).files[0];
-  if(!text && !file) return;
-  try{
-    const reply = { text: text || '', by: 'faculty', at: firebase.firestore.FieldValue.serverTimestamp() };
-    if(file){
-      if(file.size > 8*1024*1024) throw new Error('File must be under 8 MB');
-      const ref = storage.ref(`doubt-attachments/${id}/${Date.now()}-${file.name}`);
-      const uploaded = await ref.put(file);
-      reply.attachmentUrl = await uploaded.ref.getDownloadURL();
-      reply.attachmentName = file.name;
-    }
-    const docRef = db.collection('studentDoubts').doc(id);
-    const snap = await docRef.get();
-    const data = snap.data() || {};
-    const replies = Array.isArray(data.replies) ? data.replies : [];
-    replies.push(reply);
-    const sevenDays = new Date(Date.now() + 7*24*60*60*1000);
-    await docRef.update({
-      status:'answered', replies,
-      autoCloseAt: firebase.firestore.Timestamp.fromDate(sevenDays),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    loadDoubts();
-  }catch(e){ alert('Reply failed: ' + (e.message || e)); }
-};
-
-window.purgeOldDoubts = async function(){
-  if(!confirm('Delete all doubts closed for more than 7 days?')) return;
-  const snap = await db.collection('studentDoubts').where('status','==','closed').get().catch(()=>null);
-  if(!snap) return;
-  const batch = db.batch();
-  let count = 0;
-  snap.forEach(doc => {
-    const d = doc.data();
-    if(d.autoCloseAt && d.autoCloseAt.toDate && d.autoCloseAt.toDate() < new Date(Date.now() - 7*24*60*60*1000)){
-      batch.delete(doc.ref); count++;
-    }
-  });
-  await batch.commit();
-  alert(`Purged ${count} old doubts`);
-  loadDoubts();
-};
-
-showView('dashView');
 </script>
 </body>
 </html>
