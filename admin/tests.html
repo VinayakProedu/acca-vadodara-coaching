@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tests | Vinayak ProEdu Admin</title>
+<link rel="icon" type="image/png" href="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D1B40; --navy-mid:#1a2e5e; --blue:#1e3c72; --gold:#C9922A; --gold-lt:#E8AA48;
+  --amber:#F5C04A; --ink:#1A1A2E; --muted:#6B7280; --smoke:#EFF1F6; --white:#FFFFFF;
+  --shadow-sm:0 4px 20px rgba(13,27,64,0.08); --shadow-md:0 12px 45px rgba(13,27,64,0.14);
+  --r-sm:10px; --r-md:16px; --r-lg:24px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#f5f7fb;line-height:1.65;overflow-x:hidden;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
+
+/* Login */
+.login-wrap{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-box{width:min(420px,92vw);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-lg);padding:clamp(32px,6vw,48px);backdrop-filter:blur(20px);box-shadow:0 40px 100px rgba(0,0,0,0.4);}
+.login-box h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.6rem;margin-bottom:6px;text-align:center;}
+.login-box p{color:rgba(255,255,255,0.55);font-size:0.9rem;text-align:center;margin-bottom:28px;}
+.login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.login-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.65);}
+.login-field input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r-sm);color:#fff;font-size:0.95em;font-family:'DM Sans',sans-serif;transition:all 0.25s;}
+.login-field input::placeholder{color:rgba(255,255,255,0.32);}
+.login-field input:focus{outline:none;border-color:rgba(201,146,42,0.6);background:rgba(255,255,255,0.13);box-shadow:0 0 0 3px rgba(201,146,42,0.15);}
+.login-btn{width:100%;padding:15px;border-radius:50px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);font-size:1em;font-weight:700;font-family:'DM Sans',sans-serif;box-shadow:0 8px 28px rgba(201,146,42,0.35);transition:all 0.3s;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(201,146,42,0.5);}
+.login-status{margin-top:12px;font-size:0.9rem;font-weight:700;text-align:center;min-height:22px;}
+.login-status.error{color:#fca5a5;}
+
+/* App Shell */
+.app-shell{display:flex;width:100%;min-height:100vh;}
+.app-sidebar{width:260px;background:var(--navy);color:#fff;padding:18px;overflow:auto;flex-shrink:0;position:fixed;height:100vh;left:0;top:0;z-index:100;}
+.app-brand{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.app-brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;}
+.app-brand h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin:0;color:#fff;}
+.app-brand p{font-size:0.72rem;letter-spacing:1.4px;text-transform:uppercase;color:rgba(232,170,72,0.8);margin-top:2px;}
+.app-menu{display:grid;gap:6px;}
+.app-menu a,.app-menu button{width:100%;border:none;background:transparent;color:#fff;padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:600;font-size:0.9rem;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:all 0.2s;text-decoration:none;}
+.app-menu a:hover,.app-menu button:hover,.app-menu a.active,.app-menu button.active{background:var(--gold);color:var(--navy);}
+.app-main{flex:1;margin-left:260px;padding:24px 28px;overflow:auto;min-height:100vh;}
+
+/* Topbar */
+.app-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e5e7eb;}
+.app-title{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.6rem;margin:0;}
+.app-sub{color:var(--muted);font-size:0.9rem;}
+
+/* Cards */
+.app-card{background:#fff;border:1px solid rgba(201,146,42,0.12);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
+.app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.subject-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);margin:0 0 14px;}
+
+/* Form Elements */
+.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(13,27,64,0.14);background:#fff;color:var(--ink);font-size:0.95rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,42,0.12);}
+.portal-field textarea{min-height:100px;resize:vertical;}
+.portal-field select{cursor:pointer;}
+
+/* Buttons */
+.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
+.primary-btn{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;}
+.secondary-btn{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);}
+.ghost-btn{background:#eef4ff;color:var(--blue);}
+.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);opacity:0.95;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+
+/* Status */
+.portal-status{font-size:0.92rem;margin-top:10px;min-height:22px;font-weight:700;}
+.portal-status.error{color:#b42318;}
+.portal-status.success{color:#166534;}
+
+/* Search */
+.practice-search{width:100%;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;margin-bottom:14px;}
+.practice-search:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
+
+/* Test List */
+.mini-list{display:grid;gap:10px;max-height:420px;overflow:auto;padding-right:4px;}
+.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;transition:all 0.2s;}
+.mini-item:hover{box-shadow:var(--shadow-sm);border-color:rgba(201,146,42,0.3);}
+.test-code{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;background:#fde8dc;color:var(--navy);font-size:0.72rem;font-weight:800;letter-spacing:0.5px;margin:6px 0;}
+.empty-box{padding:20px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.9rem;}
+
+/* Question Type Selector */
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:14px;}
+.type-chip{padding:10px 12px;border-radius:10px;border:2px solid #e5e7eb;background:#fff;cursor:pointer;text-align:center;font-size:0.82rem;font-weight:600;transition:all 0.2s;color:var(--ink);}
+.type-chip:hover{border-color:var(--gold-lt);}
+.type-chip.active{border-color:var(--gold);background:linear-gradient(135deg,rgba(201,146,42,0.1),rgba(232,170,72,0.1));color:var(--navy);}
+
+/* Options Builder */
+.option-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
+.option-row input{flex:1;}
+.option-row .opt-index{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:0.75rem;font-weight:700;flex-shrink:0;}
+.option-row .opt-correct{width:28px;height:28px;border-radius:50%;border:2px solid #e5e7eb;background:#fff;cursor:pointer;display:grid;place-items:center;font-size:0.8rem;flex-shrink:0;transition:all 0.2s;}
+.option-row .opt-correct.selected{background:linear-gradient(135deg,var(--gold),var(--gold-lt));border-color:var(--gold);color:var(--navy);}
+
+/* Image Preview */
+.img-preview{max-width:200px;border-radius:10px;border:1px solid #e5e7eb;margin-top:8px;}
+
+/* Table */
+.app-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:0.88rem;}
+.app-table th,.app-table td{padding:10px 12px;border-bottom:1px solid #eef2f7;text-align:left;}
+.app-table th{background:#f8fafc;color:var(--navy);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px;}
+.app-table tr:last-child td{border-bottom:none;}
+.app-table tr:hover td{background:#f8fafc;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(13,27,64,0.2);border-radius:10px;}
+
+/* Responsive */
+@media(max-width:900px){
+  .app-sidebar{width:100%;height:auto;position:relative;}
+  .app-main{margin-left:0;}
+  .app-shell{flex-direction:column;}
+  .app-grid-2{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .app-main{padding:16px;}
+  .type-grid{grid-template-columns:repeat(2,1fr);}
+}
+.hidden{display:none !important;}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h2>Admin Portal</h2>
+    <p>Tests & Question Builder</p>
+    <div class="login-field"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="admin@email.com"></div>
+    <div class="login-field"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••"></div>
+    <button class="login-btn" id="adminLoginBtn" type="button">Login as Admin</button>
+    <div class="login-status" id="loginStatus"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app-shell hidden" id="appShell">
+  <aside class="app-sidebar">
+    <div class="app-brand">
+      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
+      <div>
+        <h3>Vinayak ProEdu</h3>
+        <p>Admin Panel</p>
+      </div>
+    </div>
+    <nav class="app-menu">
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html" class="active">📝 Tests</a>
+      <a href="lectures.html">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="doubts.html">💬 Doubts</a>
+      <button id="logoutBtn" type="button">🚪 Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <div class="app-topbar">
+      <div>
+        <h1 class="app-title">Test Builder</h1>
+        <div class="app-sub">Create tests, add questions, manage papers</div>
+      </div>
+      <button class="ghost-btn" id="closeBtn" type="button">Close</button>
+    </div>
+
+    <div class="app-grid-2">
+      <!-- LEFT: Create Test -->
+      <div class="app-card">
+        <h3 class="subject-title">Create / Edit Test</h3>
+        <div class="portal-field"><label>Test Title *</label><input type="text" id="testTitle" placeholder="e.g. FR Chapter 1 - Conceptual Framework"></div>
+        <div class="portal-field"><label>Subject / Paper *</label><input type="text" id="testSubject" placeholder="e.g. Financial Reporting"></div>
+        <div class="portal-field"><label>Chapter / Topic *</label><input type="text" id="testChapter" placeholder="e.g. Conceptual Framework"></div>
+        <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="testBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
+        <div class="btn-row">
+          <button class="primary-btn" id="createTestBtn" type="button">💾 Save Test</button>
+          <button class="ghost-btn" id="clearTestBtn" type="button">Clear</button>
+        </div>
+        <div class="portal-status" id="testStatus"></div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #e5e7eb;">
+          <h3 class="subject-title" style="font-size:1rem;">Your Tests</h3>
+          <input type="search" class="practice-search" id="testSearch" placeholder="Search tests..." oninput="filterTests()">
+          <div class="mini-list" id="testList"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Add Question -->
+      <div class="app-card">
+        <h3 class="subject-title">Add Question</h3>
+        <div class="portal-field"><label>Select Test *</label>
+          <select id="selectedTest"><option value="">-- Choose a test --</option></select>
+        </div>
+
+        <div class="portal-field"><label>Question Type</label>
+          <div class="type-grid" id="typeGrid">
+            <div class="type-chip active" data-type="mcq">MCQ</div>
+            <div class="type-chip" data-type="multi">Multi-Select</div>
+            <div class="type-chip" data-type="dropdown">Dropdown</div>
+            <div class="type-chip" data-type="fill">Fill Blank</div>
+            <div class="type-chip" data-type="drag">Drag & Drop</div>
+            <div class="type-chip" data-type="hotspot">Hot Spot</div>
+            <div class="type-chip" data-type="hotarea">Hot Area</div>
+            <div class="type-chip" data-type="otcase">OT Case</div>
+            <div class="type-chip" data-type="word">Word Response</div>
+            <div class="type-chip" data-type="sheet">Spreadsheet</div>
+          </div>
+        </div>
+
+        <div class="portal-field"><label>Question Text *</label><textarea id="questionText" placeholder="Enter your question here..."></textarea></div>
+        <div class="portal-field"><label>Marks</label><input type="number" id="questionMarks" value="2" min="1" max="100"></div>
+
+        <!-- Dynamic Fields -->
+        <div id="dynamicFields"></div>
+
+        <div class="portal-field"><label>Explanation (shown after answer)</label><textarea id="questionExplanation" placeholder="Explain the correct answer..."></textarea></div>
+
+        <div class="btn-row">
+          <button class="primary-btn" id="uploadQuestionBtn" type="button">⬆ Upload Question</button>
+        </div>
+        <div class="portal-status" id="questionStatus"></div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #e5e7eb;">
+          <h3 class="subject-title" style="font-size:1rem;">Questions in Selected Test</h3>
+          <div class="mini-list" id="questionList"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+<script>
+(function(){
+  const ADMIN_EMAIL = "vinayakproedu@gmail.com";
+
+  // Firebase init
+  const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
+  if (!firebase.apps.length) firebase.initializeApp(_fc);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  // State
+  let currentType = 'mcq';
+  let allTests = [];
+  let allQuestions = [];
+
+  // Elements
+  const loginWrap = document.getElementById('loginWrap');
+  const appShell = document.getElementById('appShell');
+  const loginStatus = document.getElementById('loginStatus');
+
+  function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
+  function setStatus(el, msg, err=false){ if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); }
+
+  // Auth
+  document.getElementById('adminLoginBtn').addEventListener('click', async () => {
+    const email = val('adminEmail');
+    const pw = document.getElementById('adminPassword').value;
+    if(!email || !pw){ setStatus(loginStatus, 'Email and password required.', true); return; }
+    try{
+      const cred = await auth.signInWithEmailAndPassword(email, pw);
+      if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); setStatus(loginStatus, 'Not authorized.', true); return; }
+      sessionStorage.setItem('adminUnlocked', '1');
+      showApp();
+    }catch(err){ setStatus(loginStatus, err.message, true); }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    sessionStorage.removeItem('adminUnlocked');
+    await auth.signOut();
+    location.reload();
+  });
+
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  auth.onAuthStateChanged(user => {
+    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+      showApp();
+    } else {
+      loginWrap.classList.remove('hidden');
+      appShell.classList.add('hidden');
+    }
+  });
+
+  function showApp(){
+    loginWrap.classList.add('hidden');
+    appShell.classList.remove('hidden');
+    loadTests();
+    renderTypeFields();
+  }
+
+  // Type selector
+  document.querySelectorAll('.type-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentType = chip.dataset.type;
+      renderTypeFields();
+    });
+  });
+
+  // Dynamic fields renderer
+  function renderTypeFields(){
+    const box = document.getElementById('dynamicFields');
+    box.innerHTML = '';
+
+    if(currentType === 'mcq' || currentType === 'dropdown'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Options (click circle to mark correct)</label>
+          <div id="optionsContainer"></div>
+          <button class="ghost-btn" type="button" onclick="addOption()" style="margin-top:8px;">+ Add Option</button>
+        </div>
+        <input type="hidden" id="correctAnswer">
+      `;
+      initOptions(4);
+    }
+    else if(currentType === 'multi'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Options (click circles to mark all correct)</label>
+          <div id="optionsContainer"></div>
+          <button class="ghost-btn" type="button" onclick="addOption()" style="margin-top:8px;">+ Add Option</button>
+        </div>
+        <input type="hidden" id="correctAnswer">
+      `;
+      initOptions(4, true);
+    }
+    else if(currentType === 'fill'){
+      box.innerHTML = `<div class="portal-field"><label>Correct Answer</label><input type="text" id="fillAnswer" placeholder="Exact answer text"></div>`;
+    }
+    else if(currentType === 'drag'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Drag & Drop Pairs (JSON format)</label>
+          <textarea id="dragPairs" placeholder='[{"drag":"Asset","drop":"Balance Sheet"},{"drag":"Revenue","drop":"Income Statement"}]'></textarea>
+          <div class="small" style="color:var(--muted);margin-top:6px;">Format: [{"drag":"...","drop":"..."}, ...]</div>
+        </div>`;
+    }
+    else if(currentType === 'hotspot' || currentType === 'hotarea'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Upload Image</label><input type="file" id="hotspotImage" accept="image/*" onchange="previewImage(this)"></div>
+        <div id="imagePreview"></div>
+        <div class="portal-field"><label>Correct Answer / Coordinates</label><input type="text" id="hotspotCoords" placeholder="e.g. 120,80 or 'Top Left'"></div>
+      `;
+    }
+    else if(currentType === 'otcase'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Case Scenario</label><textarea id="caseScenario" placeholder="Describe the case scenario..."></textarea></div>
+        <div class="portal-field"><label>Reference Answer / Marking Guide</label><textarea id="caseAnswer" placeholder="What should the student answer?"></textarea></div>
+      `;
+    }
+    else if(currentType === 'word' || currentType === 'sheet'){
+      box.innerHTML = `
+        <div class="portal-field"><label>Template File (optional)</label><input type="file" id="templateFile"></div>
+        <div class="portal-field"><label>Marking Guide / Model Answer</label><textarea id="templateAnswer" placeholder="Describe how this should be marked..."></textarea></div>
+      `;
+    }
+  }
+
+  // Options builder
+  window.initOptions = function(count=4, multi=false){
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    for(let i=0;i<count;i++) addOption(multi);
+  };
+
+  window.addOption = function(multi=false){
+    const container = document.getElementById('optionsContainer');
+    const idx = container.children.length;
+    const row = document.createElement('div');
+    row.className = 'option-row';
+    row.innerHTML = `
+      <div class="opt-index">${String.fromCharCode(65+idx)}</div>
+      <input type="text" class="opt-text" placeholder="Option ${idx+1}">
+      <div class="opt-correct" data-idx="${idx}" title="Mark as correct" onclick="toggleCorrect(this, ${multi})">✓</div>
+    `;
+    container.appendChild(row);
+  };
+
+  window.toggleCorrect = function(el, multi){
+    if(multi){
+      el.classList.toggle('selected');
+    } else {
+      document.querySelectorAll('.opt-correct').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+    updateCorrectHidden(multi);
+  };
+
+  window.updateCorrectHidden = function(multi){
+    const selected = [...document.querySelectorAll('.opt-correct.selected')].map(el => Number(el.dataset.idx));
+    document.getElementById('correctAnswer').value = multi ? selected.join(',') : (selected[0] ?? '');
+  };
+
+  window.previewImage = function(input){
+    const preview = document.getElementById('imagePreview');
+    if(input.files && input.files[0]){
+      const reader = new FileReader();
+      reader.onload = e => { preview.innerHTML = `<img src="${e.target.result}" class="img-preview">`; };
+      reader.readAsDataURL(input.files[0]);
+    }
+  };
+
+  // Create test
+  document.getElementById('createTestBtn').addEventListener('click', async () => {
+    const title = val('testTitle');
+    const subject = val('testSubject');
+    const chapter = val('testChapter');
+    if(!title || !subject || !chapter){ setStatus(document.getElementById('testStatus'), 'Fill all required fields.', true); return; }
+
+    try{
+      const batchCodes = val('testBatch').split(',').map(s=>s.trim()).filter(Boolean);
+      const existing = await db.collection('tests').where('title','==',title).where('subject','==',subject).where('chapter','==',chapter).limit(1).get();
+      if(!existing.empty){
+        const id = existing.docs[0].id;
+        await db.collection('tests').doc(id).update({batchCodes, updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
+        setStatus(document.getElementById('testStatus'), 'Test updated ✅');
+        document.getElementById('selectedTest').value = id;
+      } else {
+        const ref = await db.collection('tests').add({
+          title, subject, chapter, batchCodes,
+          questionCount: 0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        setStatus(document.getElementById('testStatus'), 'Test created ✅');
+        document.getElementById('selectedTest').value = ref.id;
+      }
+      await loadTests();
+      loadQuestionsForSelected();
+    }catch(err){ setStatus(document.getElementById('testStatus'), err.message, true); }
+  });
+
+  document.getElementById('clearTestBtn').addEventListener('click', () => {
+    document.getElementById('testTitle').value = '';
+    document.getElementById('testSubject').value = '';
+    document.getElementById('testChapter').value = '';
+    document.getElementById('testBatch').value = '';
+    setStatus(document.getElementById('testStatus'), '');
+  });
+
+  // Load tests
+  async function loadTests(){
+    const snap = await db.collection('tests').orderBy('createdAt','desc').limit(100).get();
+    allTests = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderTestList();
+    populateTestSelect();
+  }
+
+  function populateTestSelect(){
+    const sel = document.getElementById('selectedTest');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">-- Choose a test --</option>' + allTests.map(t =>
+      `<option value="${t.id}">${esc(t.title || 'Untitled')} — ${esc(t.subject || '')}</option>`
+    ).join('');
+    if(current && allTests.find(t => t.id === current)) sel.value = current;
+  }
+
+  function renderTestList(){
+    const box = document.getElementById('testList');
+    const q = (document.getElementById('testSearch')?.value || '').toLowerCase();
+    const filtered = allTests.filter(t => !q || [t.title,t.subject,t.chapter].join(' ').toLowerCase().includes(q));
+
+    if(!filtered.length){ box.innerHTML = '<div class="empty-box">No tests yet.</div>'; return; }
+    box.innerHTML = filtered.map(t => {
+      const code = `${String(t.subject || 'TEST').replace(/[^A-Za-z0-9]/g,'').slice(0,5).toUpperCase()}-${String(t.id).slice(0,6).toUpperCase()}`;
+      return `<div class="mini-item">
+        <strong>${esc(t.title || 'Untitled')}</strong>
+        <div class="test-code">${esc(code)}</div>
+        <div class="small" style="color:var(--muted);font-size:0.82rem;">${esc(t.subject || '')} · ${esc(t.chapter || '')} · ${t.questionCount || 0} questions</div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="ghost-btn" type="button" onclick="selectTest('${t.id}')">Select</button>
+          <button class="secondary-btn" type="button" onclick="deleteTest('${t.id}')">Delete</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window.filterTests = function(){ renderTestList(); };
+
+  window.selectTest = function(id){
+    document.getElementById('selectedTest').value = id;
+    const t = allTests.find(x => x.id === id);
+    if(t){
+      document.getElementById('testTitle').value = t.title || '';
+      document.getElementById('testSubject').value = t.subject || '';
+      document.getElementById('testChapter').value = t.chapter || '';
+      document.getElementById('testBatch').value = (t.batchCodes || []).join(', ');
+    }
+    loadQuestionsForSelected();
+  };
+
+  window.deleteTest = async function(id){
+    if(!confirm('Delete this test and ALL its questions?')) return;
+    const batch = db.batch();
+    const qSnap = await db.collection('questions').where('testId','==',id).get();
+    qSnap.forEach(doc => batch.delete(doc.ref));
+    batch.delete(db.collection('tests').doc(id));
+    await batch.commit();
+    await loadTests();
+    loadQuestionsForSelected();
+  };
+
+  // Upload question
+  document.getElementById('uploadQuestionBtn').addEventListener('click', async () => {
+    const testId = document.getElementById('selectedTest').value;
+    if(!testId){ setStatus(document.getElementById('questionStatus'), 'Select a test first.', true); return; }
+
+    const text = val('questionText');
+    const marks = Number(val('questionMarks') || 2);
+    const explanation = val('questionExplanation');
+    if(!text){ setStatus(document.getElementById('questionStatus'), 'Question text is required.', true); return; }
+
+    const test = allTests.find(t => t.id === testId);
+    const qData = { testId, testTitle: test?.title || '', subject: test?.subject || '', chapter: test?.chapter || '', type: currentType, question: text, marks, explanation, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+
+    try{
+      if(currentType === 'mcq' || currentType === 'dropdown'){
+        const opts = [...document.querySelectorAll('.opt-text')].map(i => i.value.trim()).filter(Boolean);
+        const correct = Number(val('correctAnswer'));
+        if(opts.length < 2){ setStatus(document.getElementById('questionStatus'), 'Need at least 2 options.', true); return; }
+        if(Number.isNaN(correct)){ setStatus(document.getElementById('questionStatus'), 'Mark the correct answer.', true); return; }
+        qData.options = opts; qData.correct = correct;
+      }
+      else if(currentType === 'multi'){
+        const opts = [...document.querySelectorAll('.opt-text')].map(i => i.value.trim()).filter(Boolean);
+        const correctRaw = val('correctAnswer');
+        const correct = correctRaw ? correctRaw.split(',').map(v => Number(v.trim())).filter(v => !Number.isNaN(v)) : [];
+        if(opts.length < 2){ setStatus(document.getElementById('questionStatus'), 'Need at least 2 options.', true); return; }
+        if(!correct.length){ setStatus(document.getElementById('questionStatus'), 'Mark at least one correct answer.', true); return; }
+        qData.options = opts; qData.correct = correct;
+      }
+      else if(currentType === 'fill'){
+        const ans = val('fillAnswer');
+        if(!ans){ setStatus(document.getElementById('questionStatus'), 'Correct answer is required.', true); return; }
+        qData.answer = ans;
+      }
+      else if(currentType === 'drag'){
+        let pairs;
+        try{ pairs = JSON.parse(val('dragPairs') || '[]'); }catch(e){ setStatus(document.getElementById('questionStatus'), 'Invalid JSON for drag pairs.', true); return; }
+        if(!Array.isArray(pairs) || !pairs.length){ setStatus(document.getElementById('questionStatus'), 'Drag pairs required.', true); return; }
+        qData.pairs = pairs;
+      }
+      else if(currentType === 'hotspot' || currentType === 'hotarea'){
+        const file = document.getElementById('hotspotImage')?.files?.[0];
+        const coords = val('hotspotCoords');
+        if(!file && !coords){ setStatus(document.getElementById('questionStatus'), 'Upload image or enter coordinates.', true); return; }
+        if(file){
+          const safe = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+          const ref = storage.ref(`tests/images/${safe}`);
+          await ref.put(file);
+          qData.imageUrl = await ref.getDownloadURL();
+        }
+        qData.coords = coords;
+      }
+      else if(currentType === 'otcase'){
+        const scenario = val('caseScenario');
+        const answer = val('caseAnswer');
+        if(!scenario){ setStatus(document.getElementById('questionStatus'), 'Case scenario required.', true); return; }
+        qData.caseScenario = scenario; qData.caseAnswer = answer;
+      }
+      else if(currentType === 'word' || currentType === 'sheet'){
+        const file = document.getElementById('templateFile')?.files?.[0];
+        const answer = val('templateAnswer');
+        if(file){
+          const safe = Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+          const ref = storage.ref(`tests/templates/${safe}`);
+          await ref.put(file);
+          qData.templateUrl = await ref.getDownloadURL();
+        }
+        qData.templateAnswer = answer;
+      }
+
+      await db.collection('questions').add(qData);
+      await db.collection('tests').doc(testId).update({
+        questionCount: firebase.firestore.FieldValue.increment(1),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      setStatus(document.getElementById('questionStatus'), 'Question uploaded ✅');
+      document.getElementById('questionText').value = '';
+      document.getElementById('questionExplanation').value = '';
+      renderTypeFields();
+      await loadTests();
+      loadQuestionsForSelected();
+    }catch(err){ setStatus(document.getElementById('questionStatus'), err.message, true); }
+  });
+
+  // Load questions for selected test
+  document.getElementById('selectedTest').addEventListener('change', loadQuestionsForSelected);
+
+  async function loadQuestionsForSelected(){
+    const testId = document.getElementById('selectedTest').value;
+    const box = document.getElementById('questionList');
+    if(!testId){ box.innerHTML = '<div class="empty-box">Select a test to see its questions.</div>'; return; }
+
+    const snap = await db.collection('questions').where('testId','==',testId).orderBy('createdAt','asc').get();
+    allQuestions = snap.docs.map(d => ({id: d.id, ...d.data()}));
+
+    if(!allQuestions.length){ box.innerHTML = '<div class="empty-box">No questions in this test yet.</div>'; return; }
+    box.innerHTML = allQuestions.map((q,i) => `<div class="mini-item">
+      <strong>Q${i+1}. ${esc((q.question || '').slice(0,80))}${(q.question || '').length > 80 ? '...' : ''}</strong>
+      <div class="test-code">${esc(q.type || 'mcq').toUpperCase()} · ${q.marks || 2} marks</div>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="ghost-btn" type="button" onclick="deleteQuestion('${q.id}', '${testId}')">Delete</button>
+      </div>
+    </div>`).join('');
+  }
+
+  window.deleteQuestion = async function(qid, testId){
+    if(!confirm('Delete this question?')) return;
+    await db.collection('questions').doc(qid).delete();
+    await db.collection('tests').doc(testId).update({
+      questionCount: firebase.firestore.FieldValue.increment(-1),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await loadTests();
+    loadQuestionsForSelected();
+  };
+
+  // Init
+  renderTypeFields();
+})();
+</script>
+</body>
+</html>
