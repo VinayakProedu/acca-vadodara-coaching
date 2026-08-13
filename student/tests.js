@@ -35,30 +35,22 @@
     if(!user){ container.innerHTML='<div class="empty-box">Please log in to view tests.</div>'; return; }
 
     try {
-      // 1) Tests scoped to subject
-      let tSnap;
-      try {
-        tSnap = await db().collection('tests')
-          .where('subject','==',subject)
-          .orderBy('createdAt','desc')
-          .limit(PAGE_SIZE)
-          .get();
-      } catch(e) {
-        tSnap = await db().collection('tests')
-          .where('subject','==',subject)
-          .limit(PAGE_SIZE)
-          .get();
-      }
-      testsData = tSnap.docs.map(d => ({id: d.id, ...d.data()}));
+      // 1) Tests scoped to subject — NO orderBy to avoid composite index
+      const tSnap = await db().collection('tests')
+        .where('subject','==',subject)
+        .limit(PAGE_SIZE)
+        .get();
+      testsData = tSnap.docs.map(d => ({id: d.id, ...d.data()}))
+        .sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-      // 2) Attempts scoped to user + subject
+      // 2) Attempts scoped to user + subject — NO orderBy to avoid composite index
       const aSnap = await db().collection('attempts')
         .where('userId','==',user.uid)
         .where('subject','==',subject)
-        .orderBy('createdAt','desc')
         .limit(200)
         .get();
-      attemptsData = aSnap.docs.map(d => ({id: d.id, ...d.data()}));
+      attemptsData = aSnap.docs.map(d => ({id: d.id, ...d.data()}))
+        .sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
       // 3) Questions scoped to subject
       const qSnap = await db().collection('questions')
@@ -80,7 +72,7 @@
       }
     } catch(err) {
       console.error('loadMocksForCourse error:', err);
-      container.innerHTML = '<div class="empty-box">Unable to load tests. If this persists, ask admin to check Firestore indexes.</div>';
+      container.innerHTML = '<div class="empty-box">Unable to load tests. Error: ' + esc(err.message) + '</div>';
       if(pag) pag.style.display = 'none';
     }
   };
