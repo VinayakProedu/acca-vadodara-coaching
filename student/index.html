@@ -173,6 +173,20 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .rank-2 td{background:linear-gradient(90deg,#f3f4f6,#fff) !important;}
 .rank-3 td{background:linear-gradient(90deg,#ffedd5,#fff) !important;}
 
+/* Podium */
+.podium-wrap{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px;align-items:end;}
+.podium-1st{background:linear-gradient(135deg,#ffd700,#ffed4e);color:#0D1B40;border-radius:20px;padding:28px 16px;text-align:center;box-shadow:0 16px 45px rgba(255,215,0,.35);transform:scale(1.06);animation:fadeInUp .7s ease both;}
+.podium-2nd{background:linear-gradient(135deg,#c0c0c0,#e8e8e8);color:#0D1B40;border-radius:20px;padding:22px 16px;text-align:center;box-shadow:0 12px 35px rgba(192,192,192,.25);animation:fadeInUp .7s ease .15s both;}
+.podium-3rd{background:linear-gradient(135deg,#cd7f32,#e6a55c);color:#fff;border-radius:20px;padding:22px 16px;text-align:center;box-shadow:0 12px 35px rgba(205,127,50,.25);animation:fadeInUp .7s ease .3s both;}
+.podium-crown{font-size:2.2rem;margin-bottom:6px;line-height:1;}
+.podium-name{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:4px;}
+.podium-meta{font-size:.78rem;opacity:.7;margin-bottom:8px;}
+.podium-score{font-size:1.6rem;font-weight:800;}
+
+/* Announcements */
+.announcement-high{border-left:4px solid #ef4444 !important;}
+.announcement-normal{border-left:4px solid #C9922A !important;}
+
 /* Pagination */
 .pagination-bar{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
 .pagination-bar button{border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:700;color:#0D1B40;}
@@ -186,6 +200,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 /* Skeleton */
 .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
 /* Test Overlay (for test-engine.js) */
 #testOverlay{display:none;}
@@ -215,6 +232,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   .syllabus-sidebar{width:100%;border-left:none;border-top:1px solid #e5e7eb;max-height:50vh}
   .player-video{min-height:240px}
   .course-hub-grid{grid-template-columns:1fr 1fr}
+  .podium-wrap{grid-template-columns:1fr !important;}
+  .podium-1st{transform:scale(1);order:1;}
+  .podium-2nd{order:2;}
+  .podium-3rd{order:3;}
 }
 @media(max-width:640px){
   .app-sidebar{width:100%;height:auto;position:absolute;z-index:100;transform:translateX(-100%);transition:transform .3s}
@@ -224,6 +245,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   .course-grid{grid-template-columns:1fr}
 }
 </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -257,7 +279,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 <!-- ==================== STUDENT APP ==================== -->
 <div class="student-app" id="studentAppX">
   <div class="app-shell" id="appShellX">
-    
+
     <!-- Sidebar -->
     <aside class="app-sidebar" id="appSidebarX">
       <button class="portal-collapse-btn" type="button" onclick="toggleSidebar()">☰ Menu</button>
@@ -267,8 +289,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       </div>
       <div class="app-menu">
         <button class="active" data-stu-view="studentHomeX" type="button">🏠 Dashboard</button>
-        <button data-stu-view="studentLeaderboardX" type="button">🏆 Leaderboard</button>
-        <button data-stu-view="studentCalendarX" type="button">📅 Calendar</button>
+        <button data-stu-view="studentAnnouncementsX" type="button">📢 Announcements</button>
         <button id="studentLogoutBtnX" type="button">Logout</button>
       </div>
     </aside>
@@ -327,6 +348,16 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
             <h4>Doubts</h4>
             <p>Ask faculty & view replies</p>
           </div>
+          <div class="hub-option-card" onclick="openCourseSection('leaderboard')">
+            <div class="icon">🏆</div>
+            <h4>Leaderboard</h4>
+            <p>Rankings & achievements</p>
+          </div>
+          <div class="hub-option-card" onclick="openCourseSection('calendar')">
+            <div class="icon">📅</div>
+            <h4>Calendar</h4>
+            <p>Upcoming events & deadlines</p>
+          </div>
         </div>
       </section>
 
@@ -372,8 +403,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         <p class="app-sub" style="margin-bottom:16px;">Practice tests and mock exams for this subject</p>
         <div class="app-card">
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
-            <input id="mockSearchX" class="course-search" style="margin:0;flex:1;min-width:200px;" type="search" placeholder="Search tests by chapter or title..." oninput="debounceLoadMocks()">
-            <select id="mockFilterX" class="course-search" style="margin:0;max-width:180px;padding:10px 14px;" onchange="loadMocksForCourse()">
+            <input id="mockSearchX" class="course-search" style="margin:0;flex:1;min-width:200px;" type="search" placeholder="Search tests by chapter or title...">
+            <select id="mockFilterX" class="course-search" style="margin:0;max-width:180px;padding:10px 14px;">
               <option value="">All Chapters</option>
             </select>
           </div>
@@ -433,54 +464,76 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         </div>
       </section>
 
-      <!-- 7. LEADERBOARD (Global) -->
-      <section class="app-view hidden" id="studentLeaderboardX">
-        <h2 class="app-title" style="margin-bottom:6px;">🏆 Leaderboard</h2>
-        <p class="app-sub" style="margin-bottom:16px;">Top performers across all courses</p>
-        <div class="app-card">
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
-            <select id="leaderboardFilterX" class="course-search" style="margin:0;max-width:220px;padding:10px 14px;" onchange="resetLeaderboard()">
-              <option value="">All Courses</option>
-            </select>
-            <select id="leaderboardPeriodX" class="course-search" style="margin:0;max-width:180px;padding:10px 14px;" onchange="resetLeaderboard()">
-              <option value="all">All Time</option>
-              <option value="month">This Month</option>
-              <option value="week">This Week</option>
-            </select>
+      <!-- 7. COURSE LEADERBOARD (Gamified) -->
+      <section class="app-view hidden" id="studentCourseLeaderboardX">
+        <button class="back-btn" onclick="backToCourseHub()" type="button">← Back to Course</button>
+        <h2 class="app-title" style="margin:10px 0 6px;">🏆 Leaderboard — <span id="lbCourseNameX">Course</span></h2>
+        <p class="app-sub" style="margin-bottom:16px;">Rankings based on mock test performance</p>
+
+        <div id="lbPodiumX" class="podium-wrap" style="margin-bottom:24px;">
+          <div class="skeleton" style="height:180px;border-radius:20px;"></div>
+          <div class="skeleton" style="height:180px;border-radius:20px;"></div>
+          <div class="skeleton" style="height:180px;border-radius:20px;"></div>
+        </div>
+
+        <div class="app-card" id="myRankCardX" style="display:none;background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;border:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-size:.8rem;opacity:.7;text-transform:uppercase;letter-spacing:1px;">Your Ranking</div>
+              <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;margin-top:4px;" id="myRankPosX">#--</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.8rem;opacity:.7;text-transform:uppercase;letter-spacing:1px;">Average Score</div>
+              <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:#E8AA48;margin-top:4px;" id="myRankAvgX">0%</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.8rem;opacity:.7;text-transform:uppercase;letter-spacing:1px;">Tests Taken</div>
+              <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800;color:#E8AA48;margin-top:4px;" id="myRankTestsX">0</div>
+            </div>
           </div>
-          <div style="overflow-x:auto;">
-            <table class="leaderboard-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Student</th>
-                  <th>Course</th>
-                  <th>Tests</th>
-                  <th>Avg Score</th>
-                  <th>Best Score</th>
-                </tr>
-              </thead>
-              <tbody id="leaderboardBodyX">
-                <tr><td colspan="6" style="text-align:center;padding:20px;">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div id="leaderboardEmptyX" class="empty-box hidden" style="margin-top:16px;">No leaderboard data yet.</div>
-          <div class="pagination-bar" id="leaderboardPaginationX" style="display:none;"></div>
+        </div>
+
+        <div class="app-card" style="padding:0;overflow:hidden;">
+          <table class="leaderboard-table" style="border-spacing:0;width:100%;">
+            <thead style="background:#f8fafc;">
+              <tr>
+                <th style="padding:14px 16px;">Rank</th>
+                <th style="padding:14px 16px;">Student</th>
+                <th style="padding:14px 16px;">Tests</th>
+                <th style="padding:14px 16px;">Avg Score</th>
+                <th style="padding:14px 16px;">Best Score</th>
+              </tr>
+            </thead>
+            <tbody id="lbTableBodyX">
+              <tr><td colspan="5" style="text-align:center;padding:24px;">Loading rankings…</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <!-- 8. CALENDAR (All Courses) -->
-      <section class="app-view hidden" id="studentCalendarX">
-        <h2 class="app-title" style="margin-bottom:6px;">📅 Calendar</h2>
-        <p class="app-sub" style="margin-bottom:16px;">All upcoming live classes and events</p>
+      <!-- 8. COURSE CALENDAR -->
+      <section class="app-view hidden" id="studentCourseCalendarX">
+        <button class="back-btn" onclick="backToCourseHub()" type="button">← Back to Course</button>
+        <h2 class="app-title" style="margin:10px 0 6px;">📅 Calendar — <span id="calCourseNameX">Course</span></h2>
+        <p class="app-sub" style="margin-bottom:16px;">Upcoming live classes and events</p>
         <div class="app-card">
-          <div id="studentCalendarListX" class="calendar-list">
+          <div id="courseCalendarListX" class="calendar-list">
             <div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div>
             <div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div>
           </div>
-          <div id="calendarEmptyX" class="empty-box hidden" style="margin-top:16px;">No upcoming live classes.</div>
+          <div id="courseCalendarEmptyX" class="empty-box hidden" style="margin-top:16px;">No upcoming events for this course.</div>
         </div>
+      </section>
+
+      <!-- 9. ANNOUNCEMENTS (Global) -->
+      <section class="app-view hidden" id="studentAnnouncementsX">
+        <h2 class="app-title" style="margin-bottom:6px;">📢 Announcements</h2>
+        <p class="app-sub" style="margin-bottom:16px;">Important updates from Vinayak ProEdu</p>
+        <div id="announcementListX" class="mini-list">
+          <div class="skeleton" style="height:120px;border-radius:14px;margin-bottom:8px;"></div>
+          <div class="skeleton" style="height:120px;border-radius:14px;margin-bottom:8px;"></div>
+        </div>
+        <div id="announcementEmptyX" class="empty-box hidden" style="margin-top:16px;">No announcements yet.</div>
       </section>
 
     </main>
@@ -538,7 +591,7 @@ function getYouTubeId(input) {
   if(/^[A-Za-z0-9_-]{6,}$/.test(raw)) return raw; return '';
 }
 
-/* ===== STATE (Scalable Architecture) ===== */
+/* ===== STATE ===== */
 const state = {
   currentUser: null,
   userData: null,
@@ -547,10 +600,8 @@ const state = {
   activeCourse: null,
   pagination: {
     mocks: { page: 1, pageSize: 20 },
-    doubts: { page: 1, pageSize: 10 },
-    leaderboard: { page: 1, pageSize: 50 }
-  },
-  debounceTimers: {}
+    doubts: { page: 1, pageSize: 10 }
+  }
 };
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -571,13 +622,14 @@ function openStudentView(viewId){
   showView(viewId);
   const titles = {
     studentHomeX: ['Dashboard','Select a course assigned by your admin'],
-    studentCourseHubX: ['Course Hub','Choose what you want to study'],
+    studentCourseHubX: ['Course Hub','Choose what you want to study today'],
     studentLecturesX: ['Lectures','Recorded lessons & syllabus'],
     studentMocksX: ['Mocks & Tests','Practice tests for this course'],
     studentLiveX: ['Live Classes','Join scheduled live sessions'],
     studentDoubtsX: ['Doubts','Ask faculty & view replies'],
-    studentLeaderboardX: ['Leaderboard','Top performers across all courses'],
-    studentCalendarX: ['Calendar','All upcoming live classes']
+    studentCourseLeaderboardX: ['Leaderboard','Rankings based on mock test performance'],
+    studentCourseCalendarX: ['Calendar','Upcoming events for this course'],
+    studentAnnouncementsX: ['Announcements','Important updates from Vinayak ProEdu']
   };
   const t = titles[viewId] || ['Portal',''];
   document.getElementById('pageTitleX').textContent = t[0];
@@ -633,8 +685,7 @@ document.getElementById('studentCloseBtnX').addEventListener('click', closeStude
 document.querySelectorAll('.app-menu button[data-stu-view]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     openStudentView(btn.dataset.stuView);
-    if(btn.dataset.stuView === 'studentLeaderboardX') loadLeaderboard();
-    if(btn.dataset.stuView === 'studentCalendarX') renderCalendar();
+    if(btn.dataset.stuView === 'studentAnnouncementsX') loadAnnouncements();
     if(window.innerWidth<=640) document.getElementById('appSidebarX').classList.remove('open');
   });
 });
@@ -647,15 +698,14 @@ async function loadDashboard(){
   const myBatch = state.userData.batchCode || '';
   const mySubjects = Array.isArray(state.userData.enrolledSubjects) ? state.userData.enrolledSubjects : [];
   const myLectures = Array.isArray(state.userData.assignedLectureIds) ? state.userData.assignedLectureIds : [];
-  
-  // Scalable: limit 500 lectures for course discovery (admin should not assign >500 per student)
+
   const lectSnap = await db.collection('lectures').limit(500).get().catch(()=>null);
   let lectures = lectSnap ? lectSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  
+
   if(myBatch) lectures = lectures.filter(l => { const b = l.batchCodes||[]; return !b.length || b.includes(myBatch); });
   if(myLectures.length) lectures = lectures.filter(l => myLectures.includes(l.id));
   else if(mySubjects.length) lectures = lectures.filter(l => mySubjects.includes(l.subject));
-  
+
   state.lectures = lectures;
   const subjects = [...new Set(lectures.map(l => l.subject || 'General'))].sort();
   state.courses = subjects.map(sub => ({
@@ -719,11 +769,8 @@ window.openCourseSection = function(section){
     renderSyllabus(sub);
   } else if(section==='mocks'){
     document.getElementById('mockCourseNameX').textContent = sub;
-    state.pagination.mocks.page = 1;
-    document.getElementById('mockFilterX').innerHTML = '<option value="">All Chapters</option>';
-    document.getElementById('mockFilterX').dataset.populated = '';
     openStudentView('studentMocksX');
-    loadMocksForCourse();
+    if(window.__loadMocksForCourse) window.__loadMocksForCourse(sub);
   } else if(section==='live'){
     document.getElementById('liveCourseNameX').textContent = sub;
     openStudentView('studentLiveX');
@@ -733,6 +780,14 @@ window.openCourseSection = function(section){
     state.pagination.doubts.page = 1;
     openStudentView('studentDoubtsX');
     loadCourseDoubts();
+  } else if(section==='leaderboard'){
+    document.getElementById('lbCourseNameX').textContent = sub;
+    openStudentView('studentCourseLeaderboardX');
+    loadCourseLeaderboard(sub);
+  } else if(section==='calendar'){
+    document.getElementById('calCourseNameX').textContent = sub;
+    openStudentView('studentCourseCalendarX');
+    loadCourseCalendar(sub);
   }
 };
 
@@ -740,10 +795,10 @@ window.openCourseSection = function(section){
 async function renderSyllabus(subject){
   const container = document.getElementById('studentSyllabusX');
   container.innerHTML = '<div class="skeleton" style="height:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:60px;margin-bottom:8px;"></div>';
-  
+
   const lSnap = await db.collection('lectures').where('subject','==',subject).limit(200).get().catch(()=>null);
   const courseLectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  
+
   if(!courseLectures.length){
     container.innerHTML = '<div class="empty-box">No lectures uploaded for this course yet.</div>';
     return;
@@ -756,7 +811,7 @@ async function renderSyllabus(subject){
   document.getElementById('courseProgressBarX').style.width = pct+'%';
   document.getElementById('courseProgressTextX').textContent = completedLessons+' of '+totalLessons+' Lessons Completed';
   document.getElementById('courseProgressPctX').textContent = pct+'%';
-  
+
   container.innerHTML = Object.keys(bySection).sort().map((sec, secIdx) => {
     const lessons = bySection[sec].sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
     return `<details class="syllabus-section" ${secIdx===0?'open':''}>
@@ -774,7 +829,7 @@ async function renderSyllabus(subject){
       }).join('')}
     </details>`;
   }).join('');
-  
+
   const firstUnlocked = courseLectures.find(l => !l.lectureDate || new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00')) <= new Date());
   if(firstUnlocked) playLesson(firstUnlocked.id);
   else {
@@ -794,17 +849,17 @@ window.playLesson = async function(lectureId){
   const videoContainer = document.getElementById('lectureVideoContainerX');
   const titleEl = document.getElementById('lecturePlayerTitleX');
   const metaEl = document.getElementById('lecturePlayerMetaX');
-  
+
   document.querySelectorAll('.lesson-item').forEach(el=>el.classList.remove('active'));
   const activeEl = document.getElementById('lesson-'+lectureId);
   if(activeEl) activeEl.classList.add('active');
-  
+
   titleEl.textContent = lecture.title || 'Untitled Lesson';
   metaEl.textContent = (lecture.subject||'')+' · '+(lecture.section||'General')+' · '+(lecture.lectureDate||'');
-  
+
   const releaseDate = lecture.lectureDate ? new Date(lecture.lectureDate + 'T' + (lecture.lectureTime||'00:00')) : null;
   const isLocked = releaseDate && releaseDate > new Date();
-  
+
   if(isLocked){
     const diff = releaseDate - new Date();
     const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
@@ -833,91 +888,13 @@ window.playLesson = async function(lectureId){
   }
 };
 
-/* ===== MOCKS (Paginated, Scalable) ===== */
-let mockDebounceTimer;
-window.debounceLoadMocks = function(){
-  clearTimeout(mockDebounceTimer);
-  mockDebounceTimer = setTimeout(loadMocksForCourse, 300);
-};
-
-async function loadMocksForCourse(){
-  if(!state.activeCourse) return;
-  const subject = state.activeCourse.subject;
-  const container = document.getElementById('mockListX');
-  const empty = document.getElementById('mockEmptyX');
-  const pag = document.getElementById('mockPaginationX');
-  const search = (document.getElementById('mockSearchX')?.value||'').toLowerCase().trim();
-  
-  container.innerHTML = '<div class="skeleton" style="height:80px;"></div><div class="skeleton" style="height:80px;"></div>';
-  empty.classList.add('hidden');
-  
-  try {
-    // Scalable: paginated query by subject. For 10k students, ensure Firestore index on (subject, createdAt)
-    let q = db.collection('tests').where('subject','==',subject).limit(state.pagination.mocks.pageSize);
-    const snap = await q.get();
-    let tests = snap.docs.map(d=>({id:d.id,...d.data()}));
-    
-    // Client-side search (acceptable because tests per subject are usually <500)
-    if(search) tests = tests.filter(t => [t.title,t.chapter,t.code].filter(Boolean).join(' ').toLowerCase().includes(search));
-    
-    const sel = document.getElementById('mockFilterX');
-    if(sel && !sel.dataset.populated){
-      const chapters = [...new Set(tests.map(t=>t.chapter).filter(Boolean))].sort();
-      sel.innerHTML = '<option value="">All Chapters</option>' + chapters.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
-      sel.dataset.populated = '1';
-    }
-    const chapterFilter = sel?.value;
-    if(chapterFilter) tests = tests.filter(t=>t.chapter===chapterFilter);
-    
-    if(!tests.length){ container.innerHTML=''; empty.classList.remove('hidden'); pag.style.display='none'; return; }
-    
-    // Batch-get question counts (single query per subject, not per test)
-    const qSnap = await db.collection('questions').where('subject','==',subject).limit(500).get().catch(()=>null);
-    const questions = qSnap ? qSnap.docs.map(d=>d.data()) : [];
-    
-    container.innerHTML = tests.map(t => {
-      const qCount = questions.filter(q => String(q.testId||q.testID||q.test_id||'').trim()===String(t.id).trim()).length;
-      const displayCode = t.code || `${String(t.subject||'TEST').replace(/[^A-Za-z0-9]/g,'').slice(0,5).toUpperCase()}-${String(t.id).slice(0,6).toUpperCase()}`;
-      return `<div class="mock-card">
-        <div>
-          <strong style="font-size:1.05rem;color:#0D1B40;">${esc(t.title||'Test')}</strong><br>
-          <span style="font-size:.85rem;color:#6b7280;">${esc(displayCode)} · ${esc(t.chapter||'General')} · ${qCount} questions</span>
-        </div>
-        <button class="primary-btn" type="button" onclick="startMockTest('${t.id}')">Start Test</button>
-      </div>`;
-    }).join('');
-    
-    pag.style.display = 'flex';
-    pag.innerHTML = `
-      <button ${state.pagination.mocks.page<=1?'disabled':''} onclick="changeMockPage(-1)">← Prev</button>
-      <button class="active">Page ${state.pagination.mocks.page}</button>
-      <button onclick="changeMockPage(1)">Next →</button>
-    `;
-  } catch(err) {
-    console.error(err);
-    container.innerHTML = '<div class="empty-box">Failed to load tests.</div>';
-  }
-}
-
-window.changeMockPage = function(dir){
-  state.pagination.mocks.page += dir;
-  if(state.pagination.mocks.page < 1) state.pagination.mocks.page = 1;
-  loadMocksForCourse();
-};
-
-window.startMockTest = function(testId){
-  if(window.__startTest) window.__startTest(testId);
-  else alert('Test engine not loaded. Please refresh.');
-};
-
 /* ===== LIVE CLASSES ===== */
 async function loadLiveClasses(subject){
   const container = document.getElementById('liveListX');
   const empty = document.getElementById('liveEmptyX');
   container.innerHTML = '<div class="skeleton" style="height:120px;border-radius:16px;"></div>';
-  
+
   const now = new Date();
-  // Scalable: query by subject, order by date, limit 50. No inequality on meetingLink to avoid index issues.
   const snap = await db.collection('lectures').where('subject','==',subject).orderBy('lectureDate','asc').limit(50).get().catch(()=>null);
   const lives = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => l.meetingLink) : [];
   const relevant = lives.filter(l => {
@@ -926,10 +903,10 @@ async function loadLiveClasses(subject){
     const twoHoursAgo = new Date(now.getTime() - 2*3600*1000);
     return d >= twoHoursAgo;
   }).sort((a,b)=> new Date(a.lectureDate+'T'+(a.lectureTime||'00:00')) - new Date(b.lectureDate+'T'+(b.lectureTime||'00:00')));
-  
+
   if(!relevant.length){ container.innerHTML=''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  
+
   container.innerHTML = relevant.map(l => {
     const d = new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00'));
     const isLive = Math.abs(now - d) < 3600*1000;
@@ -942,30 +919,175 @@ async function loadLiveClasses(subject){
   }).join('');
 }
 
+/* ===== COURSE LEADERBOARD (Gamified) ===== */
+async function loadCourseLeaderboard(subject){
+  const podium = document.getElementById('lbPodiumX');
+  const tbody = document.getElementById('lbTableBodyX');
+  const myCard = document.getElementById('myRankCardX');
+  const user = auth.currentUser;
+
+  podium.innerHTML = '<div class="skeleton" style="height:180px;border-radius:20px;"></div><div class="skeleton" style="height:180px;border-radius:20px;"></div><div class="skeleton" style="height:180px;border-radius:20px;"></div>';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;">Loading rankings…</td></tr>';
+  myCard.style.display = 'none';
+
+  try {
+    const snap = await db.collection('attempts').where('subject','==',subject).limit(300).get();
+    const attempts = snap.docs.map(d => d.data());
+
+    const stats = {};
+    attempts.forEach(a => {
+      const uid = a.userId || 'unknown';
+      if(!stats[uid]) stats[uid] = { name: a.userName || 'Student', scores: [], best: 0, count: 0 };
+      stats[uid].scores.push(Number(a.percentage || 0));
+      stats[uid].best = Math.max(stats[uid].best, Number(a.percentage || 0));
+      stats[uid].count++;
+    });
+
+    let rows = Object.entries(stats).map(([uid, s]) => ({
+      uid, name: s.name, count: s.count,
+      avg: Math.round(s.scores.reduce((a,b)=>a+b,0)/s.scores.length),
+      best: s.best
+    })).sort((a,b) => b.avg - a.avg || b.best - a.best);
+
+    if(!rows.length){
+      podium.innerHTML = '<div class="empty-box" style="grid-column:1/-1;text-align:center;padding:40px;">No test data yet. Be the first to take a mock!</div>';
+      tbody.innerHTML = '';
+      return;
+    }
+
+    // Render podium
+    const top3 = rows.slice(0,3);
+    const podiumOrder = [
+      { rank: 2, data: top3[1], cls: 'podium-2nd', icon: '🥈', label: '2nd' },
+      { rank: 1, data: top3[0], cls: 'podium-1st', icon: '👑', label: '1st' },
+      { rank: 3, data: top3[2], cls: 'podium-3rd', icon: '🥉', label: '3rd' }
+    ];
+    podium.innerHTML = podiumOrder.map(p => {
+      if(!p.data) return '<div></div>';
+      return `<div class="${p.cls}">
+        <div class="podium-crown">${p.icon}</div>
+        <div class="podium-name">${esc(p.data.name)}</div>
+        <div class="podium-meta">${p.data.count} tests · ${p.label}</div>
+        <div class="podium-score">${p.data.avg}%</div>
+      </div>`;
+    }).join('');
+
+    // Render table
+    tbody.innerHTML = rows.map((r, i) => {
+      const isMe = user && r.uid === user.uid;
+      const medal = i===0 ? '🥇' : i===1 ? '🥈' : i===2 ? '🥉' : '';
+      return `<tr style="${isMe?'background:#eef4ff;':''}">
+        <td style="padding:14px 16px;font-weight:800;color:${i<3?'#C9922A':'#6b7280'};">${medal} #${i+1}</td>
+        <td style="padding:14px 16px;"><strong>${esc(r.name)}</strong> ${isMe?'<span style="background:#C9922A;color:#fff;padding:2px 8px;border-radius:999px;font-size:.7rem;margin-left:6px;">YOU</span>':''}</td>
+        <td style="padding:14px 16px;">${r.count}</td>
+        <td style="padding:14px 16px;font-weight:700;color:#1e3c72;">${r.avg}%</td>
+        <td style="padding:14px 16px;color:#6b7280;">${r.best}%</td>
+      </tr>`;
+    }).join('');
+
+    // My rank card
+    const myIdx = rows.findIndex(r => user && r.uid === user.uid);
+    if(myIdx >= 0){
+      myCard.style.display = 'block';
+      document.getElementById('myRankPosX').textContent = '#' + (myIdx + 1);
+      document.getElementById('myRankAvgX').textContent = rows[myIdx].avg + '%';
+      document.getElementById('myRankTestsX').textContent = rows[myIdx].count;
+    }
+  } catch(err){
+    console.error(err);
+    podium.innerHTML = '<div class="empty-box" style="grid-column:1/-1;">Failed to load leaderboard.</div>';
+    tbody.innerHTML = '';
+  }
+}
+
+/* ===== COURSE CALENDAR ===== */
+async function loadCourseCalendar(subject){
+  const list = document.getElementById('courseCalendarListX');
+  const empty = document.getElementById('courseCalendarEmptyX');
+  list.innerHTML = '<div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div><div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div>';
+
+  const now = new Date();
+  const snap = await db.collection('lectures')
+    .where('subject','==',subject)
+    .where('meetingLink','!=','')
+    .orderBy('meetingLink')
+    .orderBy('lectureDate','asc')
+    .limit(50).get().catch(()=>null);
+
+  const events = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => {
+    if(!l.lectureDate) return false;
+    const d = new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00'));
+    return d >= new Date(now.getTime() - 2*3600*1000);
+  }) : [];
+
+  if(!events.length){ list.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+
+  list.innerHTML = events.map(l => `
+    <div class="calendar-item">
+      <div class="calendar-date">${esc(l.lectureDate||'TBD')} · ${esc(l.lectureTime||'')}</div>
+      <div class="calendar-title">${esc(l.title||'Event')}</div>
+      <div style="font-size:.8rem;color:#6b7280;margin:4px 0">${esc(l.section||'')}</div>
+      <a href="${esc(l.meetingLink)}" target="_blank" class="primary-btn" style="margin-top:6px;display:inline-block">Join Live Class</a>
+    </div>
+  `).join('');
+}
+
+/* ===== ANNOUNCEMENTS (Global) ===== */
+async function loadAnnouncements(){
+  const list = document.getElementById('announcementListX');
+  const empty = document.getElementById('announcementEmptyX');
+  if(!list) return;
+  list.innerHTML = '<div class="skeleton" style="height:120px;border-radius:14px;margin-bottom:8px;"></div><div class="skeleton" style="height:120px;border-radius:14px;margin-bottom:8px;"></div>';
+
+  try {
+    const snap = await db.collection('announcements').orderBy('createdAt','desc').limit(20).get();
+    const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    if(!items.length){ list.innerHTML=''; empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+
+    list.innerHTML = items.map(a => {
+      const isHigh = a.priority === 'high';
+      return `<div class="mini-item ${isHigh?'announcement-high':'announcement-normal'}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <strong style="font-size:1.05rem;color:#0D1B40;">${esc(a.title||'Announcement')}</strong>
+          ${isHigh?'<span style="background:#fee2e2;color:#991b1b;padding:3px 10px;border-radius:999px;font-size:.7rem;font-weight:800;">IMPORTANT</span>':''}
+        </div>
+        <p style="color:#374151;line-height:1.6;margin-bottom:8px;">${esc(a.message||'')}</p>
+        <div style="font-size:.78rem;color:#9ca3af;">${fmtDate(a.createdAt)} · by ${esc(a.createdBy||'Admin')}</div>
+      </div>`;
+    }).join('');
+  } catch(err){
+    console.error(err);
+    list.innerHTML = '<div class="empty-box">Unable to load announcements.</div>';
+  }
+}
+
+/* ===== DOUBTS ===== */
 async function loadCourseDoubts(){
   if(!state.activeCourse) return;
   const user = auth.currentUser; if(!user) return;
   const box = document.getElementById('studentDoubtListX');
   const pag = document.getElementById('doubtPaginationX');
   box.innerHTML = '<div class="skeleton" style="height:100px;border-radius:14px;margin-bottom:8px;"></div><div class="skeleton" style="height:100px;border-radius:14px;margin-bottom:8px;"></div>';
-  
+
   try {
-    // Scalable: paginated query. Requires Firestore composite index: (userId, courseSubject, createdAt desc)
     let q = db.collection('studentDoubts')
       .where('userId','==',user.uid)
       .where('courseSubject','==',state.activeCourse.subject)
       .orderBy('createdAt','desc')
       .limit(state.pagination.doubts.pageSize);
-    
+
     const snap = await q.get();
     const doubts = snap.docs.map(d=>({id:d.id,...d.data()}));
-    
+
     if(!doubts.length){ 
       box.innerHTML = '<div class="empty-box">No doubts asked for this course yet.</div>'; 
       pag.style.display='none'; 
       return; 
     }
-    
+
     box.innerHTML = doubts.map(d => {
       const replies = Array.isArray(d.replies) ? d.replies : [];
       const isClosed = d.status === 'closed';
@@ -984,7 +1106,7 @@ async function loadCourseDoubts(){
         </div>` : '<div style="margin-top:8px;font-size:.85rem;color:#9ca3af">Awaiting faculty reply…</div>'}
       </div>`;
     }).join('');
-    
+
     pag.style.display = 'flex';
     pag.innerHTML = `
       <button ${state.pagination.doubts.page<=1?'disabled':''} onclick="changeDoubtPage(-1)">← Prev</button>
@@ -1046,149 +1168,10 @@ window.submitCourseDoubt = async function(){
   }catch(err){ if(statusEl) statusEl.textContent = err.message || 'Could not send doubt.'; }
 };
 
-/* ===== CALENDAR (Global - All Courses) ===== */
-async function renderCalendar(){
-  const list = document.getElementById('studentCalendarListX');
-  const empty = document.getElementById('calendarEmptyX');
-  if(!list) return;
-  list.innerHTML = '<div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div><div class="skeleton" style="height:100px;border-radius:12px;margin-bottom:8px;"></div>';
-  
-  const mySubjects = state.courses.map(c => c.subject);
-  if(!mySubjects.length){ list.innerHTML=''; empty.classList.remove('hidden'); return; }
-  
-  // Scalable: Firestore 'in' supports max 10 values. ACCA usually has <10 subjects per student.
-  // If a student has >10 subjects, batch the queries.
-  let lectures = [];
-  if(mySubjects.length <= 10){
-    const snap = await db.collection('lectures')
-      .where('subject','in',mySubjects)
-      .where('meetingLink','!=','')
-      .orderBy('meetingLink')
-      .orderBy('lectureDate','asc')
-      .limit(100).get().catch(()=>null);
-    lectures = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  } else {
-    for(let i=0;i<mySubjects.length;i+=10){
-      const batch = mySubjects.slice(i,i+10);
-      const snap = await db.collection('lectures')
-        .where('subject','in',batch)
-        .where('meetingLink','!=','')
-        .orderBy('meetingLink')
-        .orderBy('lectureDate','asc')
-        .limit(50).get().catch(()=>null);
-      if(snap) lectures.push(...snap.docs.map(d=>({id:d.id,...d.data()})));
-    }
-    lectures = lectures.sort((a,b)=> String(a.lectureDate||'').localeCompare(String(b.lectureDate||''))).slice(0,100);
-  }
-  
-  const now = new Date();
-  const live = lectures.filter(l => {
-    if(!l.meetingLink || !l.lectureDate) return false;
-    const d = new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00'));
-    const twoHoursAgo = new Date(now.getTime() - 2*3600*1000);
-    return d >= twoHoursAgo;
-  });
-  
-  if(!live.length){ list.innerHTML=''; empty.classList.remove('hidden'); return; }
-  empty.classList.add('hidden');
-  
-  list.innerHTML = live.map(l => `
-    <div class="calendar-item">
-      <div class="calendar-date">${esc(l.lectureDate||'TBD')} · ${esc(l.subject||'')}</div>
-      <div class="calendar-title">${esc(l.title||'Lecture')}</div>
-      <div style="font-size:.8rem;color:#6b7280;margin:4px 0">🕒 ${esc(l.lectureTime||'')} · ${esc(l.section||'')}</div>
-      <a href="${esc(l.meetingLink)}" target="_blank" class="primary-btn" style="margin-top:6px;display:inline-block">Join Live Class</a>
-    </div>
-  `).join('');
-}
-
-/* ===== LEADERBOARD (Global, Paginated, Scalable) ===== */
-// For 10,000+ students: use a pre-aggregated 'leaderboard' collection (updated by Admin/Cloud Function).
-// This avoids expensive client-side aggregation across all attempts.
-async function loadLeaderboard(){
-  const container = document.getElementById('leaderboardBodyX');
-  const empty = document.getElementById('leaderboardEmptyX');
-  const pag = document.getElementById('leaderboardPaginationX');
-  const filter = document.getElementById('leaderboardFilterX')?.value || '';
-  const period = document.getElementById('leaderboardPeriodX')?.value || 'all';
-  
-  container.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;">Loading…</td></tr>';
-  empty.classList.add('hidden');
-  
-  try {
-    // Populate course filter once
-    const sel = document.getElementById('leaderboardFilterX');
-    if(sel && !sel.dataset.populated && state.courses.length){
-      sel.innerHTML = '<option value="">All Courses</option>' + state.courses.map(c=>`<option value="${esc(c.subject)}">${esc(c.subject)}</option>`).join('');
-      sel.dataset.populated = '1';
-    }
-    
-    // Primary: query pre-aggregated leaderboard (scalable for 10k+)
-    let q;
-    if(filter){
-      q = db.collection('leaderboard').where('courseSubject','==',filter).orderBy('avgPercentage','desc').limit(state.pagination.leaderboard.pageSize);
-    } else {
-      q = db.collection('leaderboard').orderBy('avgPercentage','desc').limit(state.pagination.leaderboard.pageSize);
-    }
-    const snap = await q.get().catch(()=>null);
-    let rows = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-    
-    // Fallback: if no pre-aggregated data exists, aggregate from attempts (limited to recent top 50 for performance)
-    if(!rows.length && !filter){
-      const aSnap = await db.collection('attempts').orderBy('percentage','desc').limit(50).get().catch(()=>null);
-      const attempts = aSnap ? aSnap.docs.map(d=>d.data()) : [];
-      const grouped = {};
-      attempts.forEach(a=>{
-        const key = (a.userId||'')+'_'+ (a.subject||'');
-        if(!grouped[key]) grouped[key] = {name:a.userName||'Student', subject:a.subject||'General', scores:[], best:0, totalTests:0};
-        grouped[key].scores.push(Number(a.percentage||0));
-        grouped[key].best = Math.max(grouped[key].best, Number(a.percentage||0));
-        grouped[key].totalTests++;
-      });
-      rows = Object.values(grouped).map(g=>({
-        studentName: g.name,
-        courseSubject: g.subject,
-        totalTests: g.totalTests,
-        avgPercentage: Math.round(g.scores.reduce((a,b)=>a+b,0)/g.scores.length),
-        bestPercentage: g.best
-      })).sort((a,b)=>b.avgPercentage - a.avgPercentage).slice(0, state.pagination.leaderboard.pageSize);
-    }
-    
-    if(!rows.length){ container.innerHTML=''; empty.classList.remove('hidden'); pag.style.display='none'; return; }
-    
-    container.innerHTML = rows.map((r,i) => {
-      const rank = (state.pagination.leaderboard.page - 1) * state.pagination.leaderboard.pageSize + i + 1;
-      return `<tr class="rank-${rank<=3?rank:''}">
-        <td style="font-weight:800;color:#C9922A;">#${rank}</td>
-        <td><strong>${esc(r.studentName || 'Student')}</strong></td>
-        <td>${esc(r.courseSubject || 'General')}</td>
-        <td>${r.totalTests || 0}</td>
-        <td><strong>${r.avgPercentage || 0}%</strong></td>
-        <td>${r.bestPercentage || 0}%</td>
-      </tr>`;
-    }).join('');
-    
-    pag.style.display = 'flex';
-    pag.innerHTML = `
-      <button ${state.pagination.leaderboard.page<=1?'disabled':''} onclick="changeLeaderboardPage(-1)">← Prev</button>
-      <button class="active">Page ${state.pagination.leaderboard.page}</button>
-      <button onclick="changeLeaderboardPage(1)">Next →</button>
-    `;
-  } catch(err) {
-    console.error(err);
-    container.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;">Failed to load leaderboard.</td></tr>';
-  }
-}
-
-window.resetLeaderboard = function(){
-  state.pagination.leaderboard.page = 1;
-  loadLeaderboard();
-};
-
-window.changeLeaderboardPage = function(dir){
-  state.pagination.leaderboard.page += dir;
-  if(state.pagination.leaderboard.page < 1) state.pagination.leaderboard.page = 1;
-  loadLeaderboard();
+/* ===== TEST ENGINE WRAPPER ===== */
+window.startMockTest = function(testId){
+  if(window.__startTest) window.__startTest(testId);
+  else alert('Test engine not loaded. Please refresh.');
 };
 
 /* ===== AUTH STATE ===== */
@@ -1205,8 +1188,12 @@ auth.onAuthStateChanged(async user => {
   openStudentApp();
   openStudentView('studentHomeX');
   await loadDashboard();
-  await renderCalendar();
 });
 </script>
+
+<!-- Test Engine Modules -->
+<script src="./tests.js"></script>
+<script src="./test-engine.js"></script>
+
 </body>
 </html>
