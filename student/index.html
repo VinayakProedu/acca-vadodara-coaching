@@ -797,7 +797,8 @@ async function renderSyllabus(subject){
   container.innerHTML = '<div class="skeleton" style="height:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:60px;margin-bottom:8px;"></div>';
 
   const lSnap = await db.collection('lectures').where('subject','==',subject).limit(200).get().catch(()=>null);
-  const courseLectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+  let courseLectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+  courseLectures.sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
 
   if(!courseLectures.length){
     container.innerHTML = '<div class="empty-box">No lectures uploaded for this course yet.</div>';
@@ -895,8 +896,9 @@ async function loadLiveClasses(subject){
   container.innerHTML = '<div class="skeleton" style="height:120px;border-radius:16px;"></div>';
 
   const now = new Date();
-  const snap = await db.collection('lectures').where('subject','==',subject).orderBy('lectureDate','asc').limit(50).get().catch(()=>null);
-  const lives = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => l.meetingLink) : [];
+  const snap = await db.collection('lectures').where('subject','==',subject).limit(200).get().catch(()=>null);
+  let lives = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => l.meetingLink) : [];
+  lives.sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
   const relevant = lives.filter(l => {
     if(!l.lectureDate) return false;
     const d = new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00'));
@@ -1009,16 +1011,14 @@ async function loadCourseCalendar(subject){
   const now = new Date();
   const snap = await db.collection('lectures')
     .where('subject','==',subject)
-    .where('meetingLink','!=','')
-    .orderBy('meetingLink')
-    .orderBy('lectureDate','asc')
-    .limit(50).get().catch(()=>null);
+    .limit(200).get().catch(()=>null);
 
-  const events = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => {
-    if(!l.lectureDate) return false;
+  let events = snap ? snap.docs.map(d=>({id:d.id,...d.data()})).filter(l => {
+    if(!l.meetingLink || !l.lectureDate) return false;
     const d = new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00'));
     return d >= new Date(now.getTime() - 2*3600*1000);
   }) : [];
+  events.sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
 
   if(!events.length){ list.innerHTML=''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
@@ -1073,14 +1073,13 @@ async function loadCourseDoubts(){
   box.innerHTML = '<div class="skeleton" style="height:100px;border-radius:14px;margin-bottom:8px;"></div><div class="skeleton" style="height:100px;border-radius:14px;margin-bottom:8px;"></div>';
 
   try {
-    let q = db.collection('studentDoubts')
+    const snap = await db.collection('studentDoubts')
       .where('userId','==',user.uid)
       .where('courseSubject','==',state.activeCourse.subject)
-      .orderBy('createdAt','desc')
-      .limit(state.pagination.doubts.pageSize);
-
-    const snap = await q.get();
-    const doubts = snap.docs.map(d=>({id:d.id,...d.data()}));
+      .limit(state.pagination.doubts.pageSize)
+      .get();
+    let doubts = snap.docs.map(d=>({id:d.id,...d.data()}));
+    doubts.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
     if(!doubts.length){ 
       box.innerHTML = '<div class="empty-box">No doubts asked for this course yet.</div>'; 
