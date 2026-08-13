@@ -35,7 +35,7 @@
     if(!user){ container.innerHTML='<div class="empty-box">Please log in to view tests.</div>'; return; }
 
     try {
-      // 1) Tests scoped to subject only — O(1) query even with 10k students
+      // 1) Tests scoped to subject
       let tSnap;
       try {
         tSnap = await db().collection('tests')
@@ -44,7 +44,6 @@
           .limit(PAGE_SIZE)
           .get();
       } catch(e) {
-        // Fallback if 'createdAt' is missing on some docs or index not ready
         tSnap = await db().collection('tests')
           .where('subject','==',subject)
           .limit(PAGE_SIZE)
@@ -52,8 +51,7 @@
       }
       testsData = tSnap.docs.map(d => ({id: d.id, ...d.data()}));
 
-      // 2) Attempts scoped to user + subject — requires composite index:
-      //    attempts -> (userId, subject, createdAt desc)
+      // 2) Attempts scoped to user + subject
       const aSnap = await db().collection('attempts')
         .where('userId','==',user.uid)
         .where('subject','==',subject)
@@ -62,7 +60,7 @@
         .get();
       attemptsData = aSnap.docs.map(d => ({id: d.id, ...d.data()}));
 
-      // 3) Questions scoped to subject — batched, not global
+      // 3) Questions scoped to subject
       const qSnap = await db().collection('questions')
         .where('subject','==',subject)
         .limit(500)
@@ -97,7 +95,7 @@
   };
 
   /* ================================================================
-     RENDERING — grouped by Chapter (since Subject is already chosen)
+     RENDERING — grouped by Chapter
      ================================================================ */
   function renderMocksList(){
     const container = $('mockListX');
@@ -144,7 +142,7 @@
     if(container){
       container.innerHTML = chapters.map((chapter, cIdx) => {
         const chapId = 'mock-chap-' + slugify(currentSubject) + '-' + slugify(chapter);
-        const isOpen = cIdx === 0; // first chapter open by default
+        const isOpen = cIdx === 0;
         return `
           <div style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;">
             <div class="chapter-head" style="padding:14px 16px;background:#f8fafc;cursor:pointer;font-weight:700;color:#0D1B40;display:flex;justify-content:space-between;align-items:center;" onclick="window.__toggleMockChapter('${chapId}')">
@@ -200,7 +198,7 @@
     body.style.display = isOpen ? 'none' : 'block';
     const arrow = document.getElementById('arrow-'+id);
     if(arrow){
-      const text = arrow.textContent.slice(2); // remove arrow
+      const text = arrow.textContent.slice(2);
       arrow.textContent = (isOpen ? '▶ ' : '▼ ') + text;
     }
   };
