@@ -209,7 +209,7 @@
       <textarea class="manual-textarea" placeholder="Write your answer here">${esc(S.manual)}</textarea>`;
     }
     else {
-      html += `${q.templateUrl ? `<a href="${q.templateUrl}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:12px;color:#1e3c72;font-weight:700;">📎 Open Template</a>` : ''}
+      html += `${q.templateUrl ? `<a href="${q.templateUrl}" target="blank" rel="noopener" style="display:inline-block;margin-bottom:12px;color:#1e3c72;font-weight:700;">📎 Open Template</a>` : ''}
       <textarea class="manual-textarea" placeholder="Write your answer here">${esc(S.manual)}</textarea>`;
     }
 
@@ -223,7 +223,7 @@
   }
 
   /* ===================== STATE HANDLERS ===================== */
-  window.__pickSingle = function(i){ if(S.submitted) return; S.choice = i; renderQuestion(); };
+  window.__pickSingle = function(i){ if(S.submitted || S.finished) return; S.choice = i; renderQuestion(); };
   window.__syncMulti = function(){ S.multi = Array.from(document.querySelectorAll('.multi-check')).filter(x => x.checked).map(x => Number(x.value)); };
   window.__setDropdown = function(v){ S.dropdown = v; };
   window.__stateFill = function(v){ S.fill = v; };
@@ -231,7 +231,9 @@
 
   function initDrag(){
     document.querySelectorAll('.drag-item').forEach(item => {
-      item.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item.dataset.drag || ''));
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.dataset.drag || '');
+      });
     });
     document.querySelectorAll('.drop-slot').forEach(slot => {
       slot.addEventListener('dragover', e => e.preventDefault());
@@ -266,7 +268,7 @@
     if(type === 'mcq'){
       if(S.choice == null){ alert('Choose an option first.'); return; }
       isCorrect = compareSingle(q, S.choice);
-      if(isCorrect) S.score++;
+      if(isCorrect) S.score += (q.marks || 1);
       userText = q.options?.[S.choice] ?? '';
       feedback = isCorrect
         ? `✅ Correct${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -276,7 +278,7 @@
       if(S.dropdown === ''){ alert('Choose an option first.'); return; }
       const idx = Number(S.dropdown);
       isCorrect = compareSingle(q, idx);
-      if(isCorrect) S.score++;
+      if(isCorrect) S.score += (q.marks || 1);
       userText = q.options?.[idx] ?? '';
       feedback = isCorrect
         ? `✅ Correct${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -286,7 +288,7 @@
       const sel = [...S.multi].sort((a,b) => a-b);
       const cor = normMulti(q.correct);
       isCorrect = sel.length === cor.length && sel.every((v,i) => v === cor[i]);
-      if(isCorrect) S.score++;
+      if(isCorrect) S.score += (q.marks || 1);
       userText = sel.map(i => q.options?.[i]).filter(Boolean).join(', ');
       feedback = isCorrect
         ? `✅ Correct${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -296,7 +298,7 @@
       const ans = S.fill.trim(), exp = String(q.answer || '').trim();
       if(!ans){ alert('Type your answer first.'); return; }
       isCorrect = ans.toLowerCase() === exp.toLowerCase();
-      if(isCorrect) S.score++;
+      if(isCorrect) S.score += (q.marks || 1);
       userText = ans;
       feedback = isCorrect
         ? `✅ Correct${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -308,7 +310,7 @@
       pairs.forEach(p => {
         if(String(S.dragMap[String(p.drop)] || '') !== String(p.drag)) isCorrect = false;
       });
-      if(isCorrect) S.score++;
+      if(isCorrect) S.score += (q.marks || 1);
       userText = JSON.stringify(S.dragMap);
       feedback = isCorrect
         ? `✅ Correct${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -329,7 +331,7 @@
         same = typed.toLowerCase() === exp.toLowerCase();
       }
       isCorrect = same;
-      if(same) S.score++;
+      if(same) S.score += (q.marks || 1);
       userText = typed || `${S.hotspotClick?.x}, ${S.hotspotClick?.y}`;
       feedback = same
         ? `✅ Submitted${q.explanation ? '<br><br><strong>Explanation:</strong> ' + esc(q.explanation) : ''}`
@@ -344,7 +346,7 @@
     }
 
     S.submitted = true;
-    S.responses.push({index: S.index, isCorrect, explanation: q.explanation || ''});
+    S.responses.push({index: S.index, isCorrect, userText, explanation: q.explanation || ''});
     toggleInteract(false);
     setFeedback(feedback, isCorrect === true ? 'correct' : isCorrect === false ? 'wrong' : 'info');
     setActionState();
@@ -380,7 +382,8 @@
   async function saveAttempt(){
     const user = currentUser();
     if(!user) throw new Error('Not logged in');
-    const total = S.questions.length, score = S.score;
+    const total = S.questions.length;
+    const score = S.score;
     await db().collection('attempts').add({
       userId: user.uid,
       userEmail: user.email || '',
@@ -408,12 +411,33 @@
 
     const total = S.questions.length, score = S.score, pct = total ? Math.round((score / total) * 100) : 0;
 
+    // Determine rank message
+    let rankMsg = '';
+    if(pct >= 90) rankMsg = '🏆 Outstanding! You are a top performer!';
+    else if(pct >= 70) rankMsg = '🌟 Great job! Keep pushing higher!';
+    else if(pct >= 50) rankMsg = '👍 Good effort! Practice more to improve.';
+    else rankMsg = '💪 Keep practicing! You will get better.';
+
     if(els.area) els.area.innerHTML = `
-      <div class="question-card">
-        <h2 style="font-family:'Playfair Display',serif;color:#0D1B40;font-size:1.8rem;margin-bottom:8px;">🎉 Test Completed</h2>
-        <p style="font-size:1.1rem;margin-bottom:4px;"><strong>Score:</strong> ${score}/${total} (${pct}%)</p>
-        <p style="color:#6b7280;margin-bottom:20px;">Time taken: ${Math.floor(S.timeTaken/60)}m ${S.timeTaken%60}s</p>
-        <div style="display:grid;gap:12px;margin-top:14px;">
+      <div class="question-card" style="text-align:center;padding:40px 20px;">
+        <div style="font-size:4rem;margin-bottom:16px;">${pct >= 70 ? '🎉' : pct >= 50 ? '👏' : '💪'}</div>
+        <h2 style="font-family:'Playfair Display',serif;color:#0D1B40;font-size:2rem;margin-bottom:8px;">Test Completed</h2>
+        <p style="font-size:1.1rem;color:#6b7280;margin-bottom:4px;">${esc(rankMsg)}</p>
+        <div style="display:flex;justify-content:center;gap:24px;margin:24px 0;flex-wrap:wrap;">
+          <div style="background:linear-gradient(135deg,#0D1B40,#1e3c72);color:#fff;padding:20px 28px;border-radius:16px;min-width:120px;">
+            <div style="font-size:2.2rem;font-weight:800;font-family:'Playfair Display',serif;">${score}/${total}</div>
+            <div style="font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:1px;">Score</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#C9922A,#E8AA48);color:#0D1B40;padding:20px 28px;border-radius:16px;min-width:120px;">
+            <div style="font-size:2.2rem;font-weight:800;font-family:'Playfair Display',serif;">${pct}%</div>
+            <div style="font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:1px;">Percentage</div>
+          </div>
+          <div style="background:#f8fafc;border:2px solid #e5e7eb;padding:20px 28px;border-radius:16px;min-width:120px;">
+            <div style="font-size:2.2rem;font-weight:800;font-family:'Playfair Display',serif;color:#0D1B40;">${Math.floor(S.timeTaken/60)}m ${S.timeTaken%60}s</div>
+            <div style="font-size:.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Time Taken</div>
+          </div>
+        </div>
+        <div style="display:grid;gap:12px;margin-top:14px;text-align:left;max-width:700px;margin-left:auto;margin-right:auto;">
           ${S.responses.map(r => `
             <div class="mini-item" style="padding:18px;border:1.5px solid ${r.isCorrect===true?'#10b981':r.isCorrect===false?'#ef4444':'#e5e7eb'};border-radius:12px;">
               <strong style="font-size:1.1rem;">Q${r.index+1}</strong>
@@ -468,7 +492,7 @@
       ]);
 
       const questions = qSnap.docs.map(d => ({id: d.id, ...d.data()}))
-        .sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+        .sort((a, b) => (a.order ?? a.createdAt?.seconds ?? 0) - (b.order ?? b.createdAt?.seconds ?? 0));
 
       if(!testDoc.exists && !questions.length){ alert('Test not found'); return; }
       if(!questions.length){ alert('No questions found for this test'); return; }
