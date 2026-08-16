@@ -67,15 +67,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .danger-btn{background:#fef2f2;color:#b42318;border:1px solid #fecaca;}
 .primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover,.back-btn:hover,.danger-btn:hover{transform:translateY(-1px);opacity:0.95;}
 
-/* Batch Grid */
-.batch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
-.batch-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;cursor:pointer;transition:all 0.25s;text-align:center;position:relative;overflow:hidden;}
-.batch-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--gold);}
-.batch-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-lt));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
-.batch-card:hover::after{transform:scaleX(1);}
-.batch-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;margin:0 auto 14px;color:#fff;font-size:1.4rem;}
-.batch-name{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.1rem;font-weight:700;margin-bottom:4px;}
-.batch-count{color:var(--muted);font-size:0.85rem;}
+/* Batch filter bar */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:200px;}
+.filter-bar select:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
 /* Doubt Cards */
 .doubt-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;margin-bottom:12px;transition:all 0.2s;}
@@ -126,14 +121,12 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   .app-sidebar{width:100%;height:auto;position:relative;}
   .app-main{margin-left:0;}
   .app-shell{flex-direction:column;}
-  .batch-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:640px){
   .app-main{padding:16px;}
 }
 .hidden{display:none !important;}
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -161,13 +154,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       </div>
     </div>
     <nav class="app-menu">
-      <a href="index.html" target="_self">📊 Dashboard</a>
-      <a href="students.html" target="_self">👥 Students</a>
-      <a href="tests.html" target="_self">📝 Tests</a>
-      <a href="lectures.html" target="_self">🎬 Lectures</a>
-      <a href="live.html" target="_self">🔴 Live Classes</a>
-      <a href="leaderboard.html" target="_self">🏆 Leaderboard</a>
-      <a href="doubts.html" target="_self" class="active">💬 Doubts</a>
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html">📝 Mocks</a>
+      <a href="lectures.html">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="doubts.html" class="active">💬 Doubts</a>
       <button id="logoutBtn" type="button">🚪 Logout</button>
     </nav>
   </aside>
@@ -181,26 +174,21 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       <button class="ghost-btn" id="closeBtn" type="button">Close</button>
     </div>
 
-    <!-- STEP 1: Batch Selection -->
-    <div id="batchView">
-      <div class="app-card">
-        <h3 class="subject-title">Select a Batch</h3>
-        <div id="batchGrid" class="batch-grid">
-          <div class="empty-box" style="grid-column:1/-1;">Loading batches...</div>
-        </div>
+    <div class="app-card">
+      <h3 class="subject-title">Select a Batch</h3>
+      <div class="filter-bar">
+        <select id="batchSelect" onchange="onBatchChange()"><option value="">-- Choose Batch --</option></select>
+        <button class="primary-btn" type="button" onclick="loadDoubts()">Load Doubts</button>
+        <button class="danger-btn" type="button" onclick="purgeOldDoubts()">🧹 Purge Old Closed</button>
       </div>
+      <div class="portal-status" id="batchStatus"></div>
     </div>
 
-    <!-- STEP 2: Doubts for Selected Batch -->
-    <div id="doubtsView" class="hidden">
-      <button class="back-btn" id="backToBatches" type="button">← Back to Batches</button>
+    <div id="doubtsView" style="display:none;">
       <div class="app-card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
           <h3 class="subject-title" id="doubtBatchName" style="margin:0;">Batch Name</h3>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <span id="doubtStat" style="font-size:0.85rem;color:var(--muted);">0 doubts</span>
-            <button class="danger-btn" type="button" onclick="purgeOldDoubts()">🧹 Purge Old Closed</button>
-          </div>
+          <span id="doubtStat" style="font-size:0.85rem;color:var(--muted);">0 doubts</span>
         </div>
         <input type="search" class="practice-search" id="doubtSearch" placeholder="Search student, subject, or doubt text..." oninput="renderDoubts()">
         <div id="doubtList"></div>
@@ -218,19 +206,17 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 (function(){
   const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-  // Firebase
   const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
   if (!firebase.apps.length) firebase.initializeApp(_fc);
   const auth = firebase.auth();
   const db = firebase.firestore();
   const storage = firebase.storage();
 
-  // Utils
   function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
   function fmtDate(v){ if(!v) return ''; const d = v.toDate ? v.toDate() : new Date(v.seconds ? v.seconds*1000 : v); return d.toLocaleString(); }
 
-  // Auth
+  /* Auth */
   document.getElementById('adminLoginBtn').addEventListener('click', async () => {
     const email = val('adminEmail');
     const pw = document.getElementById('adminPassword').value;
@@ -238,13 +224,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     try{
       const cred = await auth.signInWithEmailAndPassword(email, pw);
       if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); document.getElementById('loginStatus').textContent = 'Not authorized.'; document.getElementById('loginStatus').className = 'login-status error'; return; }
-      sessionStorage.setItem('adminUnlocked', '1');
+      localStorage.setItem('adminUnlocked', '1');
       showApp();
     }catch(err){ document.getElementById('loginStatus').textContent = err.message; document.getElementById('loginStatus').className = 'login-status error'; }
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
-    sessionStorage.removeItem('adminUnlocked');
+    localStorage.removeItem('adminUnlocked');
     await auth.signOut();
     location.reload();
   });
@@ -253,13 +239,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     window.location.href = 'index.html';
   });
 
-  document.getElementById('backToBatches').addEventListener('click', () => {
-    document.getElementById('batchView').classList.remove('hidden');
-    document.getElementById('doubtsView').classList.add('hidden');
-  });
-
   auth.onAuthStateChanged(user => {
-    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+    if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
       showApp();
     } else {
       document.getElementById('loginWrap').classList.remove('hidden');
@@ -273,75 +254,58 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     loadBatches();
   }
 
-  // Load batches
+  /* Batches */
   async function loadBatches(){
-    const grid = document.getElementById('batchGrid');
-    grid.innerHTML = '<div class="empty-box" style="grid-column:1/-1;">Loading batches...</div>';
-
+    const sel = document.getElementById('batchSelect');
     try{
       const snap = await db.collection('users').where('role','==','student').limit(500).get();
       const students = snap.docs.map(d => d.data());
-
-      const batchMap = {};
-      students.forEach(s => {
-        const code = s.batchCode || 'Unassigned';
-        if(!batchMap[code]) batchMap[code] = {count:0};
-        batchMap[code].count++;
-      });
-
-      const batches = Object.keys(batchMap).sort((a,b) => a.localeCompare(b));
-      if(!batches.length){ grid.innerHTML = '<div class="empty-box" style="grid-column:1/-1;">No batches found. Assign batch codes to students first.</div>'; return; }
-
-      grid.innerHTML = batches.map(code => `
-        <div class="batch-card" onclick="openBatchDoubts('${esc(code)}')">
-          <div class="batch-icon">💬</div>
-          <div class="batch-name">${esc(code)}</div>
-          <div class="batch-count">${batchMap[code].count} student${batchMap[code].count !== 1 ? 's' : ''}</div>
-        </div>
-      `).join('');
-    }catch(err){
-      grid.innerHTML = `<div class="empty-box" style="grid-column:1/-1;">Error: ${esc(err.message)}</div>`;
-    }
+      const batches = [...new Set(students.map(s => s.batchCode).filter(Boolean))].sort();
+      sel.innerHTML = '<option value="">-- Choose Batch --</option>' + batches.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join('');
+    }catch(err){ document.getElementById('batchStatus').textContent = err.message; document.getElementById('batchStatus').className = 'portal-status error'; }
   }
 
-  // State for current batch
+  window.onBatchChange = function(){
+    document.getElementById('doubtsView').style.display = 'none';
+  };
+
+  /* Doubts */
   let currentBatchCode = '';
   let currentDoubts = [];
 
-  // Open batch doubts
-  window.openBatchDoubts = async function(batchCode){
+  window.loadDoubts = async function(){
+    const batchCode = document.getElementById('batchSelect').value;
+    if(!batchCode){ document.getElementById('batchStatus').textContent = 'Select a batch first.'; document.getElementById('batchStatus').className = 'portal-status error'; return; }
     currentBatchCode = batchCode;
-    document.getElementById('batchView').classList.add('hidden');
-    document.getElementById('doubtsView').classList.remove('hidden');
+    document.getElementById('batchStatus').textContent = 'Loading...';
+    document.getElementById('batchStatus').className = 'portal-status';
+    document.getElementById('doubtsView').style.display = 'block';
     document.getElementById('doubtBatchName').textContent = esc(batchCode);
-    await loadDoubts();
-  };
-
-  async function loadDoubts(){
     const list = document.getElementById('doubtList');
     list.innerHTML = '<div class="empty-box">Loading doubts...</div>';
 
     try{
-      // Get students in this batch
-      const userSnap = await db.collection('users').where('role','==','student').where('batchCode','==',currentBatchCode).limit(200).get();
+      const userSnap = await db.collection('users').where('role','==','student').where('batchCode','==',batchCode).limit(200).get();
       const studentIds = userSnap.docs.map(d => d.id);
 
       if(!studentIds.length){
         list.innerHTML = '<div class="empty-box">No students in this batch.</div>';
         document.getElementById('doubtStat').textContent = '0 doubts';
+        document.getElementById('batchStatus').textContent = '';
         return;
       }
 
-      // Fetch doubts (Firestore 'in' limited to 10, so fetch all and filter client-side)
       const doubtSnap = await db.collection('studentDoubts').orderBy('createdAt','desc').limit(300).get();
       const allDoubts = doubtSnap.docs.map(d => ({id: d.id, ...d.data()}));
       currentDoubts = allDoubts.filter(d => studentIds.includes(d.userId));
-
       renderDoubts();
+      document.getElementById('batchStatus').textContent = '';
     }catch(err){
       document.getElementById('doubtList').innerHTML = `<div class="empty-box">Error: ${esc(err.message)}</div>`;
+      document.getElementById('batchStatus').textContent = err.message;
+      document.getElementById('batchStatus').className = 'portal-status error';
     }
-  }
+  };
 
   window.renderDoubts = function(){
     const list = document.getElementById('doubtList');
@@ -352,7 +316,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       return [d.studentName, d.courseSubject, d.message].join(' ').toLowerCase().includes(q);
     });
 
-    // Auto-close doubts past 7 days of faculty reply
     const now = new Date();
     filtered = filtered.map(d => {
       const isClosed = d.status === 'closed' || (d.autoCloseAt && d.autoCloseAt.toDate && d.autoCloseAt.toDate() < now);
@@ -406,7 +369,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     }).join('');
   };
 
-  // Reply to doubt
   window.replyToDoubt = async function(doubtId){
     const text = document.getElementById(`replyText-${doubtId}`)?.value.trim();
     const file = document.getElementById(`replyFile-${doubtId}`)?.files?.[0];
@@ -447,7 +409,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     }
   };
 
-  // Close doubt manually
   window.closeDoubt = async function(doubtId){
     if(!confirm('Mark this doubt as closed?')) return;
     await db.collection('studentDoubts').doc(doubtId).update({
@@ -457,7 +418,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     await loadDoubts();
   };
 
-  // Purge old closed doubts
   window.purgeOldDoubts = async function(){
     if(!confirm('Delete all closed doubts older than 7 days? This cannot be undone.')) return;
     try{
@@ -468,10 +428,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       snap.docs.forEach(doc => {
         const data = doc.data();
         const updated = data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date();
-        if(updated < cutoff){
-          batch.delete(doc.ref);
-          count++;
-        }
+        if(updated < cutoff){ batch.delete(doc.ref); count++; }
       });
       if(count) await batch.commit();
       alert(`Deleted ${count} old closed doubt(s).`);
