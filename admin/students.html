@@ -114,7 +114,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 }
 .hidden{display:none !important}
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -167,21 +166,35 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
           <h3 class="subject-title" style="margin:0">All Students</h3>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <input type="search" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea;min-width:200px" id="studentSearch" placeholder="Search name, email, phone..." oninput="renderStudents()">
-            <select id="filterState" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All States</option></select>
-            <select id="filterCity" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Cities</option></select>
+            <select id="filterBatch" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Batches</option></select>
+            <select id="filterSubject" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Subjects</option></select>
             <button class="ghost-btn" type="button" onclick="refreshStudents()">🔄 Refresh</button>
           </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:0.82rem;color:#6b7280">
           <span id="studentCountBadge">0 students</span>
           <span style="color:#d1d5db">|</span>
-          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="showUnenrolled" onchange="renderStudents()"> Unassigned only</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="showUnassigned" onchange="renderStudents()"> Unassigned only</label>
         </div>
       </div>
       <div style="overflow:auto;max-height:calc(100vh - 300px)">
         <table class="app-table" id="studentTable">
-          <thead><tr><th style="width:40px">#</th><th>Name</th><th>Email</th><th>Phone</th><th>State</th><th>City</th><th>Course</th><th>Subjects</th><th style="width:100px">Actions</th></tr></thead>
-          <tbody id="studentTableBody"><tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr></tbody>
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Batch</th>
+              <th>Subjects</th>
+              <th>Lectures</th>
+              <th>Joined</th>
+              <th style="width:100px">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody">
+            <tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -209,7 +222,6 @@ const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR
 if(!firebase.apps.length) firebase.initializeApp(_fc);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
 let allStudents = [];
@@ -270,32 +282,49 @@ async function loadLectures(){ const snap=await db.collection('lectures').get().
 
 /* Students */
 async function refreshStudents(){
-  const snap = await db.collection('users').where('role','==','student').limit(500).get().catch(()=>null);
-  allStudents = snap ? snap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  const aSnap = await db.collection('attempts').get().catch(()=>null);
-  allAttempts = aSnap ? aSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
-  renderStudents();
+  $('studentTableBody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr>';
+  try {
+    const snap = await db.collection('users').where('role','==','student').limit(500).get();
+    allStudents = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    
+    // Load attempts for stats
+    const aSnap = await db.collection('attempts').get().catch(()=>null);
+    allAttempts = aSnap ? aSnap.docs.map(d => ({id:d.id,...d.data()})) : [];
+    
+    renderStudents();
+  } catch(e) {
+    console.error(e);
+    $('studentTableBody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:#ef4444">Error: ${esc(e.message)}</td></tr>`;
+  }
 }
 
 function renderStudents(){
   const search = ($('studentSearch').value || '').toLowerCase();
-  const selState = $('filterState').value;
-  const selCity = $('filterCity').value;
-  const showUnenrolled = $('showUnenrolled').checked;
+  const selBatch = $('filterBatch').value;
+  const selSubject = $('filterSubject').value;
+  const showUnassigned = $('showUnassigned').checked;
 
-  const states = [...new Set(allStudents.map(s=>s.state).filter(Boolean))].sort();
-  const cities = [...new Set(allStudents.map(s=>s.city).filter(Boolean))].sort();
-  $('filterState').innerHTML = '<option value="">All States</option>' + states.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
-  $('filterCity').innerHTML = '<option value="">All Cities</option>' + cities.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
-  if(selState) $('filterState').value = selState;
-  if(selCity) $('filterCity').value = selCity;
+  // Populate filters from actual data
+  const batches = [...new Set(allStudents.map(s => s.batchCode).filter(Boolean))].sort();
+  const subjects = [...new Set(allStudents.flatMap(s => Array.isArray(s.enrolledSubjects) ? s.enrolledSubjects : []))].sort();
+  
+  const batchSel = $('filterBatch');
+  const subjSel = $('filterSubject');
+  const prevBatch = batchSel.value;
+  const prevSubj = subjSel.value;
+  
+  batchSel.innerHTML = '<option value="">All Batches</option>' + batches.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join('');
+  subjSel.innerHTML = '<option value="">All Subjects</option>' + subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  if([...batchSel.options].some(o=>o.value===prevBatch)) batchSel.value = prevBatch;
+  if([...subjSel.options].some(o=>o.value===prevSubj)) subjSel.value = prevSubj;
 
   let filtered = allStudents.filter(s => {
-    const text = [s.name,s.email,s.phone,s.state,s.city,s.courseInterest].join(' ').toLowerCase();
+    const text = [s.name, s.email, s.phone, s.batchCode].join(' ').toLowerCase();
     if(search && !text.includes(search)) return false;
-    if(selState && s.state !== selState) return false;
-    if(selCity && s.city !== selCity) return false;
-    if(showUnenrolled && (s.enrolledSubjects || []).length > 0) return false;
+    if(selBatch && s.batchCode !== selBatch) return false;
+    const subs = Array.isArray(s.enrolledSubjects) ? s.enrolledSubjects : [];
+    if(selSubject && !subs.includes(selSubject)) return false;
+    if(showUnassigned && subs.length > 0) return false;
     return true;
   });
 
@@ -309,15 +338,16 @@ function renderStudents(){
   $('studentTableBody').innerHTML = filtered.map((s, i) => {
     const subjCount = (s.enrolledSubjects || []).length;
     const lectCount = (s.assignedLectureIds || []).length;
+    const joined = s.createdAt ? fmtDate(s.createdAt) : 'N/A';
     return `<tr style="cursor:pointer" onclick="showStudentDetail('${s.id}')">
       <td style="color:#9ca3af;font-size:0.85rem">${i+1}</td>
       <td><strong style="color:var(--navy);font-size:0.9rem">${esc(s.name || '—')}</strong></td>
       <td style="font-size:0.85rem;color:#4b5563">${esc(s.email || '—')}</td>
       <td style="font-size:0.85rem;color:#4b5563">${esc(s.phone || '—')}</td>
-      <td><span class="chip">${esc(s.state || '—')}</span></td>
-      <td><span class="chip">${esc(s.city || '—')}</span></td>
-      <td style="font-size:0.85rem">${esc(s.courseInterest || '—')}</td>
-      <td style="font-size:0.85rem">${subjCount} subject${subjCount!==1?'s':''}${lectCount ? ', '+lectCount+' lect' : ''}</td>
+      <td>${s.batchCode ? `<span class="chip">${esc(s.batchCode)}</span>` : '<span style="color:#9ca3af;font-size:0.82rem">—</span>'}</td>
+      <td style="font-size:0.85rem">${subjCount ? subjCount + ' subject' + (subjCount!==1?'s':'') : '<span style="color:#9ca3af">None</span>'}</td>
+      <td style="font-size:0.85rem">${lectCount ? lectCount + ' lecture' + (lectCount!==1?'s':'') : '<span style="color:#9ca3af">Auto</span>'}</td>
+      <td style="font-size:0.82rem;color:#6b7280;white-space:nowrap">${esc(joined)}</td>
       <td><button class="ghost-btn" style="padding:6px 10px;font-size:0.78rem" onclick="event.stopPropagation();showStudentDetail('${s.id}')">Manage</button></td>
     </tr>`;
   }).join('');
@@ -334,10 +364,13 @@ window.closeStudentDetail = function(){ $('studentDetailPanel').style.display = 
 function renderStudentDetail(userId){
   const user = allStudents.find(u=>u.id===userId);
   if(!user){ $('detailContent').innerHTML = '<div class="empty-box">Student not found</div>'; return; }
+  
   const attempts = allAttempts.filter(a => String(a.userId || '') === String(userId));
   const totalScore = attempts.reduce((sum,a)=>sum + Number(a.score || 0), 0);
   const totalMarks = attempts.reduce((sum,a)=>sum + Number(a.total || 0), 0);
   const avg = totalMarks ? Math.round((totalScore/totalMarks)*100) : 0;
+  
+  // Available subjects from tests + lectures
   const availableSubjects = [...new Set([...allTests.map(t=>t.subject), ...allLectures.map(l=>l.subject)].filter(Boolean))].sort();
 
   $('detailName').textContent = user.name || user.email || 'Student';
@@ -391,7 +424,7 @@ function renderStudentDetail(userId){
 
 function getPaperBreakdown(attempts){
   const byPaper = {};
-  attempts.forEach(a=>{ const p = a.subject || 'General'; if(!byPaper[p]) byPaper[p]={attempts:0,score:0,total:0}; byPaper[p].attempts++; byPaper[p].score+=Number(a.score||0); byPaper[p].total+=Number(a.total||0); });
+  attempts.forEach(a=>{ const p = a.subject || a.paperTitle || 'General'; if(!byPaper[p]) byPaper[p]={attempts:0,score:0,total:0}; byPaper[p].attempts++; byPaper[p].score+=Number(a.score||0); byPaper[p].total+=Number(a.total||0); });
   return Object.keys(byPaper).length ? Object.keys(byPaper).sort().map(p=>`
     <div class="mini-item">
       <strong>${esc(p)}</strong><br>
@@ -405,19 +438,25 @@ window.saveBatch = async function(userId){
   await db.collection('users').doc(userId).update({batchCode: batch});
   const u = allStudents.find(x=>x.id===userId); if(u) u.batchCode = batch;
   alert('Batch code saved');
+  renderStudents();
 };
 
 window.saveStudentAccess = async function(userId){
   const enrolledSubjects = [...document.querySelectorAll('.enrol-subj:checked')].map(i=>i.value);
   const assignedLectureIds = [...document.querySelectorAll('.enrol-lec:checked')].map(i=>i.value);
-  await db.collection('users').doc(userId).update({enrolledSubjects, assignedLectureIds, accessUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()});
-  const u = allStudents.find(x=>x.id===userId); if(u){ u.enrolledSubjects = enrolledSubjects; u.assignedLectureIds = assignedLectureIds; }
+  await db.collection('users').doc(userId).update({
+    enrolledSubjects, 
+    assignedLectureIds, 
+    accessUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  const u = allStudents.find(x=>x.id===userId); 
+  if(u){ u.enrolledSubjects = enrolledSubjects; u.assignedLectureIds = assignedLectureIds; }
   alert('Access settings saved');
   renderStudents();
 };
 
 window.deleteStudent = async function(userId){
-  if(!confirm('Permanently delete this student and all their data?')) return;
+  if(!confirm('Permanently delete this student record?')) return;
   await db.collection('users').doc(userId).delete();
   allStudents = allStudents.filter(s=>s.id!==userId);
   renderStudents();
