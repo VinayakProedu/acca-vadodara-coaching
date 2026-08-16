@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Classes | Vinayak ProEdu Admin</title>
+<title>Lectures | Vinayak ProEdu Admin</title>
 <link rel="icon" type="image/png" href="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,14 +64,15 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 .portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(13,27,64,0.14);background:#fff;color:var(--ink);font-size:0.95rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
 .portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,42,0.12);}
+.portal-field textarea{min-height:90px;resize:vertical;}
+.portal-field select{cursor:pointer;}
 
 /* Buttons */
-.primary-btn,.secondary-btn,.ghost-btn,.danger-btn{border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
+.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
 .primary-btn{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;}
 .secondary-btn{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);}
 .ghost-btn{background:#eef4ff;color:var(--blue);}
-.danger-btn{background:#fef2f2;color:#b42318;border:1px solid #fecaca;}
-.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover,.danger-btn:hover{transform:translateY(-1px);opacity:0.95;}
+.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);opacity:0.95;}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
 
 /* Status */
@@ -79,29 +80,27 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .portal-status.error{color:#b42318;}
 .portal-status.success{color:#166534;}
 
-/* Live Class Cards */
-.live-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px;margin-bottom:12px;transition:all 0.2s;position:relative;overflow:hidden;}
-.live-card:hover{box-shadow:var(--shadow-sm);border-color:rgba(201,146,42,0.3);}
-.live-card.upcoming{border-left:4px solid var(--gold);}
-.live-card.past{border-left:4px solid #9ca3af;opacity:0.85;}
-.live-badge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;background:#fde8dc;color:var(--navy);font-size:0.72rem;font-weight:800;letter-spacing:0.5px;margin-bottom:10px;}
-.live-badge.past{background:#f3f4f6;color:#6b7280;}
-.live-title{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.05rem;margin:0 0 6px;}
-.live-meta{color:var(--muted);font-size:0.85rem;line-height:1.6;}
-.live-meta strong{color:var(--navy);}
-
-/* Countdown */
-.countdown-box{display:flex;gap:10px;align-items:center;margin-top:12px;}
-.countdown-box .cd-unit{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:10px 14px;border-radius:10px;text-align:center;min-width:56px;}
-.countdown-box .cd-unit .n{font-size:1.3rem;font-weight:800;display:block;line-height:1;}
-.countdown-box .cd-unit .l{font-size:0.65rem;text-transform:uppercase;opacity:0.7;letter-spacing:1px;}
-
 /* Search */
 .practice-search{width:100%;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;margin-bottom:14px;}
 .practice-search:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
-/* Empty */
+/* Lists */
+.mini-list{display:grid;gap:10px;max-height:480px;overflow:auto;padding-right:4px;}
+.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;transition:all 0.2s;}
+.mini-item:hover{box-shadow:var(--shadow-sm);border-color:rgba(201,146,42,0.3);}
 .empty-box{padding:20px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.9rem;}
+
+/* Lecture Grouping */
+.lecture-subject-frame{margin-bottom:14px;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;background:#fff;}
+.lecture-subject-frame summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-weight:800;font-size:0.95rem;}
+.lecture-subject-frame summary::-webkit-details-marker{display:none;}
+.lecture-subject-frame[open] summary{border-bottom:3px solid var(--gold);}
+.lecture-subject-frame .lecture-course-list{padding:10px 14px;}
+
+/* Batch filter bar */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:180px;}
+.filter-bar select:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
 /* Scrollbar */
 ::-webkit-scrollbar{width:6px;}
@@ -117,11 +116,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 }
 @media(max-width:640px){
   .app-main{padding:16px;}
-  .countdown-box{flex-wrap:wrap;}
 }
 .hidden{display:none !important;}
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -130,7 +127,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 <div class="login-wrap" id="loginWrap">
   <div class="login-box">
     <h2>Admin Portal</h2>
-    <p>Live Class Scheduler</p>
+    <p>Lecture Manager</p>
     <div class="login-field"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="admin@email.com"></div>
     <div class="login-field"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••"></div>
     <button class="login-btn" id="adminLoginBtn" type="button">Login as Admin</button>
@@ -149,13 +146,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       </div>
     </div>
     <nav class="app-menu">
-      <a href="index.html" target="_self">📊 Dashboard</a>
-      <a href="students.html" target="_self">👥 Students</a>
-      <a href="tests.html" target="_self">📝 Tests</a>
-      <a href="lectures.html" target="_self">🎬 Lectures</a>
-      <a href="live.html" target="_self" class="active">🔴 Live Classes</a>
-      <a href="leaderboard.html" target="_self">🏆 Leaderboard</a>
-      <a href="doubts.html" target="_self">💬 Doubts</a>
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html">📝 Mocks</a>
+      <a href="lectures.html" class="active">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="doubts.html">💬 Doubts</a>
       <button id="logoutBtn" type="button">🚪 Logout</button>
     </nav>
   </aside>
@@ -163,41 +160,57 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   <main class="app-main">
     <div class="app-topbar">
       <div>
-        <h1 class="app-title">Live Class Scheduler</h1>
-        <div class="app-sub">Schedule Zoom, Google Meet, or FreeConferenceCall sessions</div>
+        <h1 class="app-title">Lecture Manager</h1>
+        <div class="app-sub">Upload videos, files, and manage your course library</div>
       </div>
       <button class="ghost-btn" id="closeBtn" type="button">Close</button>
     </div>
 
     <div class="app-grid-2">
-      <!-- LEFT: Schedule Form -->
+      <!-- LEFT: Upload Form -->
       <div class="app-card">
-        <h3 class="subject-title">Schedule New Live Class</h3>
+        <h3 class="subject-title">Upload Lecture</h3>
 
-        <div class="portal-field"><label>Class Title *</label><input type="text" id="liveTitle" placeholder="e.g. FR Live Doubt Session - Conceptual Framework"></div>
-        <div class="portal-field"><label>Subject / Paper Code *</label><input type="text" id="liveSubject" placeholder="e.g. FR, FM, SBL..."></div>
+        <div class="portal-field"><label>Title *</label><input type="text" id="lecTitle" placeholder="e.g. BT Chapter 1 - Introduction to Business"></div>
+        <div class="portal-field"><label>Subject / Paper Code *</label><input type="text" id="lecSubject" placeholder="e.g. BT, MA, FA, FR, FM..."></div>
+        <div class="portal-field"><label>Section / Chapter</label><input type="text" id="lecSection" placeholder="e.g. 01 Introduction, 02 Study Material"></div>
 
         <div class="app-grid-2" style="grid-template-columns:1fr 1fr;">
-          <div class="portal-field"><label>Date *</label><input type="date" id="liveDate"></div>
-          <div class="portal-field"><label>Time *</label><input type="time" id="liveTime"></div>
+          <div class="portal-field"><label>Date *</label><input type="date" id="lecDate"></div>
+          <div class="portal-field"><label>Time</label><input type="time" id="lecTime"></div>
         </div>
 
-        <div class="portal-field"><label>Meeting Link *</label><input type="text" id="liveLink" placeholder="https://zoom.us/j/... or https://meet.google.com/..."></div>
-        <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="liveBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
-        <div class="portal-field"><label>Description (optional)</label><input type="text" id="liveDesc" placeholder="What will be covered in this session?"></div>
+        <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="lecBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
+        <div class="portal-field"><label>Attachment / Notes Link</label><input type="text" id="lecAttachment" placeholder="Google Drive, PDF, or notes URL (optional)"></div>
+
+        <div class="portal-field">
+          <label>YouTube Link</label>
+          <input type="text" id="lecYoutube" placeholder="Paste YouTube URL here">
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Supports youtube.com, youtu.be, shorts</div>
+        </div>
+
+        <div class="portal-field">
+          <label>OR Upload File</label>
+          <input type="hidden" role="uploadcare-uploader" data-public-key="9dcf4ee1bc520691123a" id="uploadcareInput">
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Video, PDF, or any file type</div>
+        </div>
 
         <div class="btn-row">
-          <button class="primary-btn" id="scheduleBtn" type="button">📅 Schedule Class</button>
+          <button class="primary-btn" id="uploadBtn" type="button">⬆ Upload Lecture</button>
           <button class="ghost-btn" id="clearBtn" type="button">Clear</button>
         </div>
-        <div class="portal-status" id="scheduleStatus"></div>
+        <div class="portal-status" id="uploadStatus"></div>
       </div>
 
-      <!-- RIGHT: Upcoming & Past -->
+      <!-- RIGHT: Library -->
       <div class="app-card">
-        <h3 class="subject-title">All Live Classes</h3>
-        <input type="search" class="practice-search" id="liveSearch" placeholder="Search classes..." oninput="renderClasses()">
-        <div id="liveList"></div>
+        <h3 class="subject-title">Lecture Library</h3>
+        <div class="filter-bar">
+          <select id="batchFilter" onchange="renderLibrary()"><option value="">All Batches</option></select>
+          <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()" style="margin:0;flex:1;">
+        </div>
+        <div class="portal-field"><label>Filter by Date</label><input type="date" id="libFilterDate" onchange="renderLibrary()"></div>
+        <div id="lectureLibrary"></div>
       </div>
     </div>
   </main>
@@ -206,23 +219,35 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 
 <script>
 (function(){
   const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-  // Firebase
   const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
   if (!firebase.apps.length) firebase.initializeApp(_fc);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Utils
+  UPLOADCARE_PUBLIC_KEY = "9dcf4ee1bc520691123a";
+  let uploadedFileURL = null;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const widget = uploadcare.Widget(document.querySelector('[role="uploadcare-uploader"]'));
+    widget.onUploadComplete(function(info) {
+      uploadedFileURL = info.cdnUrl;
+      const st = document.getElementById('uploadStatus');
+      if(st) st.textContent = 'File ready ✅';
+    });
+  });
+
   function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
   function setStatus(el, msg, err=false){ if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); }
 
-  // Auth
+  /* Auth */
   document.getElementById('adminLoginBtn').addEventListener('click', async () => {
     const email = val('adminEmail');
     const pw = document.getElementById('adminPassword').value;
@@ -230,13 +255,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     try{
       const cred = await auth.signInWithEmailAndPassword(email, pw);
       if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); setStatus(document.getElementById('loginStatus'), 'Not authorized.', true); return; }
-      sessionStorage.setItem('adminUnlocked', '1');
+      localStorage.setItem('adminUnlocked', '1');
       showApp();
     }catch(err){ setStatus(document.getElementById('loginStatus'), err.message, true); }
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
-    sessionStorage.removeItem('adminUnlocked');
+    localStorage.removeItem('adminUnlocked');
     await auth.signOut();
     location.reload();
   });
@@ -246,7 +271,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   });
 
   auth.onAuthStateChanged(user => {
-    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+    if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
       showApp();
     } else {
       document.getElementById('loginWrap').classList.remove('hidden');
@@ -257,125 +282,183 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   function showApp(){
     document.getElementById('loginWrap').classList.add('hidden');
     document.getElementById('appShell').classList.remove('hidden');
-    loadClasses();
+    loadLibrary();
+    loadBatches();
   }
 
-  // Schedule
-  document.getElementById('scheduleBtn').addEventListener('click', async () => {
-    const title = val('liveTitle');
-    const subject = val('liveSubject');
-    const date = val('liveDate');
-    const time = val('liveTime');
-    const link = val('liveLink');
-    const desc = val('liveDesc');
+  /* YouTube ID extractor */
+  function getYouTubeId(input) {
+    const raw = String(input || '').trim();
+    if (!raw) return '';
+    const short = raw.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i);
+    if (short) return short[1];
+    const watch = raw.match(/[?&]v=([A-Za-z0-9_-]{6,})/i);
+    if (watch) return watch[1];
+    const embed = raw.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i);
+    if (embed) return embed[1];
+    const shorts = raw.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]{6,})/i);
+    if (shorts) return shorts[1];
+    if (/^[A-Za-z0-9_-]{6,}$/.test(raw)) return raw;
+    return '';
+  }
 
-    if(!title || !subject || !date || !time || !link){ setStatus(document.getElementById('scheduleStatus'), 'Fill all required fields.', true); return; }
+  /* Upload */
+  document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const title = val('lecTitle');
+    const subject = val('lecSubject');
+    const section = val('lecSection') || 'General';
+    const date = val('lecDate');
+    const time = val('lecTime');
+    const attachment = val('lecAttachment');
+    const youtubeInput = val('lecYoutube');
+
+    if(!title || !subject || !date){ setStatus(document.getElementById('uploadStatus'), 'Title, Subject, and Date are required.', true); return; }
+
+    let videoURL = null;
+    let videoId = null;
+    if(youtubeInput){
+      videoId = getYouTubeId(youtubeInput);
+      videoURL = videoId ? `https://www.youtube.com/watch?v=${videoId}` : youtubeInput;
+    }
+
+    const hasVideo = videoURL && videoURL.trim() !== '';
+    const hasFile = uploadedFileURL && uploadedFileURL.trim() !== '';
+    if(!hasVideo && !hasFile){ setStatus(document.getElementById('uploadStatus'), 'Provide at least a YouTube link or upload a file.', true); return; }
 
     try{
       const payload = {
-        title, subject,
+        title, subject, section,
         lectureDate: date,
-        lectureTime: time,
-        meetingLink: link,
-        description: desc || '',
-        batchCodes: val('liveBatch').split(',').map(s=>s.trim()).filter(Boolean),
+        lectureTime: time || '',
+        videoURL: videoURL || null,
+        fileURL: uploadedFileURL || null,
+        attachment: attachment || '',
+        batchCodes: val('lecBatch').split(',').map(s=>s.trim()).filter(Boolean),
         uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-      // Store in lectures collection so student calendar picks it up automatically
       await db.collection('lectures').add(payload);
-      setStatus(document.getElementById('scheduleStatus'), 'Live class scheduled ✅');
+      setStatus(document.getElementById('uploadStatus'), 'Lecture uploaded ✅');
 
-      document.getElementById('liveTitle').value = '';
-      document.getElementById('liveSubject').value = '';
-      document.getElementById('liveDate').value = '';
-      document.getElementById('liveTime').value = '';
-      document.getElementById('liveLink').value = '';
-      document.getElementById('liveBatch').value = '';
-      document.getElementById('liveDesc').value = '';
+      document.getElementById('lecTitle').value = '';
+      document.getElementById('lecSubject').value = '';
+      document.getElementById('lecSection').value = '';
+      document.getElementById('lecDate').value = '';
+      document.getElementById('lecTime').value = '';
+      document.getElementById('lecBatch').value = '';
+      document.getElementById('lecAttachment').value = '';
+      document.getElementById('lecYoutube').value = '';
+      uploadedFileURL = null;
 
-      await loadClasses();
-    }catch(err){ setStatus(document.getElementById('scheduleStatus'), err.message || 'Failed to schedule', true); }
+      await loadLibrary();
+      await loadBatches();
+    }catch(err){ setStatus(document.getElementById('uploadStatus'), err.message || 'Upload failed', true); }
   });
 
   document.getElementById('clearBtn').addEventListener('click', () => {
-    document.getElementById('liveTitle').value = '';
-    document.getElementById('liveSubject').value = '';
-    document.getElementById('liveDate').value = '';
-    document.getElementById('liveTime').value = '';
-    document.getElementById('liveLink').value = '';
-    document.getElementById('liveBatch').value = '';
-    document.getElementById('liveDesc').value = '';
-    setStatus(document.getElementById('scheduleStatus'), '');
+    document.getElementById('lecTitle').value = '';
+    document.getElementById('lecSubject').value = '';
+    document.getElementById('lecSection').value = '';
+    document.getElementById('lecDate').value = '';
+    document.getElementById('lecTime').value = '';
+    document.getElementById('lecBatch').value = '';
+    document.getElementById('lecAttachment').value = '';
+    document.getElementById('lecYoutube').value = '';
+    uploadedFileURL = null;
+    setStatus(document.getElementById('uploadStatus'), '');
   });
 
-  // Load & Render
-  let allClasses = [];
+  /* Library */
+  let allLectures = [];
+  let allBatches = [];
 
-  async function loadClasses(){
-    const snap = await db.collection('lectures').where('meetingLink','!=','').orderBy('uploadedAt','desc').limit(200).get();
-    allClasses = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    renderClasses();
+  async function loadLibrary(){
+    const snap = await db.collection('lectures').orderBy('uploadedAt','desc').limit(200).get();
+    allLectures = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderLibrary();
   }
 
-  window.renderClasses = function(){
-    const box = document.getElementById('liveList');
-    const q = (document.getElementById('liveSearch')?.value || '').toLowerCase();
+  async function loadBatches(){
+    const snap = await db.collection('users').where('role','==','student').limit(500).get().catch(()=>null);
+    const students = snap ? snap.docs.map(d=>d.data()) : [];
+    const batches = [...new Set(students.map(s=>s.batchCode).filter(Boolean))].sort();
+    const sel = document.getElementById('batchFilter');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">All Batches</option>' + batches.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join('');
+    if(current && batches.includes(current)) sel.value = current;
+  }
 
-    let filtered = allClasses.filter(c => !q || [c.title,c.subject,c.description].join(' ').toLowerCase().includes(q));
-    // Sort: upcoming first, then by date
-    const now = new Date();
-    filtered.sort((a,b) => {
-      const da = new Date((a.lectureDate||'') + 'T' + (a.lectureTime||'00:00'));
-      const db_ = new Date((b.lectureDate||'') + 'T' + (b.lectureTime||'00:00'));
-      return da - db_;
+  window.renderLibrary = function(){
+    const box = document.getElementById('lectureLibrary');
+    const q = (document.getElementById('libSearch')?.value || '').toLowerCase();
+    const filterDate = document.getElementById('libFilterDate')?.value || '';
+    const batchFilter = document.getElementById('batchFilter')?.value || '';
+
+    let filtered = allLectures.filter(l => {
+      if(filterDate && l.lectureDate !== filterDate) return false;
+      if(batchFilter && !(l.batchCodes || []).includes(batchFilter)) return false;
+      if(!q) return true;
+      return [l.title, l.subject, l.section, l.attachment, l.lectureDate].join(' ').toLowerCase().includes(q);
     });
 
-    if(!filtered.length){ box.innerHTML = '<div class="empty-box">No live classes scheduled yet.</div>'; return; }
+    if(!filtered.length){ box.innerHTML = '<div class="empty-box">No lectures found.</div>'; return; }
 
-    box.innerHTML = filtered.map(c => {
-      const dt = new Date((c.lectureDate||'') + 'T' + (c.lectureTime||'00:00'));
-      const isUpcoming = dt > now;
-      const diff = dt - now;
-      const days = Math.floor(diff / (1000*60*60*24));
-      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-      const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const bySubject = {};
+    filtered.forEach(l => {
+      const sub = l.subject || 'General';
+      if(!bySubject[sub]) bySubject[sub] = {};
+      const sec = l.section || 'General';
+      if(!bySubject[sub][sec]) bySubject[sub][sec] = [];
+      bySubject[sub][sec].push(l);
+    });
 
-      let countdown = '';
-      if(isUpcoming && diff > 0){
-        countdown = `<div class="countdown-box">
-          ${days > 0 ? `<div class="cd-unit"><span class="n">${days}</span><span class="l">days</span></div>` : ''}
-          <div class="cd-unit"><span class="n">${hours}</span><span class="l">hrs</span></div>
-          <div class="cd-unit"><span class="n">${mins}</span><span class="l">min</span></div>
-        </div>`;
-      }
-
-      return `<div class="live-card ${isUpcoming ? 'upcoming' : 'past'}">
-        <div class="live-badge ${isUpcoming ? '' : 'past'}">${isUpcoming ? '🔴 UPCOMING' : '✅ COMPLETED'}</div>
-        <div class="live-title">${esc(c.title || 'Untitled')}</div>
-        <div class="live-meta">
-          <strong>${esc(c.subject || 'General')}</strong><br>
-          📅 ${esc(c.lectureDate || '')} · 🕒 ${esc(c.lectureTime || '')}<br>
-          ${c.batchCodes?.length ? `👥 Batches: ${esc(c.batchCodes.join(', '))}<br>` : ''}
-          ${c.description ? `📝 ${esc(c.description)}<br>` : ''}
-          🔗 <a href="${esc(c.meetingLink)}" target="_blank" style="color:var(--gold);font-weight:600;word-break:break-all;">${esc(c.meetingLink)}</a>
+    box.innerHTML = Object.keys(bySubject).sort().map(sub => {
+      const subCount = filtered.filter(l => (l.subject||'General')===sub).length;
+      return `<details class="lecture-subject-frame" open>
+        <summary><span>${esc(sub)}</span><small>${subCount} lecture(s)</small></summary>
+        <div class="lecture-course-list">
+          ${Object.keys(bySubject[sub]).sort().map(sec => `
+            <div style="margin:10px 0;padding:10px 12px;background:#f8fafc;border-radius:10px;">
+              <strong style="color:var(--navy);font-size:0.9rem;display:block;margin-bottom:8px;">${esc(sec)}</strong>
+              ${bySubject[sub][sec].sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||''))).map(l => `
+                <div class="mini-item" style="margin:6px 0;padding:10px;border-radius:10px;">
+                  <strong>${esc(l.title || 'Untitled')}</strong><br>
+                  <span style="font-size:0.82rem;color:var(--muted);">${esc(l.lectureDate || 'No date')} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</span><br>
+                  ${l.batchCodes?.length ? `<span style="font-size:0.75rem;color:var(--navy);font-weight:600;">👥 ${esc(l.batchCodes.join(', '))}</span><br>` : ''}
+                  ${l.videoURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">🎥 Video</span>' : l.fileURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">📄 File</span>' : ''}
+                  ${l.attachment ? `<br><a href="${esc(l.attachment)}" target="_blank" style="font-size:0.78rem;color:var(--gold);font-weight:600;">📎 Attachment</a>` : ''}
+                  <div class="btn-row" style="margin-top:8px;">
+                    ${l.videoURL ? `<button class="ghost-btn" type="button" onclick="previewVideo('${esc(l.videoURL)}')">Preview</button>` : ''}
+                    ${l.fileURL ? `<a href="${esc(l.fileURL)}" target="_blank" class="ghost-btn" style="text-decoration:none;display:inline-flex;">Open File</a>` : ''}
+                    <button class="secondary-btn" type="button" onclick="deleteLecture('${l.id}')">Delete</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
         </div>
-        ${countdown}
-        <div class="btn-row" style="margin-top:14px;">
-          <a href="${esc(c.meetingLink)}" target="_blank" class="secondary-btn" style="text-decoration:none;display:inline-flex;">Join Meeting</a>
-          <button class="danger-btn" type="button" onclick="deleteClass('${c.id}')">Delete</button>
-        </div>
-      </div>`;
+      </details>`;
     }).join('');
   };
 
-  window.deleteClass = async function(id){
-    if(!confirm('Delete this live class?')) return;
-    await db.collection('lectures').doc(id).delete();
-    await loadClasses();
+  window.previewVideo = function(url){
+    const vid = getYouTubeId(url);
+    if(vid){
+      const modal = document.createElement('div');
+      modal.innerHTML = `<div style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:20000;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;" onclick="this.remove()">
+        <button style="position:absolute;top:20px;right:20px;background:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:700;" onclick="this.parentElement.remove()">✕ Close</button>
+        <iframe width="80%" height="80%" style="border-radius:12px;border:none;max-width:900px;" src="https://www.youtube.com/embed/${vid}?autoplay=1&modestbranding=1&rel=0" allowfullscreen></iframe>
+      </div>`;
+      document.body.appendChild(modal.firstElementChild);
+    } else {
+      window.open(url, '_blank');
+    }
   };
 
-  // Auto-refresh countdown every minute
-  setInterval(() => { if(document.getElementById('appShell') && !document.getElementById('appShell').classList.contains('hidden')) renderClasses(); }, 60000);
+  window.deleteLecture = async function(id){
+    if(!confirm('Delete this lecture?')) return;
+    await db.collection('lectures').doc(id).delete();
+    await loadLibrary();
+  };
 })();
 </script>
 </body>
