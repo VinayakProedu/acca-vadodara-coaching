@@ -70,15 +70,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .portal-status{font-size:0.92rem;margin-top:10px;min-height:22px;font-weight:700;}
 .portal-status.error{color:#b42318;}
 
-/* Batch Grid */
-.batch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
-.batch-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;cursor:pointer;transition:all 0.25s;text-align:center;position:relative;overflow:hidden;}
-.batch-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--gold);}
-.batch-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-lt));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
-.batch-card:hover::after{transform:scaleX(1);}
-.batch-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--navy),var(--blue));display:grid;place-items:center;margin:0 auto 14px;color:#fff;font-size:1.4rem;}
-.batch-name{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.1rem;font-weight:700;margin-bottom:4px;}
-.batch-count{color:var(--muted);font-size:0.85rem;}
+/* Batch filter bar */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:200px;}
+.filter-bar select:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
 /* Leaderboard */
 .leaderboard-wrap{max-width:720px;margin:0 auto;}
@@ -117,11 +112,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 }
 @media(max-width:640px){
   .app-main{padding:16px;}
-  .batch-grid{grid-template-columns:1fr 1fr;}
 }
 .hidden{display:none !important;}
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -149,13 +142,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       </div>
     </div>
     <nav class="app-menu">
-      <a href="index.html" target="_self">📊 Dashboard</a>
-      <a href="students.html" target="_self">👥 Students</a>
-      <a href="tests.html" target="_self">📝 Tests</a>
-      <a href="lectures.html" target="_self">🎬 Lectures</a>
-      <a href="live.html" target="_self">🔴 Live Classes</a>
-      <a href="leaderboard.html" target="_self" class="active">🏆 Leaderboard</a>
-      <a href="doubts.html" target="_self">💬 Doubts</a>
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html">📝 Mocks</a>
+      <a href="lectures.html">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html" class="active">🏆 Leaderboard</a>
+      <a href="doubts.html">💬 Doubts</a>
       <button id="logoutBtn" type="button">🚪 Logout</button>
     </nav>
   </aside>
@@ -169,19 +162,16 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       <button class="ghost-btn" id="closeBtn" type="button">Close</button>
     </div>
 
-    <!-- STEP 1: Batch Selection -->
-    <div id="batchView">
-      <div class="app-card">
-        <h3 class="subject-title">Select a Batch</h3>
-        <div id="batchGrid" class="batch-grid">
-          <div class="empty-box">Loading batches...</div>
-        </div>
+    <div class="app-card">
+      <h3 class="subject-title">Select a Batch</h3>
+      <div class="filter-bar">
+        <select id="batchSelect" onchange="onBatchChange()"><option value="">-- Choose Batch --</option></select>
+        <button class="primary-btn" type="button" onclick="loadLeaderboard()">Load Leaderboard</button>
       </div>
+      <div class="portal-status" id="batchStatus"></div>
     </div>
 
-    <!-- STEP 2: Leaderboard for Selected Batch -->
-    <div id="leaderboardView" class="hidden">
-      <button class="back-btn" id="backToBatches" type="button">← Back to Batches</button>
+    <div id="leaderboardView" style="display:none;">
       <div class="metric-bar">
         <div>
           <h3 id="lbBatchName">Batch Name</h3>
@@ -204,18 +194,16 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 (function(){
   const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-  // Firebase
   const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
   if (!firebase.apps.length) firebase.initializeApp(_fc);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Utils
   function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
   function setStatus(el, msg, err=false){ if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); }
 
-  // Auth
+  /* Auth */
   document.getElementById('adminLoginBtn').addEventListener('click', async () => {
     const email = val('adminEmail');
     const pw = document.getElementById('adminPassword').value;
@@ -223,13 +211,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     try{
       const cred = await auth.signInWithEmailAndPassword(email, pw);
       if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); setStatus(document.getElementById('loginStatus'), 'Not authorized.', true); return; }
-      sessionStorage.setItem('adminUnlocked', '1');
+      localStorage.setItem('adminUnlocked', '1');
       showApp();
     }catch(err){ setStatus(document.getElementById('loginStatus'), err.message, true); }
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
-    sessionStorage.removeItem('adminUnlocked');
+    localStorage.removeItem('adminUnlocked');
     await auth.signOut();
     location.reload();
   });
@@ -238,13 +226,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     window.location.href = 'index.html';
   });
 
-  document.getElementById('backToBatches').addEventListener('click', () => {
-    document.getElementById('batchView').classList.remove('hidden');
-    document.getElementById('leaderboardView').classList.add('hidden');
-  });
-
   auth.onAuthStateChanged(user => {
-    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+    if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
       showApp();
     } else {
       document.getElementById('loginWrap').classList.remove('hidden');
@@ -258,50 +241,31 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     loadBatches();
   }
 
-  // Load all batches from student batchCodes
+  /* Batches */
   async function loadBatches(){
-    const grid = document.getElementById('batchGrid');
-    grid.innerHTML = '<div class="empty-box" style="grid-column:1/-1;">Loading batches...</div>';
-
+    const sel = document.getElementById('batchSelect');
     try{
       const snap = await db.collection('users').where('role','==','student').limit(500).get();
       const students = snap.docs.map(d => d.data());
-
-      // Group by batchCode
-      const batchMap = {};
-      students.forEach(s => {
-        const code = s.batchCode || 'Unassigned';
-        if(!batchMap[code]) batchMap[code] = {count:0, students:[]};
-        batchMap[code].count++;
-        batchMap[code].students.push(s);
-      });
-
-      const batches = Object.keys(batchMap).sort((a,b) => a.localeCompare(b));
-      if(!batches.length){ grid.innerHTML = '<div class="empty-box" style="grid-column:1/-1;">No batches found. Assign batch codes to students first.</div>'; return; }
-
-      grid.innerHTML = batches.map(code => `
-        <div class="batch-card" onclick="openBatchLeaderboard('${esc(code)}')">
-          <div class="batch-icon">👥</div>
-          <div class="batch-name">${esc(code)}</div>
-          <div class="batch-count">${batchMap[code].count} student${batchMap[code].count !== 1 ? 's' : ''}</div>
-        </div>
-      `).join('');
-    }catch(err){
-      grid.innerHTML = `<div class="empty-box" style="grid-column:1/-1;">Error: ${esc(err.message)}</div>`;
-    }
+      const batches = [...new Set(students.map(s => s.batchCode).filter(Boolean))].sort();
+      sel.innerHTML = '<option value="">-- Choose Batch --</option>' + batches.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join('');
+    }catch(err){ setStatus(document.getElementById('batchStatus'), err.message, true); }
   }
 
-  // Open batch leaderboard
-  window.openBatchLeaderboard = async function(batchCode){
-    document.getElementById('batchView').classList.add('hidden');
-    document.getElementById('leaderboardView').classList.remove('hidden');
-    document.getElementById('lbBatchName').textContent = esc(batchCode);
+  window.onBatchChange = function(){
+    document.getElementById('leaderboardView').style.display = 'none';
+  };
 
+  window.loadLeaderboard = async function(){
+    const batchCode = document.getElementById('batchSelect').value;
+    if(!batchCode){ setStatus(document.getElementById('batchStatus'), 'Select a batch first.', true); return; }
+    setStatus(document.getElementById('batchStatus'), 'Loading...');
+    document.getElementById('leaderboardView').style.display = 'block';
+    document.getElementById('lbBatchName').textContent = esc(batchCode);
     const list = document.getElementById('leaderboardList');
     list.innerHTML = '<div class="empty-box">Loading leaderboard...</div>';
 
     try{
-      // Get all students in this batch
       const userSnap = await db.collection('users').where('role','==','student').where('batchCode','==',batchCode).limit(200).get();
       const students = userSnap.docs.map(d => ({id: d.id, ...d.data()}));
       const studentIds = students.map(s => s.id);
@@ -309,27 +273,20 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       if(!studentIds.length){
         list.innerHTML = '<div class="empty-box">No students in this batch.</div>';
         document.getElementById('lbBatchStat').textContent = '0 students · 0 attempts';
+        setStatus(document.getElementById('batchStatus'), '');
         return;
       }
 
-      // Get all attempts for these students
-      // Firestore 'in' query limited to 10, so we fetch all attempts and filter client-side
       const attemptSnap = await db.collection('attempts').orderBy('createdAt','desc').limit(500).get();
       const allAttempts = attemptSnap.docs.map(d => d.data());
       const batchAttempts = allAttempts.filter(a => studentIds.includes(a.userId));
 
-      // Aggregate per student
       const ranking = {};
       batchAttempts.forEach(a => {
         const key = a.userId;
         if(!ranking[key]){
           const student = students.find(s => s.id === key);
-          ranking[key] = {
-            name: a.userName || a.userEmail || student?.name || student?.email || 'Student',
-            score: 0,
-            total: 0,
-            attempts: 0
-          };
+          ranking[key] = { name: a.userName || a.userEmail || student?.name || student?.email || 'Student', score: 0, total: 0, attempts: 0 };
         }
         ranking[key].score += Number(a.score || 0);
         ranking[key].total += Number(a.total || 0);
@@ -346,6 +303,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 
       if(!arr.length){
         list.innerHTML = '<div class="empty-box">No test attempts from this batch yet.</div>';
+        setStatus(document.getElementById('batchStatus'), '');
         return;
       }
 
@@ -364,9 +322,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
           <div class="lb-score">${pct}<span>%</span></div>
         </div>`;
       }).join('');
+      setStatus(document.getElementById('batchStatus'), '');
 
     }catch(err){
       list.innerHTML = `<div class="empty-box">Error loading leaderboard: ${esc(err.message)}</div>`;
+      setStatus(document.getElementById('batchStatus'), err.message, true);
     }
   };
 })();
