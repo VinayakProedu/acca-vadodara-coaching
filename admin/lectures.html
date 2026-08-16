@@ -94,12 +94,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .lecture-subject-frame{margin-bottom:14px;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;background:#fff;}
 .lecture-subject-frame summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-weight:800;font-size:0.95rem;}
 .lecture-subject-frame summary::-webkit-details-marker{display:none;}
-.lecture-subject-frame summary small{color:var(--gold-lt);font-weight:700;}
 .lecture-subject-frame[open] summary{border-bottom:3px solid var(--gold);}
 .lecture-subject-frame .lecture-course-list{padding:10px 14px;}
 
-/* Uploadcare */
-.uploadcare-widget{margin-top:6px;}
+/* Batch filter bar */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:180px;}
+.filter-bar select:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
 /* Scrollbar */
 ::-webkit-scrollbar{width:6px;}
@@ -118,7 +119,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 }
 .hidden{display:none !important;}
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -146,13 +146,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       </div>
     </div>
     <nav class="app-menu">
-      <a href="index.html" target="_self">📊 Dashboard</a>
-      <a href="students.html" target="_self">👥 Students</a>
-      <a href="tests.html" target="_self">📝 Tests</a>
-      <a href="lectures.html" target="_self" class="active">🎬 Lectures</a>
-      <a href="live.html" target="_self">🔴 Live Classes</a>
-      <a href="leaderboard.html" target="_self">🏆 Leaderboard</a>
-      <a href="doubts.html" target="_self">💬 Doubts</a>
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html">📝 Mocks</a>
+      <a href="lectures.html" class="active">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="doubts.html">💬 Doubts</a>
       <button id="logoutBtn" type="button">🚪 Logout</button>
     </nav>
   </aside>
@@ -205,7 +205,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       <!-- RIGHT: Library -->
       <div class="app-card">
         <h3 class="subject-title">Lecture Library</h3>
-        <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()">
+        <div class="filter-bar">
+          <select id="batchFilter" onchange="renderLibrary()"><option value="">All Batches</option></select>
+          <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()" style="margin:0;flex:1;">
+        </div>
         <div class="portal-field"><label>Filter by Date</label><input type="date" id="libFilterDate" onchange="renderLibrary()"></div>
         <div id="lectureLibrary"></div>
       </div>
@@ -223,13 +226,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 (function(){
   const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-  // Firebase
   const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
   if (!firebase.apps.length) firebase.initializeApp(_fc);
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Uploadcare
   UPLOADCARE_PUBLIC_KEY = "9dcf4ee1bc520691123a";
   let uploadedFileURL = null;
 
@@ -242,12 +243,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     });
   });
 
-  // Utils
   function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
   function setStatus(el, msg, err=false){ if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); }
 
-  // Auth
+  /* Auth */
   document.getElementById('adminLoginBtn').addEventListener('click', async () => {
     const email = val('adminEmail');
     const pw = document.getElementById('adminPassword').value;
@@ -255,13 +255,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     try{
       const cred = await auth.signInWithEmailAndPassword(email, pw);
       if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); setStatus(document.getElementById('loginStatus'), 'Not authorized.', true); return; }
-      sessionStorage.setItem('adminUnlocked', '1');
+      localStorage.setItem('adminUnlocked', '1');
       showApp();
     }catch(err){ setStatus(document.getElementById('loginStatus'), err.message, true); }
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
-    sessionStorage.removeItem('adminUnlocked');
+    localStorage.removeItem('adminUnlocked');
     await auth.signOut();
     location.reload();
   });
@@ -271,7 +271,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   });
 
   auth.onAuthStateChanged(user => {
-    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+    if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
       showApp();
     } else {
       document.getElementById('loginWrap').classList.remove('hidden');
@@ -283,9 +283,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('loginWrap').classList.add('hidden');
     document.getElementById('appShell').classList.remove('hidden');
     loadLibrary();
+    loadBatches();
   }
 
-  // YouTube ID extractor
+  /* YouTube ID extractor */
   function getYouTubeId(input) {
     const raw = String(input || '').trim();
     if (!raw) return '';
@@ -301,7 +302,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     return '';
   }
 
-  // Upload
+  /* Upload */
   document.getElementById('uploadBtn').addEventListener('click', async () => {
     const title = val('lecTitle');
     const subject = val('lecSubject');
@@ -338,7 +339,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       await db.collection('lectures').add(payload);
       setStatus(document.getElementById('uploadStatus'), 'Lecture uploaded ✅');
 
-      // Clear form
       document.getElementById('lecTitle').value = '';
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecSection').value = '';
@@ -350,6 +350,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       uploadedFileURL = null;
 
       await loadLibrary();
+      await loadBatches();
     }catch(err){ setStatus(document.getElementById('uploadStatus'), err.message || 'Upload failed', true); }
   });
 
@@ -366,8 +367,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     setStatus(document.getElementById('uploadStatus'), '');
   });
 
-  // Library
+  /* Library */
   let allLectures = [];
+  let allBatches = [];
 
   async function loadLibrary(){
     const snap = await db.collection('lectures').orderBy('uploadedAt','desc').limit(200).get();
@@ -375,20 +377,31 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     renderLibrary();
   }
 
+  async function loadBatches(){
+    const snap = await db.collection('users').where('role','==','student').limit(500).get().catch(()=>null);
+    const students = snap ? snap.docs.map(d=>d.data()) : [];
+    const batches = [...new Set(students.map(s=>s.batchCode).filter(Boolean))].sort();
+    const sel = document.getElementById('batchFilter');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">All Batches</option>' + batches.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join('');
+    if(current && batches.includes(current)) sel.value = current;
+  }
+
   window.renderLibrary = function(){
     const box = document.getElementById('lectureLibrary');
     const q = (document.getElementById('libSearch')?.value || '').toLowerCase();
     const filterDate = document.getElementById('libFilterDate')?.value || '';
+    const batchFilter = document.getElementById('batchFilter')?.value || '';
 
     let filtered = allLectures.filter(l => {
       if(filterDate && l.lectureDate !== filterDate) return false;
+      if(batchFilter && !(l.batchCodes || []).includes(batchFilter)) return false;
       if(!q) return true;
       return [l.title, l.subject, l.section, l.attachment, l.lectureDate].join(' ').toLowerCase().includes(q);
     });
 
     if(!filtered.length){ box.innerHTML = '<div class="empty-box">No lectures found.</div>'; return; }
 
-    // Group by subject → section
     const bySubject = {};
     filtered.forEach(l => {
       const sub = l.subject || 'General';
@@ -410,6 +423,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
                 <div class="mini-item" style="margin:6px 0;padding:10px;border-radius:10px;">
                   <strong>${esc(l.title || 'Untitled')}</strong><br>
                   <span style="font-size:0.82rem;color:var(--muted);">${esc(l.lectureDate || 'No date')} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</span><br>
+                  ${l.batchCodes?.length ? `<span style="font-size:0.75rem;color:var(--navy);font-weight:600;">👥 ${esc(l.batchCodes.join(', '))}</span><br>` : ''}
                   ${l.videoURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">🎥 Video</span>' : l.fileURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">📄 File</span>' : ''}
                   ${l.attachment ? `<br><a href="${esc(l.attachment)}" target="_blank" style="font-size:0.78rem;color:var(--gold);font-weight:600;">📎 Attachment</a>` : ''}
                   <div class="btn-row" style="margin-top:8px;">
