@@ -115,7 +115,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .hidden{display:none !important}
 </style>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
 
@@ -142,7 +141,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
     </div>
     <nav class="app-menu">
       <a href="index.html"><span>📊</span> Dashboard</a>
-      <a href="tests.html"><span>📝</span> Tests</a>
+      <a href="tests.html"><span>📝</span> Mocks</a>
       <a href="lectures.html"><span>🎬</span> Lectures</a>
       <a href="live.html"><span>🔴</span> Live Classes</a>
       <a href="students.html" class="active"><span>👨‍🎓</span> Students</a>
@@ -224,13 +223,13 @@ const fmtDate = v => { if(!v) return ''; const d = v.toDate ? v.toDate() : new D
 
 /* Auth */
 auth.onAuthStateChanged(user => {
-  if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+  if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
     $('loginScreen').classList.add('hidden');
     $('adminApp').classList.remove('hidden');
     init();
   } else {
     if(user && user.email !== ADMIN_EMAIL) auth.signOut();
-    sessionStorage.removeItem('adminUnlocked');
+    localStorage.removeItem('adminUnlocked');
     $('loginScreen').classList.remove('hidden');
     $('adminApp').classList.add('hidden');
   }
@@ -243,7 +242,7 @@ $('adminLoginBtn').onclick = async () => {
   try{
     const cred = await auth.signInWithEmailAndPassword(email, pass);
     if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); return setLoginStatus('Not an admin account', true); }
-    sessionStorage.setItem('adminUnlocked', '1');
+    localStorage.setItem('adminUnlocked', '1');
     $('loginScreen').classList.add('hidden');
     $('adminApp').classList.remove('hidden');
     init();
@@ -252,8 +251,8 @@ $('adminLoginBtn').onclick = async () => {
 
 function setLoginStatus(msg, err){ const el=$('adminLoginStatus'); el.textContent=msg; el.className='login-status '+(err?'error':''); }
 
-$('adminLogoutBtn').onclick = async () => { sessionStorage.removeItem('adminUnlocked'); await auth.signOut(); location.reload(); };
-$('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href='../index.html'; };
+$('adminLogoutBtn').onclick = async () => { localStorage.removeItem('adminUnlocked'); await auth.signOut(); location.reload(); };
+$('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href='index.html'; };
 $('refreshBtn').onclick = () => refreshStudents();
 
 /* Sidebar */
