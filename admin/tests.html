@@ -1601,7 +1601,7 @@ function renderFillInline(q,selected){
   const safeSentence=renderPastedText(sentence);
   const placeholderMatches=[...sentence.matchAll(/\{\{(\d+)\}\}/g)].map(m=>Number(m[1]));
   if(placeholderMatches.length){
-    const html=safeSentence.replace(/\{\{(\d+)\}\}/g,(_,n)=>{const idx=Number(n)-1;const value=values[idx]??'';return`<input type="text" class="fib-input" data-idx="${idx}" value="${esc(value)}" style="display:inline-block;min-width:120px;max-width:180px;padding:8px 10px;margin:0 4px;border:1px solid var(--border);border-radius:10px;background:#fff;">`;});`
+    const html=safeSentence.replace(/\{\{(\d+)\}\}/g,(_,n)=>{const idx=Number(n)-1;const value=values[idx]??'';return`<input type="text" class="fib-input" data-idx="${idx}" value="${esc(value)}" style="display:inline-block;min-width:120px;max-width:180px;padding:8px 10px;margin:0 4px;border:1px solid var(--border);border-radius:10px;background:#fff;">`;});
     return`<div class="question-text-block">${html}</div>`;
   }
   if(/\[blank\]/i.test(sentence)){const value=values[0]??'';const html=safeSentence.replace(/\[blank\]/i,`<input type="text" class="fib-input" data-idx="0" value="${esc(value)}" style="display:inline-block;min-width:120px;max-width:180px;padding:8px 10px;margin:0 4px;border:1px solid var(--border);border-radius:10px;background:#fff;">`);return`<div class="question-text-block">${html}</div>`;}
