@@ -938,7 +938,7 @@ window.editPaper=function(id){
   el.paperMarks.value=p.totalMarks||100;
   if(el.paperLocked) el.paperLocked.checked=!!p.locked;
   if(el.paperAttempts) el.paperAttempts.value=Number(p.attemptLimit||1);
-  el.paperSections.value=Array.isArray(p.sections)?p sections.join('\n'):'';
+  el.paperSections.value=Array.isArray(p.sections)?p.sections.join('\n'):'';
   el.savePaperBtn.textContent='Update Paper';
   showView('adminView');
 };
