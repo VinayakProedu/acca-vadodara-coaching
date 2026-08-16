@@ -367,7 +367,10 @@ const firebaseConfig = {
   messagingSenderId: "993646562333",
   appId: "1:993646562333:web:5f37a0b63d4d177adf4af4"
 };
-firebase.initializeApp(firebaseConfig);
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 const auth = firebase.auth();
 const db = firebase.firestore();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
@@ -463,18 +466,25 @@ auth.onAuthStateChanged(async user => {
 
 el.loginBtn.addEventListener('click', doLogin);
 el.logoutBtn.addEventListener('click', async () => { await auth.signOut(); location.reload(); });
-el.closeBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+if(el.closeBtn) el.closeBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
 
 /* ================= DATA ================= */
 async function loadData() {
-  const [pSnap, qSnap, aSnap] = await Promise.all([
-    db.collection('mockPapers').orderBy('createdAt', 'desc').get().catch(() => ({ docs: [] })),
-    db.collection('mockQuestions').orderBy('createdAt', 'asc').get().catch(() => ({ docs: [] })),
-    state.user ? db.collection('mockAttempts').where('userId', '==', state.user.uid).get().catch(() => ({ docs: [] })) : Promise.resolve({ docs: [] })
-  ]);
-  state.papers = pSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => !p.locked);
-  state.questions = qSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-  state.attempts = aSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  try {
+    const [pSnap, qSnap, aSnap] = await Promise.all([
+      db.collection('mockPapers').orderBy('createdAt', 'desc').get().catch(() => ({ docs: [] })),
+      db.collection('mockQuestions').orderBy('createdAt', 'asc').get().catch(() => ({ docs: [] })),
+      state.user ? db.collection('mockAttempts').where('userId', '==', state.user.uid).get().catch(() => ({ docs: [] })) : Promise.resolve({ docs: [] })
+    ]);
+    state.papers = pSnap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => !p.locked);
+    state.questions = qSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    state.attempts = aSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error('Firebase load error:', err);
+    state.papers = state.papers || [];
+    state.questions = state.questions || [];
+    state.attempts = state.attempts || [];
+  }
 
   const myAttempts = state.attempts.filter(a => String(a.userId) === String(state.user?.uid));
   el.paperCount.textContent = state.papers.length;
@@ -485,10 +495,6 @@ async function loadData() {
 
 function getQuestionsForPaper(paperId) {
   return state.questions.filter(q => String(q.paperId) === String(paperId));
-}
-
-function hasAttemptedPaper(paperId) {
-  return state.attempts.some(a => String(a.paperId) === String(paperId) && String(a.userId) === String(state.user?.uid));
 }
 
 function getAttemptCount(paperId) {
@@ -516,20 +522,20 @@ function paperCard(p) {
       <div class="meta">${Number(p.timeLimit || 0)} min · ${Number(p.totalMarks || 0)} marks · ${qCount} questions · ${attempts}/${maxAttempts} attempts used</div>
       <div class="actions">
         ${canStart
-          ? `<button class="btn btn-primary" onclick="startMock('${p.id}')">Start Mock</button>`
+          ? `<button class="btn btn-primary" onclick="window.startMock('${p.id}')">Start Mock</button>`
           : `<button class="btn btn-ghost" disabled>${qCount === 0 ? 'No Questions' : 'Attempts Exhausted'}</button>`}
       </div>
     </div>`;
 }
 
 function renderPapers() {
-  const search = (el.paperSearch.value || el.paperSearch2.value || '').toLowerCase();
+  const search = (el.paperSearch?.value || el.paperSearch2?.value || '').toLowerCase();
   const filtered = state.papers.filter(p =>
     `${p.code || ''} ${p.title || ''} ${p.level || ''}`.toLowerCase().includes(search)
   );
   const html = filtered.length ? filtered.map(paperCard).join('') : '<div class="empty">No papers available.</div>';
-  el.paperList.innerHTML = html;
-  el.papersPanel.innerHTML = html;
+  if(el.paperList) el.paperList.innerHTML = html;
+  if(el.papersPanel) el.papersPanel.innerHTML = html;
 }
 
 function renderAttempts() {
@@ -558,8 +564,8 @@ async function refreshAll() {
   renderAttempts();
 }
 
-el.paperSearch.addEventListener('input', renderPapers);
-el.paperSearch2.addEventListener('input', renderPapers);
+if(el.paperSearch) el.paperSearch.addEventListener('input', renderPapers);
+if(el.paperSearch2) el.paperSearch2.addEventListener('input', renderPapers);
 
 /* ================= EXAM ENGINE ================= */
 function openCenterModal({ title, message, input = false, inputValue = '', confirmText = 'Confirm', onConfirm }) {
@@ -666,19 +672,19 @@ function renderNavigator() {
         <div class="nav-wrap" style="margin-top:12px;">
           <div class="nav-progress"><div class="nav-progress-bar" id="navProgressBar" style="width:${progress}%"></div></div>
           <div class="nav-arrow-row">
-            <button class="btn btn-ghost nav-arrow" type="button" onclick="toggleExamNavigator()">${isOpen ? '▲' : '▼'}</button>
+            <button class="btn btn-ghost nav-arrow" type="button" onclick="window.toggleExamNavigator()">${isOpen ? '▲' : '▼'}</button>
           </div>
           <div class="nav-panel ${isOpen ? 'open' : ''}" id="navPanel">
             <div class="nav-grid" style="margin-top:2px;">
               ${state.activeQuestions.map((q, idx) => `
-                <button type="button" class="${navButtonClass(q, idx)}" data-idx="${idx}" onclick="gotoQuestion(${idx})">${idx + 1}${state.reviewed[q.id] ? ' ★' : ''}</button>
+                <button type="button" class="${navButtonClass(q, idx)}" data-idx="${idx}" onclick="window.gotoQuestion(${idx})">${idx + 1}${state.reviewed[q.id] ? ' ★' : ''}</button>
               `).join('')}
             </div>
             <div class="exam-nav-top-actions">
-              <button class="btn btn-ghost" type="button" onclick="prevQ()">Previous</button>
-              <button class="btn btn-primary" type="button" onclick="nextQ()">Next</button>
-              <button class="btn btn-gold" type="button" onclick="toggleReviewFlag()">${state.reviewed[state.activeQuestions[state.currentIndex]?.id] ? 'Unflag Review' : 'Flag for Review'}</button>
-              <button class="btn btn-ghost" type="button" onclick="requestSubmitMock()">Submit</button>
+              <button class="btn btn-ghost" type="button" onclick="window.prevQ()">Previous</button>
+              <button class="btn btn-primary" type="button" onclick="window.nextQ()">Next</button>
+              <button class="btn btn-gold" type="button" onclick="window.toggleReviewFlag()">${state.reviewed[state.activeQuestions[state.currentIndex]?.id] ? 'Unflag Review' : 'Flag for Review'}</button>
+              <button class="btn btn-ghost" type="button" onclick="window.requestSubmitMock()">Submit</button>
             </div>
           </div>
         </div>
@@ -1042,7 +1048,7 @@ function wireQuestionInputs() {
 function renderMockQuestion() {
   if (!state.examActive) return;
   if (state.examLocked) {
-    el.overlayBody.innerHTML = `<div class="lock-screen"><h3>Exam Locked</h3><p>${esc(state.lockReason || 'The exam lost focus.')}</p><p>The attempt is frozen because the browser tab or window changed.</p><div class="btn-row" style="justify-content:center;margin-top:14px;"><button class="btn btn-gold" onclick="requestSubmitMock()">Submit Now</button></div></div>`;
+    el.overlayBody.innerHTML = `<div class="lock-screen"><h3>Exam Locked</h3><p>${esc(state.lockReason || 'The exam lost focus.')}</p><p>The attempt is frozen because the browser tab or window changed.</p><div class="btn-row" style="justify-content:center;margin-top:14px;"><button class="btn btn-gold" onclick="window.requestSubmitMock()">Submit Now</button></div></div>`;
     return;
   }
   const q = state.activeQuestions[state.currentIndex];
@@ -1069,10 +1075,10 @@ function renderMockQuestion() {
             ${body}
           </div>
           <div class="btn-row exam-actions" style="margin-top:14px;position:static;background:transparent;border:none;box-shadow:none;padding:0;display:flex !important;">
-            <button class="btn btn-ghost" onclick="prevQ()">Previous</button>
-            <button class="btn btn-primary" onclick="nextQ()">Next</button>
-            <button class="btn btn-gold" id="reviewToggleBtn" onclick="toggleReviewFlag()">${reviewed ? 'Unflag Review' : 'Flag for Review'}</button>
-            <button class="btn btn-ghost" onclick="requestSubmitMock()">Submit Paper</button>
+            <button class="btn btn-ghost" onclick="window.prevQ()">Previous</button>
+            <button class="btn btn-primary" onclick="window.nextQ()">Next</button>
+            <button class="btn btn-gold" id="reviewToggleBtn" onclick="window.toggleReviewFlag()">${reviewed ? 'Unflag Review' : 'Flag for Review'}</button>
+            <button class="btn btn-ghost" onclick="window.requestSubmitMock()">Submit Paper</button>
           </div>
         </div>
       </div>
@@ -1111,8 +1117,7 @@ function captureAnswer() {
   state.selected[q.id] = answer;
 }
 
-function gotoQuestion(idx) { if (idx < 0 || idx >= state.activeQuestions.length) return; captureAnswer(); state.currentIndex = idx; renderMockQuestion(); }
-window.gotoQuestion = gotoQuestion;
+window.gotoQuestion = function(idx) { if (idx < 0 || idx >= state.activeQuestions.length) return; captureAnswer(); state.currentIndex = idx; renderMockQuestion(); };
 window.nextQ = function () { captureAnswer(); if (state.currentIndex < state.activeQuestions.length - 1) { state.currentIndex++; renderMockQuestion(); } };
 window.prevQ = function () { captureAnswer(); if (state.currentIndex > 0) { state.currentIndex--; renderMockQuestion(); } };
 window.toggleReviewFlag = function () { const q = state.activeQuestions[state.currentIndex]; if (!q) return; state.reviewed[q.id] = !state.reviewed[q.id]; renderMockQuestion(); };
@@ -1221,23 +1226,32 @@ async function submitMock() {
   const reviewed = Object.keys(state.reviewed || {}).filter(k => state.reviewed[k]).length;
   const timeTakenSec = Math.max(0, Math.round((Date.now() - (state.startTime || Date.now())) / 1000));
   const studentName = (state.studentName || state.user?.displayName || state.user?.email || 'Student').trim();
-  await db.collection('mockAttempts').add({
-    userId: state.user ? state.user.uid : '',
-    userEmail: state.user ? state.user.email || '' : '',
-    studentName,
-    paperId: state.activePaper.id,
-    paperCode: state.activePaper.code || '',
-    paperTitle: state.activePaper.title || '',
-    score,
-    total: totalForResult,
-    percentage,
-    answered,
-    reviewedCount: reviewed,
-    timeTakenSec,
-    answers: state.selected,
-    reviewed: state.reviewed,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+
+  try {
+    await db.collection('mockAttempts').add({
+      userId: state.user ? state.user.uid : '',
+      userEmail: state.user ? state.user.email || '' : '',
+      studentName,
+      paperId: state.activePaper.id,
+      paperCode: state.activePaper.code || '',
+      paperTitle: state.activePaper.title || '',
+      score,
+      total: totalForResult,
+      percentage,
+      answered,
+      reviewedCount: reviewed,
+      timeTakenSec,
+      answers: state.selected,
+      reviewed: state.reviewed,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err) {
+    console.error('Failed to save attempt:', err);
+    alert('Could not save your attempt. Please check your connection and try again.');
+    state.submitting = false;
+    return;
+  }
+
   state.examActive = false;
   state.submitting = false;
   state.resultData = {
@@ -1274,7 +1288,7 @@ function renderResultPage() {
             <h2 class="title" style="margin-bottom:6px;">${esc(rd.paperTitle || 'Exam Results')}</h2>
             <p class="sub" style="margin-bottom:0;">${esc(rd.paperCode || '')} - ${esc(rd.studentName || 'Student')} - Completed attempt</p>
           </div>
-          <div class="btn-row"><button class="btn btn-ghost" onclick="closeMock()">Back to Dashboard</button></div>
+          <div class="btn-row"><button class="btn btn-ghost" onclick="window.closeMock()">Back to Dashboard</button></div>
         </div>
         <div class="result-summary">
           <div class="result-card result-ok"><h3>Score</h3><div style="font-size:2rem;font-weight:900;">${rd.score}/${rd.total}</div></div>
@@ -1292,10 +1306,10 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && sta
 window.addEventListener('beforeunload', e => { if (state.examActive) { e.preventDefault(); e.returnValue = ''; } });
 
 /* Modal events */
-el.submitMockBtn.addEventListener('click', requestSubmitMock);
-el.centerModalCancelBtn.addEventListener('click', closeCenterModal);
-el.centerModalConfirmBtn.addEventListener('click', () => { if (typeof state.centerModalAction === 'function') { const ok = state.centerModalAction(); if (ok === false) return; } closeCenterModal(); });
-el.centerModalInput.addEventListener('keydown', e => { if (e.key === 'Enter') el.centerModalConfirmBtn.click(); });
+if(el.submitMockBtn) el.submitMockBtn.addEventListener('click', requestSubmitMock);
+if(el.centerModalCancelBtn) el.centerModalCancelBtn.addEventListener('click', closeCenterModal);
+if(el.centerModalConfirmBtn) el.centerModalConfirmBtn.addEventListener('click', () => { if (typeof state.centerModalAction === 'function') { const ok = state.centerModalAction(); if (ok === false) return; } closeCenterModal(); });
+if(el.centerModalInput) el.centerModalInput.addEventListener('keydown', e => { if (e.key === 'Enter') el.centerModalConfirmBtn.click(); });
 
 /* Menu events */
 el.menuBtns.forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.view)));
