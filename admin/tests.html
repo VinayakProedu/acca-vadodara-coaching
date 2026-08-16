@@ -11,11 +11,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-<script type="module">
-  import * as UC from 'https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@v1/web/file-uploader.min.js';
-  UC.defineComponents(UC);
-</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@v1/web/uc-file-uploader-regular.min.css">
+<script>
+  window._ucReady = false;
+  async function initUploadcare() {
+    if (window._ucReady) return;
+    try {
+      const UC = await import('https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@v1/web/file-uploader.min.js');
+      UC.defineComponents(UC);
+      window._ucReady = true;
+    } catch (e) {
+      console.warn('Uploadcare blocked by browser privacy settings. Image upload will need manual URL entry.');
+    }
+  }
+</script>
 
 <style>
 :root{
