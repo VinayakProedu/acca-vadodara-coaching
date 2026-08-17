@@ -257,13 +257,18 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 
   /* Batches */
  async function loadBatches(){
-    const snap = await db.collection('batches').orderBy('createdAt','desc').get().catch(()=>null);
-    const batches = snap ? snap.docs.map(d => d.data()) : [];
-    const sel = document.getElementById('batchFilter'); // or 'batchSelect' depending on the file
-    const current = sel.value;
-    sel.innerHTML = '<option value="">All Batches</option>' + 
-        batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
-    if(current && batches.some(b => b.code === current)) sel.value = current;
+    try {
+        const snap = await db.collection('batches').orderBy('createdAt','desc').get().catch(()=>null);
+        const batches = snap ? snap.docs.map(d => d.data()) : [];
+        const sel = document.getElementById('batchSelect'); // FIXED: was batchFilter
+        if(!sel) return;
+        const current = sel.value;
+        sel.innerHTML = '<option value="">-- Choose Batch --</option>' + 
+            batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
+        if(current && batches.some(b => b.code === current)) sel.value = current;
+    } catch(err) {
+        console.error('loadBatches failed', err);
+    }
 }
 
   window.onBatchChange = function(){
