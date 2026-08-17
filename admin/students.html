@@ -24,7 +24,6 @@ img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 
-/* Login */
 .login-screen{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:20px}
 .login-card{width:min(420px,92vw);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-xl);padding:clamp(32px,6vw,48px);backdrop-filter:blur(24px);box-shadow:0 40px 100px rgba(0,0,0,0.45);text-align:center}
 .login-logo{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 20px;object-fit:cover;box-shadow:0 0 0 10px rgba(201,146,42,0.1)}
@@ -40,7 +39,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .login-status{font-size:0.92rem;margin-top:14px;min-height:22px;font-weight:700}
 .login-status.error{color:#fca5a5}
 
-/* App */
 .app-shell{display:flex;width:100%;height:100vh;background:#f5f7fb}
 .app-sidebar{width:260px;background:var(--navy);color:#fff;padding:18px;overflow:auto;flex-shrink:0;display:flex;flex-direction:column}
 .app-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08)}
@@ -101,12 +99,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .lecture-access-list{display:grid;gap:8px;max-height:280px;overflow:auto;padding:4px;margin:10px 0 14px;border:1px solid #e1e7f0;border-radius:10px}
 .lecture-access-list .enrolment-option{justify-content:flex-start}
 
-/* View system */
 .view{display:none}
 .view.active{display:block}
 
-/* Batch card */
-.batch-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.batch-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
 .batch-code{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:1rem}
 .batch-name{color:var(--muted);font-size:0.85rem}
 
@@ -126,7 +122,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" class="login-logo">
@@ -139,7 +134,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
   </div>
 </div>
 
-<!-- APP -->
 <div class="app-shell hidden" id="adminApp">
   <aside class="app-sidebar" id="appSidebar">
     <button class="sidebar-toggle" id="sidebarToggle" type="button">☰ Menu</button>
@@ -171,7 +165,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 
     <!-- STUDENTS VIEW -->
     <div id="studentsView" class="view active">
-      <!-- Student Table -->
       <div class="app-card" style="padding:0;overflow:hidden">
         <div style="padding:18px 20px;border-bottom:1px solid #e5e7eb;background:#f8fafc">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
@@ -192,26 +185,12 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
         <div style="overflow:auto;max-height:calc(100vh - 300px)">
           <table class="app-table" id="studentTable">
             <thead>
-              <tr>
-                <th style="width:40px">#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Batch</th>
-                <th>Subjects</th>
-                <th>Lectures</th>
-                <th>Joined</th>
-                <th style="width:100px">Actions</th>
-              </tr>
+              <tr><th style="width:40px">#</th><th>Name</th><th>Email</th><th>Phone</th><th>Batch</th><th>Subjects</th><th>Lectures</th><th>Joined</th><th style="width:100px">Actions</th></tr>
             </thead>
-            <tbody id="studentTableBody">
-              <tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr>
-            </tbody>
+            <tbody id="studentTableBody"><tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr></tbody>
           </table>
         </div>
       </div>
-
-      <!-- Student Detail Panel -->
       <div id="studentDetailPanel" style="display:none;margin-top:16px">
         <div class="app-card">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
@@ -246,12 +225,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
           </div>
           <div id="batchCreateStatus" class="portal-status"></div>
         </div>
-
         <div class="app-card">
           <h3 class="subject-title">Existing Batches</h3>
-          <div id="batchList" class="mini-list">
-            <div class="empty-box">Loading batches...</div>
-          </div>
+          <div id="batchList" class="mini-list"><div class="empty-box">Loading batches...</div></div>
         </div>
       </div>
     </div>
@@ -261,7 +237,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
 <script>
 const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e){ return {}; } })();
@@ -270,11 +245,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-let allStudents = [];
-let allTests = [];
-let allLectures = [];
-let allAttempts = [];
-let allBatches = [];
+let allStudents = [], allTests = [], allLectures = [], allAttempts = [], allBatches = [];
 
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -314,25 +285,19 @@ $('adminLogoutBtn').onclick = async () => { localStorage.removeItem('adminUnlock
 $('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href='index.html'; };
 $('refreshBtn').onclick = () => refreshStudents();
 
-/* Sidebar */
 $('sidebarToggle').onclick = () => $('appSidebar').classList.toggle('open');
 document.addEventListener('click', e => { if(window.innerWidth <= 980 && !e.target.closest('.app-sidebar')) $('appSidebar').classList.remove('open'); });
 
-/* View Switcher */
 function showView(viewId){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   $(viewId).classList.add('active');
   document.querySelectorAll('.app-menu a').forEach(a => a.classList.remove('active'));
-  
   if(viewId === 'studentsView') $('menuStudents').classList.add('active');
   if(viewId === 'batchView') $('menuBatches').classList.add('active');
-  
-  if(viewId === 'batchView') loadBatches();
 }
 
 $('menuStudents').onclick = (e) => { e.preventDefault(); showView('studentsView'); };
 
-/* Init */
 async function init(){
   await Promise.all([loadTests(), loadLectures(), loadBatches()]);
   await refreshStudents();
@@ -352,8 +317,8 @@ async function loadBatches(){
 }
 
 function populateBatchDropdowns(){
-  // Student filter
   const batchSel = $('filterBatch');
+  if(!batchSel) return;
   const current = batchSel.value;
   batchSel.innerHTML = '<option value="">All Batches</option>' + allBatches.map(b=>`<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
   if([...batchSel.options].some(o=>o.value===current)) batchSel.value = current;
@@ -395,7 +360,7 @@ window.createBatch = async function(){
 };
 
 window.deleteBatch = async function(code){
-  if(!confirm(`Delete batch "${code}"? Students in this batch will keep their batchCode but the batch will no longer appear in lists.`)) return;
+  if(!confirm(`Delete batch "${code}"?`)) return;
   await db.collection('batches').doc(code).delete();
   await loadBatches();
 };
@@ -413,13 +378,10 @@ async function refreshStudents(){
   try {
     const snap = await db.collection('users').where('role','==','student').limit(500).get();
     allStudents = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    
     const aSnap = await db.collection('attempts').get().catch(()=>null);
     allAttempts = aSnap ? aSnap.docs.map(d => ({id:d.id,...d.data()})) : [];
-    
     renderStudents();
   } catch(e) {
-    console.error(e);
     $('studentTableBody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:#ef4444">Error: ${esc(e.message)}</td></tr>`;
   }
 }
@@ -487,7 +449,6 @@ function renderStudentDetail(userId){
   const totalScore = attempts.reduce((sum,a)=>sum + Number(a.score || 0), 0);
   const totalMarks = attempts.reduce((sum,a)=>sum + Number(a.total || 0), 0);
   const avg = totalMarks ? Math.round((totalScore/totalMarks)*100) : 0;
-  
   const availableSubjects = [...new Set([...allTests.map(t=>t.subject), ...allLectures.map(l=>l.subject)].filter(Boolean))].sort();
 
   $('detailName').textContent = user.name || user.email || 'Student';
@@ -565,8 +526,7 @@ window.saveStudentAccess = async function(userId){
   const enrolledSubjects = [...document.querySelectorAll('.enrol-subj:checked')].map(i=>i.value);
   const assignedLectureIds = [...document.querySelectorAll('.enrol-lec:checked')].map(i=>i.value);
   await db.collection('users').doc(userId).update({
-    enrolledSubjects, 
-    assignedLectureIds, 
+    enrolledSubjects, assignedLectureIds, 
     accessUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
   });
   const u = allStudents.find(x=>x.id===userId); 
