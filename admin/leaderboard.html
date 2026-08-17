@@ -243,14 +243,14 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 
   /* Batches */
   async function loadBatches(){
-    const sel = document.getElementById('batchSelect');
-    try{
-      const snap = await db.collection('users').where('role','==','student').limit(500).get();
-      const students = snap.docs.map(d => d.data());
-      const batches = [...new Set(students.map(s => s.batchCode).filter(Boolean))].sort();
-      sel.innerHTML = '<option value="">-- Choose Batch --</option>' + batches.map(b => `<option value="${esc(b)}">${esc(b)}</option>`).join('');
-    }catch(err){ setStatus(document.getElementById('batchStatus'), err.message, true); }
-  }
+    const snap = await db.collection('batches').orderBy('createdAt','desc').get().catch(()=>null);
+    const batches = snap ? snap.docs.map(d => d.data()) : [];
+    const sel = document.getElementById('batchFilter'); // or 'batchSelect' depending on the file
+    const current = sel.value;
+    sel.innerHTML = '<option value="">All Batches</option>' + 
+        batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
+    if(current && batches.some(b => b.code === current)) sel.value = current;
+}
 
   window.onBatchChange = function(){
     document.getElementById('leaderboardView').style.display = 'none';
