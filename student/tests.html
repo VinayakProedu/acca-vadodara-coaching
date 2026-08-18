@@ -96,12 +96,6 @@ input:focus,select:focus,textarea:focus{border-color:#b8c7ea;box-shadow:0 0 0 3p
 .paper-card .meta{color:var(--muted);font-size:.9rem;margin-bottom:12px;}
 .paper-card .actions{display:flex;gap:10px;flex-wrap:wrap;}
 
-/* Chapter grouping */
-.chapter-group{margin-bottom:14px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff;}
-.chapter-head{padding:14px 16px;background:#f8fafc;cursor:pointer;font-weight:700;color:var(--navy);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
-.chapter-body{padding:14px;display:none;}
-.chapter-body.open{display:block;}
-
 /* Attempt cards */
 .attempt-card{padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow-sm);}
 .attempt-card .badge{margin-bottom:8px;}
@@ -609,7 +603,7 @@ function requestSubmitMock() {
     title: 'Are you sure?',
     message: 'Once submitted, this attempt will be scored and saved.',
     confirmText: 'Submit Paper',
-    onConfirm: () => { closeCenterModal(); submitMock(true); return true; }
+    onConfirm: () => { closeCenterModal(); submitMock(); return true; }
   });
 }
 
@@ -626,7 +620,7 @@ function updateTimerDisplay() {
     else if (secondsLeft <= 300 && secondsLeft > 0) { el.timerWarning.style.display = 'inline-flex'; el.timerWarning.textContent = 'Urgent: 5 minutes left'; }
     else { el.timerWarning.style.display = 'none'; }
   }
-  if (secondsLeft <= 0) { state.remaining = 0; clearInterval(state.timer); submitMock(true); }
+  if (secondsLeft <= 0) { state.remaining = 0; clearInterval(state.timer); submitMock(); }
 }
 function startTimer() {
   clearInterval(state.timer);
