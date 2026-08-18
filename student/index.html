@@ -188,8 +188,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
 /* Test Overlay */
-#testOverlay{display:none;}
-#testOverlay.show{display:block;}
+#testOverlay{display:none !important;}
+#testOverlay.show{display:block !important;}
 .feedback{padding:16px;border-radius:12px;line-height:1.6;background:#f8fafc;border:1.5px solid #e5e7eb;}
 .feedback.correct{background:#d1fae5;border-color:#10b981;color:#065f46;}
 .feedback.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;}
@@ -327,6 +327,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
           <div class="syllabus-sidebar">
             <div class="syllabus-header">
               <h3>Syllabus</h3>
+              <input type="search" id="lectureSearchX" class="course-search" placeholder="Search lessons..." oninput="filterLectures()" style="max-width:100%;margin-bottom:10px;padding:10px 14px;">
               <div class="progress-bar-wrap"><div class="progress-bar-fill" id="courseProgressBarX" style="width:0%"></div></div>
               <div style="display:flex;justify-content:space-between;font-size:.82rem;color:#6b7280;">
                 <span id="courseProgressTextX">0 of 0 Lessons</span><span id="courseProgressPctX">0%</span>
@@ -413,10 +414,13 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 <button class="portal-reopen" id="portalReopenX" type="button" onclick="toggleSidebar()">☰ Portal</button>
 
 <!-- Test Overlay -->
-<div id="testOverlay" style="display:none;position:fixed;inset:0;z-index:20000;background:rgba(13,27,64,.92);backdrop-filter:blur(8px);overflow:auto;">
+<div id="testOverlay" style="position:fixed;inset:0;z-index:20000;background:rgba(13,27,64,.92);backdrop-filter:blur(8px);overflow:auto;">
   <div style="max-width:900px;margin:40px auto;background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.4);min-height:80vh;display:flex;flex-direction:column;">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid #e5e7eb;background:#0D1B40;color:#fff;">
-      <h3 id="overlayTitle" style="font-family:'Playfair Display',serif;margin:0;">Test</h3>
+      <div>
+        <h3 id="overlayTitle" style="font-family:'Playfair Display',serif;margin:0;">Test</h3>
+        <span id="overlayProgress" style="font-size:.85rem;opacity:.8;">Q 1 / 1</span>
+      </div>
       <div style="display:flex;align-items:center;gap:16px;"><span id="testTimer" style="font-weight:700;color:#E8AA48;">⏱ 0:00</span><button id="closeTestOverlayBtn" style="background:rgba(255,255,255,.1);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button></div>
     </div>
     <div style="padding:20px 24px;background:#f8fafc;"><div style="background:#e5e7eb;height:6px;border-radius:3px;overflow:hidden;"><div id="progressBar" style="width:0%;height:100%;background:linear-gradient(90deg,#C9922A,#E8AA48);border-radius:3px;transition:width .3s;"></div></div></div>
@@ -515,21 +519,13 @@ document.getElementById('studentSignupBtnX').addEventListener('click', async ()=
   try{
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({displayName:name});
-    // CRITICAL: Write to 'users' collection with role: 'student' so admin can find them
     await db.collection('users').doc(cred.user.uid).set({
-      uid: cred.user.uid,
-      name: name,
-      email: email,
-      phone: phone || '',
-      role: 'student',        // <-- THIS IS REQUIRED for admin to find them
-      batchCode: '',
-      enrolledSubjects: [],
-      assignedLectureIds: [],
+      uid: cred.user.uid, name: name, email: email, phone: phone || '',
+      role: 'student', batchCode: '', enrolledSubjects: [], assignedLectureIds: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     setStatus('studentSignupStatusX','Account created! Logging in…');
-    // Auto-login after 1 second
     setTimeout(() => auth.signInWithEmailAndPassword(email, password), 1000);
   }catch(err){ setStatus('studentSignupStatusX',err.message,true); }
 });
@@ -559,7 +555,10 @@ async function loadDashboard(){
 
   if(myBatch) lectures = lectures.filter(l => { const b = l.batchCodes||[]; return !b.length || b.includes(myBatch); });
   if(myLectures.length) lectures = lectures.filter(l => myLectures.includes(l.id));
-  else if(mySubjects.length) lectures = lectures.filter(l => mySubjects.includes(l.subject));
+  else if(mySubjects.length) lectures = lectures.filter(l => {
+    const sub = l.subject || 'General';
+    return mySubjects.includes(sub) || sub === 'General';
+  });
 
   state.lectures = lectures;
   const subjects = [...new Set(lectures.map(l => l.subject || 'General'))].sort();
@@ -622,16 +621,18 @@ window.openCourseSection = function(section){
 async function renderSyllabus(subject){
   const container = document.getElementById('studentSyllabusX');
   container.innerHTML = '<div class="skeleton" style="height:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:60px;margin-bottom:8px;"></div>';
-  const lSnap = await db.collection('lectures').where('subject','==',subject).limit(200).get().catch(()=>null);
-  let courseLectures = lSnap ? lSnap.docs.map(d=>({id:d.id,...d.data()})) : [];
+  
+  // Use pre-filtered user lectures so General (missing subject) lectures appear correctly
+  let courseLectures = state.lectures.filter(l => (l.subject || 'General') === subject);
   courseLectures.sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
+  
   if(!courseLectures.length){ container.innerHTML = '<div class="empty-box">No lectures yet.</div>'; return; }
-  const bySection = {};
-  courseLectures.forEach(l => { const sec = l.section || 'General'; if(!bySection[sec]) bySection[sec]=[]; bySection[sec].push(l); });
   const total = courseLectures.length;
   document.getElementById('courseProgressBarX').style.width = '0%';
   document.getElementById('courseProgressTextX').textContent = `0 of ${total} Lessons`;
   document.getElementById('courseProgressPctX').textContent = '0%';
+  const bySection = {};
+  courseLectures.forEach(l => { const sec = l.section || 'General'; if(!bySection[sec]) bySection[sec]=[]; bySection[sec].push(l); });
   container.innerHTML = Object.keys(bySection).sort().map((sec, idx) => {
     const lessons = bySection[sec].sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||'')));
     return `<details class="syllabus-section" ${idx===0?'open':''}>
@@ -650,6 +651,22 @@ async function renderSyllabus(subject){
   const first = courseLectures.find(l => !l.lectureDate || new Date(l.lectureDate + 'T' + (l.lectureTime||'00:00')) <= new Date());
   if(first) playLesson(first.id);
 }
+
+window.filterLectures = function(){
+  const q = (document.getElementById('lectureSearchX')?.value || '').toLowerCase().trim();
+  document.querySelectorAll('#studentSyllabusX .syllabus-section').forEach(sec => {
+    let visible = 0;
+    sec.querySelectorAll('.lesson-item').forEach(item => {
+      const match = !q || item.innerText.toLowerCase().includes(q);
+      item.style.display = match ? '' : 'none';
+      if(match) visible++;
+    });
+    const summary = sec.querySelector('summary');
+    const summaryMatch = summary && summary.innerText.toLowerCase().includes(q);
+    sec.style.display = (visible > 0 || summaryMatch) ? '' : 'none';
+    if(q && visible > 0) sec.open = true;
+  });
+};
 
 window.playLesson = async function(lectureId){
   let lecture = state.lectures.find(l => l.id === lectureId);
@@ -847,7 +864,7 @@ auth.onAuthStateChanged(async user => {
   await loadDashboard();
 });
 </script>
-<script src="./tests.js"></script>
+<script src="./test.js"></script>
 <script src="./test-engine.js"></script>
 </body>
 </html>
