@@ -97,6 +97,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .lecture-subject-frame[open] summary{border-bottom:3px solid var(--gold);}
 .lecture-subject-frame .lecture-course-list{padding:10px 14px;}
 
+/* Batch selector in forms */
+.batch-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;max-height:220px;overflow:auto;padding:10px;border:1px solid #e5e7eb;border-radius:12px;background:#fbfdff;}
+.batch-option{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#fff;border:1px solid #e1e7f0;border-radius:10px;font-size:0.85rem;color:var(--navy);font-weight:600;cursor:pointer;}
+.batch-option input{cursor:pointer;}
+
 /* Batch filter bar */
 .filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
 .filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:180px;}
@@ -181,7 +186,17 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
           <div class="portal-field"><label>Time</label><input type="time" id="lecTime"></div>
         </div>
 
-        <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="lecBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
+        <!-- BATCH SELECTOR -->
+        <div class="portal-field">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Assign to Batches</span>
+            <span id="batchLoadStatus" style="font-size:0.72rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500;"></span>
+          </label>
+          <div id="lecBatchSelect" class="batch-select-grid">
+            <div class="empty-box" style="padding:12px;font-size:0.85rem;">Loading batches...</div>
+          </div>
+        </div>
+
         <div class="portal-field"><label>Attachment / Notes Link</label><input type="text" id="lecAttachment" placeholder="Google Drive, PDF, or notes URL (optional)"></div>
 
         <div class="portal-field">
@@ -209,7 +224,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         <div class="filter-bar">
           <select id="batchFilter" onchange="renderLibrary()"><option value="">All Batches</option></select>
           <button class="ghost-btn" type="button" onclick="window.loadBatches()" style="padding:8px 12px;font-size:0.85rem;">🔄 Refresh Batches</button>
-          <span id="batchLoadStatus" style="font-size:0.82rem;color:var(--muted);align-self:center;"></span>
+          <span id="batchFilterStatus" style="font-size:0.82rem;color:var(--muted);align-self:center;"></span>
           <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()" style="margin:0;flex:1;">
         </div>
         <div class="portal-field"><label>Filter by Date</label><input type="date" id="libFilterDate" onchange="renderLibrary()"></div>
@@ -287,7 +302,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('appShell').classList.remove('hidden');
     loadLibrary();
     loadBatches();
-    setTimeout(loadBatches, 1200); // safety fallback in case first call races DOM
+    setTimeout(loadBatches, 1200);
   }
 
   /* YouTube ID extractor */
@@ -306,6 +321,26 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     return '';
   }
 
+  /* Batch selector renderer */
+  function renderBatchCheckboxList(batches, containerId, selected=[]){
+    const box = document.getElementById(containerId);
+    if(!box) return;
+    if(!batches.length){
+      box.innerHTML = '<div class="empty-box" style="padding:12px;font-size:0.85rem;">No batches found. Create one in Students → Batches.</div>';
+      return;
+    }
+    box.innerHTML = batches.map(b => `
+      <label class="batch-option">
+        <input type="checkbox" value="${esc(b.code)}" ${selected.includes(b.code)?'checked':''}>
+        <span style="word-break:break-word;">${esc(b.code)}<br><span style="font-size:0.75rem;color:var(--muted);font-weight:500;">${esc(b.name||'')}</span></span>
+      </label>
+    `).join('');
+  }
+
+  function getSelectedBatchCodes(containerId){
+    return [...document.querySelectorAll(`#${containerId} input:checked`)].map(i => i.value);
+  }
+
   /* Upload */
   document.getElementById('uploadBtn').addEventListener('click', async () => {
     const title = val('lecTitle');
@@ -315,6 +350,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     const time = val('lecTime');
     const attachment = val('lecAttachment');
     const youtubeInput = val('lecYoutube');
+    const batchCodes = getSelectedBatchCodes('lecBatchSelect');
 
     if(!title || !subject || !date){ setStatus(document.getElementById('uploadStatus'), 'Title, Subject, and Date are required.', true); return; }
 
@@ -337,7 +373,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         videoURL: videoURL || null,
         fileURL: uploadedFileURL || null,
         attachment: attachment || '',
-        batchCodes: val('lecBatch').split(',').map(s=>s.trim()).filter(Boolean),
+        batchCodes,
         uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
       await db.collection('lectures').add(payload);
@@ -348,13 +384,12 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       document.getElementById('lecSection').value = '';
       document.getElementById('lecDate').value = '';
       document.getElementById('lecTime').value = '';
-      document.getElementById('lecBatch').value = '';
       document.getElementById('lecAttachment').value = '';
       document.getElementById('lecYoutube').value = '';
       uploadedFileURL = null;
+      renderBatchCheckboxList(allBatches, 'lecBatchSelect');
 
       await loadLibrary();
-      await loadBatches();
     }catch(err){ setStatus(document.getElementById('uploadStatus'), err.message || 'Upload failed', true); }
   });
 
@@ -364,10 +399,10 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('lecSection').value = '';
     document.getElementById('lecDate').value = '';
     document.getElementById('lecTime').value = '';
-    document.getElementById('lecBatch').value = '';
     document.getElementById('lecAttachment').value = '';
     document.getElementById('lecYoutube').value = '';
     uploadedFileURL = null;
+    renderBatchCheckboxList(allBatches, 'lecBatchSelect');
     setStatus(document.getElementById('uploadStatus'), '');
   });
 
@@ -383,21 +418,26 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 
   async function loadBatches(){
     const statusEl = document.getElementById('batchLoadStatus');
+    const filterStatus = document.getElementById('batchFilterStatus');
     try {
-      if(statusEl) statusEl.textContent = 'Loading batches...';
+      if(statusEl) statusEl.textContent = 'Loading...';
       const snap = await db.collection('batches').orderBy('createdAt','desc').get();
       const batches = snap.docs.map(d => ({...d.data(), id: d.id}));
       allBatches = batches;
+      renderBatchCheckboxList(batches, 'lecBatchSelect');
       const sel = document.getElementById('batchFilter');
-      if(!sel){ if(statusEl) statusEl.textContent = 'Batch dropdown not found'; return; }
-      const current = sel.value;
-      sel.innerHTML = '<option value="">All Batches</option>' + 
-        batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name || 'Unnamed')}</option>`).join('');
-      if(current && batches.some(b => b.code === current)) sel.value = current;
-      if(statusEl) statusEl.textContent = batches.length ? `${batches.length} batch(es) ready` : 'No batches found. Create one in Students → Batches.';
+      if(sel){
+        const current = sel.value;
+        sel.innerHTML = '<option value="">All Batches</option>' + 
+          batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name || 'Unnamed')}</option>`).join('');
+        if(current && batches.some(b => b.code === current)) sel.value = current;
+      }
+      if(statusEl) statusEl.textContent = batches.length ? `${batches.length} ready` : 'None';
+      if(filterStatus) filterStatus.textContent = batches.length ? `${batches.length} batch(es) ready` : 'No batches found';
     } catch(err) {
       console.error('loadBatches error', err);
-      if(statusEl) statusEl.textContent = 'Error loading batches: ' + err.message;
+      if(statusEl) statusEl.textContent = 'Error';
+      if(filterStatus) filterStatus.textContent = 'Error loading batches';
     }
   }
   window.loadBatches = loadBatches;
