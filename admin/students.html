@@ -3,232 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Students | Vinayak ProEdu</title>
+<title>Lectures | Vinayak ProEdu Admin</title>
 <link rel="icon" type="image/png" href="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --gold:#C9922A;--gold-lt:#E8AA48;--amber:#F5C04A;
-  --navy:#0D1B40;--navy-mid:#1a2e5e;--blue:#1e3c72;--blue-lt:#2a5298;
-  --ink:#1A1A2E;--muted:#6B7280;--silver:#9ca3af;--smoke:#EFF1F6;--white:#FFFFFF;
-  --rose:#F7F5F0;--blush:#fde8dc;
-  --shadow-sm:0 4px 20px rgba(13,27,64,0.08);--shadow-md:0 12px 45px rgba(13,27,64,0.14);
-  --r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;
+  --navy:#0D1B40; --navy-mid:#1a2e5e; --blue:#1e3c72; --gold:#C9922A; --gold-lt:#E8AA48;
+  --amber:#F5C04A; --ink:#1A1A2E; --muted:#6B7280; --smoke:#EFF1F6; --white:#FFFFFF;
+  --shadow-sm:0 4px 20px rgba(13,27,64,0.08); --shadow-md:0 12px 45px rgba(13,27,64,0.14);
+  --r-sm:10px; --r-md:16px; --r-lg:24px;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--rose);line-height:1.65;overflow-x:hidden}
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
-h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#f5f7fb;line-height:1.65;overflow-x:hidden;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 
-.login-screen{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:20px}
-.login-card{width:min(420px,92vw);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-xl);padding:clamp(32px,6vw,48px);backdrop-filter:blur(24px);box-shadow:0 40px 100px rgba(0,0,0,0.45);text-align:center}
-.login-logo{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);margin:0 auto 20px;object-fit:cover;box-shadow:0 0 0 10px rgba(201,146,42,0.1)}
-.login-card h2{color:#fff;font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:6px}
-.login-card>p{color:rgba(255,255,255,0.55);font-size:0.92rem;margin-bottom:28px}
-.login-field{text-align:left;margin-bottom:16px}
-.login-field label{display:block;font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px}
-.login-field input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r-sm);color:#fff;font-size:0.95em;font-family:'DM Sans',sans-serif;transition:all 0.25s}
-.login-field input::placeholder{color:rgba(255,255,255,0.3)}
-.login-field input:focus{outline:none;border-color:rgba(201,146,42,0.6);background:rgba(255,255,255,0.13);box-shadow:0 0 0 3px rgba(201,146,42,0.15)}
-.login-btn{width:100%;padding:14px;border-radius:50px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);font-size:1em;font-weight:700;font-family:'DM Sans',sans-serif;box-shadow:0 8px 28px rgba(201,146,42,0.35);transition:all 0.3s;margin-top:6px}
-.login-btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(201,146,42,0.5)}
-.login-status{font-size:0.92rem;margin-top:14px;min-height:22px;font-weight:700}
-.login-status.error{color:#fca5a5}
+/* Login */
+.login-wrap{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-box{width:min(420px,92vw);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-lg);padding:clamp(32px,6vw,48px);backdrop-filter:blur(20px);box-shadow:0 40px 100px rgba(0,0,0,0.4);}
+.login-box h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.6rem;margin-bottom:6px;text-align:center;}
+.login-box p{color:rgba(255,255,255,0.55);font-size:0.9rem;text-align:center;margin-bottom:28px;}
+.login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.login-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.65);}
+.login-field input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.14);border-radius:var(--r-sm);color:#fff;font-size:0.95em;font-family:'DM Sans',sans-serif;transition:all 0.25s;}
+.login-field input::placeholder{color:rgba(255,255,255,0.32);}
+.login-field input:focus{outline:none;border-color:rgba(201,146,42,0.6);background:rgba(255,255,255,0.13);box-shadow:0 0 0 3px rgba(201,146,42,0.15);}
+.login-btn{width:100%;padding:15px;border-radius:50px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);font-size:1em;font-weight:700;font-family:'DM Sans',sans-serif;box-shadow:0 8px 28px rgba(201,146,42,0.35);transition:all 0.3s;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(201,146,42,0.5);}
+.login-status{margin-top:12px;font-size:0.9rem;font-weight:700;text-align:center;min-height:22px;}
+.login-status.error{color:#fca5a5;}
 
-.app-shell{display:flex;width:100%;height:100vh;background:#f5f7fb}
-.app-sidebar{width:260px;background:var(--navy);color:#fff;padding:18px;overflow:auto;flex-shrink:0;display:flex;flex-direction:column}
-.app-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08)}
-.app-brand img{width:42px;height:42px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
-.app-brand h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin:0;color:#fff}
-.app-brand p{font-size:0.7rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-lt);margin:2px 0 0}
-.app-menu{display:flex;flex-direction:column;gap:6px;flex:1}
-.app-menu a,.app-menu button{width:100%;border:none;background:transparent;color:rgba(255,255,255,0.85);padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:600;font-size:0.9rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:10px;text-decoration:none}
-.app-menu a:hover,.app-menu button:hover{background:rgba(255,255,255,0.08);color:#fff}
-.app-menu a.active,.app-menu button.active{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);box-shadow:0 4px 14px rgba(201,146,42,0.35)}
-.app-menu .logout-btn{margin-top:auto;background:rgba(180,35,24,0.15);color:#fca5a5;border:1px solid rgba(180,35,24,0.3)}
-.app-menu .logout-btn:hover{background:rgba(180,35,24,0.25)}
-.sidebar-toggle{display:none;width:100%;margin-bottom:14px;padding:10px 12px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;font:inherit;font-weight:700;text-align:left}
-.app-main{flex:1;overflow:auto;padding:24px 28px}
+/* App Shell */
+.app-shell{display:flex;width:100%;min-height:100vh;}
+.app-sidebar{width:260px;background:var(--navy);color:#fff;padding:18px;overflow:auto;flex-shrink:0;position:fixed;height:100vh;left:0;top:0;z-index:100;}
+.app-brand{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.app-brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;}
+.app-brand h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin:0;color:#fff;}
+.app-brand p{font-size:0.72rem;letter-spacing:1.4px;text-transform:uppercase;color:rgba(232,170,72,0.8);margin-top:2px;}
+.app-menu{display:grid;gap:6px;}
+.app-menu a,.app-menu button{width:100%;border:none;background:transparent;color:#fff;padding:11px 14px;border-radius:10px;cursor:pointer;text-align:left;font-weight:600;font-size:0.9rem;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:all 0.2s;text-decoration:none;}
+.app-menu a:hover,.app-menu button:hover,.app-menu a.active,.app-menu button.active{background:var(--gold);color:var(--navy);}
+.app-main{flex:1;margin-left:260px;padding:24px 28px;overflow:auto;min-height:100vh;}
 
-.app-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #e2e8f0}
-.app-title{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.6rem;margin:0}
-.app-sub{color:var(--muted);font-size:0.9rem}
-.topbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* Topbar */
+.app-topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e5e7eb;}
+.app-title{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.6rem;margin:0;}
+.app-sub{color:var(--muted);font-size:0.9rem;}
 
-.app-card{background:#fff;border:1px solid rgba(201,146,42,0.12);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm);margin-bottom:18px}
-.app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.metric{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:16px;padding:18px;text-align:center}
-.metric .n{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:800}
-.metric .l{font-size:0.75rem;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:4px}
-.subject-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);margin:0 0 14px}
-.empty-box{padding:18px;border:1.5px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.92rem}
-.mini-list{display:flex;flex-direction:column;gap:10px}
-.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;transition:all 0.2s}
-.mini-item:hover{background:#f8fafc}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:var(--blue);border-radius:999px;padding:5px 10px;font-size:0.75rem;font-weight:700;margin:3px 6px 3px 0}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.primary-btn,.secondary-btn,.ghost-btn,.danger-btn{border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.88rem;transition:all 0.2s}
-.primary-btn{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff}
-.secondary-btn{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy)}
-.ghost-btn{background:#eef4ff;color:var(--blue)}
-.danger-btn{background:#fef2f2;color:#b42318;border:1px solid #fecaca}
-.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);opacity:0.95}
-.danger-btn:hover{background:#fee2e2}
+/* Cards */
+.app-card{background:#fff;border:1px solid rgba(201,146,42,0.12);border-radius:20px;padding:22px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
+.app-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.subject-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);margin:0 0 14px;}
 
-.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted)}
-.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(13,27,64,0.14);background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:all 0.2s}
-.portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,42,0.12)}
-.portal-field textarea{min-height:100px;resize:vertical}
+/* Form Elements */
+.portal-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.portal-field label{font-size:0.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.portal-field input,.portal-field select,.portal-field textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(13,27,64,0.14);background:#fff;color:var(--ink);font-size:0.95rem;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.portal-field input:focus,.portal-field select:focus,.portal-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,42,0.12);}
+.portal-field textarea{min-height:90px;resize:vertical;}
+.portal-field select{cursor:pointer;}
 
-.app-table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:0.88rem}
-.app-table th,.app-table td{padding:10px 12px;border-bottom:1px solid #eef2f7;text-align:left}
-.app-table th{background:#f8fafc;color:var(--navy);font-weight:700;font-size:0.8rem;letter-spacing:0.5px;text-transform:uppercase}
-.app-table tr:last-child td{border-bottom:none}
-.app-table tr:hover td{background:#f8fafc}
+/* Buttons */
+.primary-btn,.secondary-btn,.ghost-btn{border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
+.primary-btn{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;}
+.secondary-btn{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--navy);}
+.ghost-btn{background:#eef4ff;color:var(--blue);}
+.primary-btn:hover,.secondary-btn:hover,.ghost-btn:hover{transform:translateY(-1px);opacity:0.95;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
 
-.student-detail-header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:20px;border-radius:16px;margin-bottom:16px}
-.student-detail-header h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:4px}
-.enrolment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0 14px}
-.enrolment-option{display:flex;gap:8px;align-items:center;padding:10px 12px;background:var(--smoke);border:1px solid #e1e7f0;border-radius:10px;font-size:0.88rem;color:var(--navy);font-weight:600;cursor:pointer}
-.enrolment-option input{cursor:pointer}
-.lecture-access-list{display:grid;gap:8px;max-height:280px;overflow:auto;padding:4px;margin:10px 0 14px;border:1px solid #e1e7f0;border-radius:10px}
-.lecture-access-list .enrolment-option{justify-content:flex-start}
+/* Status */
+.portal-status{font-size:0.92rem;margin-top:10px;min-height:22px;font-weight:700;}
+.portal-status.error{color:#b42318;}
+.portal-status.success{color:#166534;}
 
-.view{display:none}
-.view.active{display:block}
+/* Search */
+.practice-search{width:100%;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;margin-bottom:14px;}
+.practice-search:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
-.batch-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
-.batch-code{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:1rem}
-.batch-name{color:var(--muted);font-size:0.85rem}
+/* Lists */
+.mini-list{display:grid;gap:10px;max-height:480px;overflow:auto;padding-right:4px;}
+.mini-item{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;transition:all 0.2s;}
+.mini-item:hover{box-shadow:var(--shadow-sm);border-color:rgba(201,146,42,0.3);}
+.empty-box{padding:20px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.9rem;}
 
-@media(max-width:980px){
-  .app-grid-2{grid-template-columns:1fr}
-  .app-sidebar{position:fixed;left:0;top:0;bottom:0;z-index:9000;transform:translateX(-100%);transition:transform 0.3s}
-  .app-sidebar.open{transform:translateX(0)}
-  .sidebar-toggle{display:block}
-  .app-main{padding:18px}
+/* Lecture Grouping */
+.lecture-subject-frame{margin-bottom:14px;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;background:#fff;}
+.lecture-subject-frame summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;font-weight:800;font-size:0.95rem;}
+.lecture-subject-frame summary::-webkit-details-marker{display:none;}
+.lecture-subject-frame[open] summary{border-bottom:3px solid var(--gold);}
+.lecture-subject-frame .lecture-course-list{padding:10px 14px;}
+
+/* Batch selector in forms */
+.batch-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;max-height:220px;overflow:auto;padding:10px;border:1px solid #e5e7eb;border-radius:12px;background:#fbfdff;}
+.batch-option{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#fff;border:1px solid #e1e7f0;border-radius:10px;font-size:0.85rem;color:var(--navy);font-weight:600;cursor:pointer;}
+.batch-option input{cursor:pointer;}
+
+/* Batch filter bar */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;}
+.filter-bar select{padding:10px 14px;border-radius:10px;border:1px solid #d7ddea;background:#fff;font:inherit;color:var(--ink);min-width:180px;}
+.filter-bar select:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(13,27,64,0.2);border-radius:10px;}
+
+/* Responsive */
+@media(max-width:900px){
+  .app-sidebar{width:100%;height:auto;position:relative;}
+  .app-main{margin-left:0;}
+  .app-shell{flex-direction:column;}
+  .app-grid-2{grid-template-columns:1fr;}
 }
 @media(max-width:640px){
-  .app-title{font-size:1.25rem}
-  .login-card{padding:28px 20px}
+  .app-main{padding:16px;}
 }
-.hidden{display:none !important}
+.hidden{display:none !important;}
 </style>
+<base target="_blank">
 </head>
 <body>
 
-<div class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu" class="login-logo">
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
     <h2>Admin Portal</h2>
-    <p>Students Module · Vinayak ProEdu</p>
+    <p>Lecture Manager</p>
     <div class="login-field"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="admin@email.com"></div>
     <div class="login-field"><label>Password</label><input type="password" id="adminPassword" placeholder="••••••••"></div>
-    <button class="login-btn" id="adminLoginBtn">Login as Admin</button>
-    <div class="login-status" id="adminLoginStatus"></div>
+    <button class="login-btn" id="adminLoginBtn" type="button">Login as Admin</button>
+    <div class="login-status" id="loginStatus"></div>
   </div>
 </div>
 
-<div class="app-shell hidden" id="adminApp">
-  <aside class="app-sidebar" id="appSidebar">
-    <button class="sidebar-toggle" id="sidebarToggle" type="button">☰ Menu</button>
+<!-- APP -->
+<div class="app-shell hidden" id="appShell">
+  <aside class="app-sidebar">
     <div class="app-brand">
-      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Logo">
-      <div><h3>Vinayak ProEdu</h3><p>Admin Panel</p></div>
+      <img src="https://pasteimg.com/images/2026/03/31/WhatsApp-Image-2026-03-19-at-6.49.19-PM.jpg" alt="Vinayak ProEdu">
+      <div>
+        <h3>Vinayak ProEdu</h3>
+        <p>Admin Panel</p>
+      </div>
     </div>
     <nav class="app-menu">
-      <a href="index.html"><span>📊</span> Dashboard</a>
-      <a href="tests.html"><span>📝</span> Mocks</a>
-      <a href="lectures.html"><span>🎬</span> Lectures</a>
-      <a href="live.html"><span>🔴</span> Live Classes</a>
-      <a href="students.html" class="active" id="menuStudents"><span>👨‍🎓</span> Students</a>
-      <a href="#" id="menuBatches" onclick="showView('batchView');return false;"><span>📦</span> Batches</a>
-      <a href="leaderboard.html"><span>🏆</span> Leaderboard</a>
-      <a href="doubts.html"><span>💬</span> Doubts</a>
-      <button class="logout-btn" id="adminLogoutBtn" type="button"><span>🚪</span> Logout</button>
+      <a href="students.html"><span>📦</span> Batches</a>
+      <a href="index.html">📊 Dashboard</a>
+      <a href="students.html">👥 Students</a>
+      <a href="tests.html">📝 Mocks</a>
+      <a href="lectures.html" class="active">🎬 Lectures</a>
+      <a href="live.html">🔴 Live Classes</a>
+      <a href="leaderboard.html">🏆 Leaderboard</a>
+      <a href="doubts.html">💬 Doubts</a>
+      <button id="logoutBtn" type="button">🚪 Logout</button>
     </nav>
   </aside>
 
   <main class="app-main">
     <div class="app-topbar">
-      <div><h2 class="app-title" id="pageTitle">Students</h2><div class="app-sub" id="pageSub">Manage enrolled students and access control</div></div>
-      <div class="topbar-actions">
-        <button class="ghost-btn" id="refreshBtn" type="button">🔄 Refresh</button>
-        <button class="ghost-btn" id="closeAdminBtn" type="button">✕ Close</button>
+      <div>
+        <h1 class="app-title">Lecture Manager</h1>
+        <div class="app-sub">Upload videos, files, and manage your course library</div>
       </div>
+      <button class="ghost-btn" id="closeBtn" type="button">Close</button>
     </div>
 
-    <!-- STUDENTS VIEW -->
-    <div id="studentsView" class="view active">
-      <div class="app-card" style="padding:0;overflow:hidden">
-        <div style="padding:18px 20px;border-bottom:1px solid #e5e7eb;background:#f8fafc">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
-            <h3 class="subject-title" style="margin:0">All Students</h3>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <input type="search" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea;min-width:200px" id="studentSearch" placeholder="Search name, email, phone..." oninput="renderStudents()">
-              <select id="filterBatch" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Batches</option></select>
-              <select id="filterSubject" class="ghost-btn" style="background:#fff;border:1px solid #d7ddea" onchange="renderStudents()"><option value="">All Subjects</option></select>
-              <button class="ghost-btn" type="button" onclick="refreshStudents()">🔄 Refresh</button>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:0.82rem;color:#6b7280">
-            <span id="studentCountBadge">0 students</span>
-            <span style="color:#d1d5db">|</span>
-            <label style="display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="showUnassigned" onchange="renderStudents()"> Unassigned only</label>
-          </div>
-        </div>
-        <div style="overflow:auto;max-height:calc(100vh - 300px)">
-          <table class="app-table" id="studentTable">
-            <thead>
-              <tr><th style="width:40px">#</th><th>Name</th><th>Email</th><th>Phone</th><th>Batch</th><th>Subjects</th><th>Lectures</th><th>Joined</th><th style="width:100px">Actions</th></tr>
-            </thead>
-            <tbody id="studentTableBody"><tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div id="studentDetailPanel" style="display:none;margin-top:16px">
-        <div class="app-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-            <h3 class="subject-title" style="margin:0" id="detailName">Student Detail</h3>
-            <button class="ghost-btn" type="button" onclick="closeStudentDetail()">Close Detail</button>
-          </div>
-          <div id="detailContent"></div>
-        </div>
-      </div>
-    </div>
+    <div class="app-grid-2">
+      <!-- LEFT: Upload Form -->
+      <div class="app-card">
+        <h3 class="subject-title">Upload Lecture</h3>
 
-    <!-- BATCH MANAGER VIEW -->
-    <div id="batchView" class="view">
-      <div class="app-grid-2">
-        <div class="app-card">
-          <h3 class="subject-title">Create New Batch</h3>
-          <div class="portal-field">
-            <label>Batch Code *</label>
-            <input type="text" id="newBatchCode" placeholder="e.g. ACCA-2026-A">
-          </div>
-          <div class="portal-field">
-            <label>Batch Name *</label>
-            <input type="text" id="newBatchName" placeholder="e.g. ACCA March 2026 Morning Batch">
-          </div>
-          <div class="portal-field">
-            <label>Description</label>
-            <textarea id="newBatchDesc" placeholder="Optional details about this batch..."></textarea>
-          </div>
-          <div class="btn-row">
-            <button class="primary-btn" type="button" onclick="createBatch()">➕ Create Batch</button>
-            <button class="ghost-btn" type="button" onclick="clearBatchForm()">Clear</button>
-          </div>
-          <div id="batchCreateStatus" class="portal-status"></div>
+        <div class="portal-field"><label>Title *</label><input type="text" id="lecTitle" placeholder="e.g. BT Chapter 1 - Introduction to Business"></div>
+        <div class="portal-field"><label>Subject / Paper Code *</label><input type="text" id="lecSubject" placeholder="e.g. BT, MA, FA, FR, FM..."></div>
+        <div class="portal-field"><label>Section / Chapter</label><input type="text" id="lecSection" placeholder="e.g. 01 Introduction, 02 Study Material"></div>
+
+        <div class="app-grid-2" style="grid-template-columns:1fr 1fr;">
+          <div class="portal-field"><label>Date *</label><input type="date" id="lecDate"></div>
+          <div class="portal-field"><label>Time</label><input type="time" id="lecTime"></div>
         </div>
-        <div class="app-card">
-          <h3 class="subject-title">Existing Batches</h3>
-          <div id="batchList" class="mini-list"><div class="empty-box">Loading batches...</div></div>
+
+        <!-- BATCH SELECTOR -->
+        <div class="portal-field">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Assign to Batches</span>
+            <span id="batchLoadStatus" style="font-size:0.72rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500;"></span>
+          </label>
+          <div id="lecBatchSelect" class="batch-select-grid">
+            <div class="empty-box" style="padding:12px;font-size:0.85rem;">Loading batches...</div>
+          </div>
         </div>
+
+        <div class="portal-field"><label>Attachment / Notes Link</label><input type="text" id="lecAttachment" placeholder="Google Drive, PDF, or notes URL (optional)"></div>
+
+        <div class="portal-field">
+          <label>YouTube Link</label>
+          <input type="text" id="lecYoutube" placeholder="Paste YouTube URL here">
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Supports youtube.com, youtu.be, shorts</div>
+        </div>
+
+        <div class="portal-field">
+          <label>OR Upload File</label>
+          <input type="hidden" role="uploadcare-uploader" data-public-key="9dcf4ee1bc520691123a" id="uploadcareInput">
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Video, PDF, or any file type</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="primary-btn" id="uploadBtn" type="button">⬆ Upload Lecture</button>
+          <button class="ghost-btn" id="clearBtn" type="button">Clear</button>
+        </div>
+        <div class="portal-status" id="uploadStatus"></div>
+      </div>
+
+      <!-- RIGHT: Library -->
+      <div class="app-card">
+        <h3 class="subject-title">Lecture Library</h3>
+        <div class="filter-bar">
+          <select id="batchFilter" onchange="renderLibrary()"><option value="">All Batches</option></select>
+          <button class="ghost-btn" type="button" onclick="window.loadBatches()" style="padding:8px 12px;font-size:0.85rem;">🔄 Refresh Batches</button>
+          <span id="batchFilterStatus" style="font-size:0.82rem;color:var(--muted);align-self:center;"></span>
+          <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()" style="margin:0;flex:1;">
+        </div>
+        <div class="portal-field"><label>Filter by Date</label><input type="date" id="libFilterDate" onchange="renderLibrary()"></div>
+        <div id="lectureLibrary"></div>
       </div>
     </div>
   </main>
@@ -237,311 +237,284 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 
 <script>
-const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e){ return {}; } })();
-if(!firebase.apps.length) firebase.initializeApp(_fc);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const ADMIN_EMAIL = "vinayakproedu@gmail.com";
+(function(){
+  const ADMIN_EMAIL = "vinayakproedu@gmail.com";
 
-let allStudents = [], allTests = [], allLectures = [], allAttempts = [], allBatches = [];
+  const _fc = (() => { try { return JSON.parse(atob("eyJhcGlLZXkiOiAiQUl6YVN5Q3daR1ZLOUlfR1FtSmtSYXRaT3lNczBnZGNaOG5Tb3VjIiwgImF1dGhEb21haW4iOiAidmluYXlhay1wcm9lZHUuZmlyZWJhc2VhcHAuY29tIiwgInByb2plY3RJZCI6ICJ2aW5heWFrLXByb2VkdSIsICJzdG9yYWdlQnVja2V0IjogInZpbmF5YWstcHJvZWR1LmFwcHNwb3QuY29tIiwgIm1lc3NhZ2luZ1NlbmRlcklkIjogIjk5MzY0NjU2MjMzMyIsICJhcHBJZCI6ICIxOjk5MzY0NjU2MjMzMzp3ZWI6NWYzN2EwYjYzZDRkMTc3YWRmNGFmNCJ9")); } catch(e) { return {}; } })();
+  if (!firebase.apps.length) firebase.initializeApp(_fc);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-const $ = id => document.getElementById(id);
-const esc = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const fmtDate = v => { if(!v) return ''; const d = v.toDate ? v.toDate() : new Date(v.seconds ? v.seconds*1000 : v); return d.toLocaleString('en-IN'); };
+  UPLOADCARE_PUBLIC_KEY = "9dcf4ee1bc520691123a";
+  let uploadedFileURL = null;
 
-/* Auth */
-auth.onAuthStateChanged(user => {
-  if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
-    $('loginScreen').classList.add('hidden');
-    $('adminApp').classList.remove('hidden');
-    init();
-  } else {
-    if(user && user.email !== ADMIN_EMAIL) auth.signOut();
-    localStorage.removeItem('adminUnlocked');
-    $('loginScreen').classList.remove('hidden');
-    $('adminApp').classList.add('hidden');
-  }
-});
-
-$('adminLoginBtn').onclick = async () => {
-  const email = $('adminEmail').value.trim();
-  const pass = $('adminPassword').value;
-  if(!email || !pass) return setLoginStatus('Email and password required', true);
-  try{
-    const cred = await auth.signInWithEmailAndPassword(email, pass);
-    if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); return setLoginStatus('Not an admin account', true); }
-    localStorage.setItem('adminUnlocked', '1');
-    $('loginScreen').classList.add('hidden');
-    $('adminApp').classList.remove('hidden');
-    init();
-  }catch(e){ setLoginStatus(e.message, true); }
-};
-
-function setLoginStatus(msg, err){ const el=$('adminLoginStatus'); el.textContent=msg; el.className='login-status '+(err?'error':''); }
-
-$('adminLogoutBtn').onclick = async () => { localStorage.removeItem('adminUnlocked'); await auth.signOut(); location.reload(); };
-$('closeAdminBtn').onclick = () => { if(confirm('Close admin panel?')) window.location.href='index.html'; };
-$('refreshBtn').onclick = () => refreshStudents();
-
-$('sidebarToggle').onclick = () => $('appSidebar').classList.toggle('open');
-document.addEventListener('click', e => { if(window.innerWidth <= 980 && !e.target.closest('.app-sidebar')) $('appSidebar').classList.remove('open'); });
-
-function showView(viewId){
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  $(viewId).classList.add('active');
-  document.querySelectorAll('.app-menu a').forEach(a => a.classList.remove('active'));
-  if(viewId === 'studentsView') $('menuStudents').classList.add('active');
-  if(viewId === 'batchView') $('menuBatches').classList.add('active');
-}
-
-$('menuStudents').onclick = (e) => { e.preventDefault(); showView('studentsView'); };
-
-async function init(){
-  await Promise.all([loadTests(), loadLectures(), loadBatches()]);
-  await refreshStudents();
-}
-
-async function loadTests(){ const snap=await db.collection('tests').get().catch(()=>null); allTests=snap?snap.docs.map(d=>({id:d.id,...d.data()})):[]; }
-async function loadLectures(){ const snap=await db.collection('lectures').get().catch(()=>null); allLectures=snap?snap.docs.map(d=>({id:d.id,...d.data()})):[]; }
-
-/* ================= BATCHES ================= */
-async function loadBatches(){
-  try{
-    const snap = await db.collection('batches').orderBy('createdAt','desc').get();
-    allBatches = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    renderBatchList();
-    populateBatchDropdowns();
-  }catch(e){ console.error('loadBatches error', e); }
-}
-
-function populateBatchDropdowns(){
-  const batchSel = $('filterBatch');
-  if(!batchSel) return;
-  const current = batchSel.value;
-  batchSel.innerHTML = '<option value="">All Batches</option>' + allBatches.map(b=>`<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
-  if([...batchSel.options].some(o=>o.value===current)) batchSel.value = current;
-}
-
-function renderBatchList(){
-  const box = $('batchList');
-  if(!allBatches.length){ box.innerHTML = '<div class="empty-box">No batches created yet.</div>'; return; }
-  box.innerHTML = allBatches.map(b => `
-    <div class="batch-card">
-      <div>
-        <div class="batch-code">${esc(b.code)}</div>
-        <div class="batch-name">${esc(b.name)} ${b.description ? '· ' + esc(b.description) : ''}</div>
-      </div>
-      <button class="danger-btn" type="button" style="padding:6px 12px;font-size:0.78rem" onclick="deleteBatch('${esc(b.code)}')">Delete</button>
-    </div>
-  `).join('');
-}
-
-window.createBatch = async function(){
-  const code = $('newBatchCode').value.trim().toUpperCase();
-  const name = $('newBatchName').value.trim();
-  const desc = $('newBatchDesc').value.trim();
-  const statusEl = $('batchCreateStatus');
-  
-  if(!code || !name){ statusEl.textContent = 'Batch code and name are required.'; statusEl.className = 'portal-status error'; return; }
-  if(!/^[A-Z0-9\-_]+$/.test(code)){ statusEl.textContent = 'Code must be uppercase letters, numbers, hyphens only.'; statusEl.className = 'portal-status error'; return; }
-  
-  try{
-    statusEl.textContent = 'Creating...'; statusEl.className = 'portal-status';
-    await db.collection('batches').doc(code).set({
-      code, name, description: desc,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  document.addEventListener("DOMContentLoaded", function() {
+    const widget = uploadcare.Widget(document.querySelector('[role="uploadcare-uploader"]'));
+    widget.onUploadComplete(function(info) {
+      uploadedFileURL = info.cdnUrl;
+      const st = document.getElementById('uploadStatus');
+      if(st) st.textContent = 'File ready ✅';
     });
-    statusEl.textContent = 'Batch created ✅'; statusEl.className = 'portal-status success';
-    clearBatchForm();
-    await loadBatches();
-  }catch(err){ statusEl.textContent = err.message; statusEl.className = 'portal-status error'; }
-};
-
-window.deleteBatch = async function(code){
-  if(!confirm(`Delete batch "${code}"?`)) return;
-  await db.collection('batches').doc(code).delete();
-  await loadBatches();
-};
-
-window.clearBatchForm = function(){
-  $('newBatchCode').value = '';
-  $('newBatchName').value = '';
-  $('newBatchDesc').value = '';
-  $('batchCreateStatus').textContent = '';
-};
-
-/* ================= STUDENTS ================= */
-async function refreshStudents(){
-  $('studentTableBody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">Loading students...</td></tr>';
-  try {
-    const snap = await db.collection('users').where('role','==','student').limit(500).get();
-    allStudents = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    const aSnap = await db.collection('attempts').get().catch(()=>null);
-    allAttempts = aSnap ? aSnap.docs.map(d => ({id:d.id,...d.data()})) : [];
-    renderStudents();
-  } catch(e) {
-    $('studentTableBody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:#ef4444">Error: ${esc(e.message)}</td></tr>`;
-  }
-}
-
-function renderStudents(){
-  const search = ($('studentSearch').value || '').toLowerCase();
-  const selBatch = $('filterBatch').value;
-  const selSubject = $('filterSubject').value;
-  const showUnassigned = $('showUnassigned').checked;
-
-  const subjects = [...new Set(allStudents.flatMap(s => Array.isArray(s.enrolledSubjects) ? s.enrolledSubjects : []))].sort();
-  const subjSel = $('filterSubject');
-  const prevSubj = subjSel.value;
-  subjSel.innerHTML = '<option value="">All Subjects</option>' + subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
-  if([...subjSel.options].some(o=>o.value===prevSubj)) subjSel.value = prevSubj;
-
-  let filtered = allStudents.filter(s => {
-    const text = [s.name, s.email, s.phone, s.batchCode].join(' ').toLowerCase();
-    if(search && !text.includes(search)) return false;
-    if(selBatch && s.batchCode !== selBatch) return false;
-    const subs = Array.isArray(s.enrolledSubjects) ? s.enrolledSubjects : [];
-    if(selSubject && !subs.includes(selSubject)) return false;
-    if(showUnassigned && subs.length > 0) return false;
-    return true;
   });
 
-  $('studentCountBadge').textContent = `${filtered.length} of ${allStudents.length} students`;
+  function esc(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function val(id){ const n = document.getElementById(id); return n ? n.value.trim() : ''; }
+  function setStatus(el, msg, err=false){ if(!el) return; el.textContent = msg; el.className = 'portal-status ' + (err ? 'error' : 'success'); }
 
-  if(!filtered.length){
-    $('studentTableBody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:24px;color:#9ca3af">No students match your filters.</td></tr>';
-    return;
+  /* Auth */
+  document.getElementById('adminLoginBtn').addEventListener('click', async () => {
+    const email = val('adminEmail');
+    const pw = document.getElementById('adminPassword').value;
+    if(!email || !pw){ setStatus(document.getElementById('loginStatus'), 'Email and password required.', true); return; }
+    try{
+      const cred = await auth.signInWithEmailAndPassword(email, pw);
+      if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); setStatus(document.getElementById('loginStatus'), 'Not authorized.', true); return; }
+      localStorage.setItem('adminUnlocked', '1');
+      showApp();
+    }catch(err){ setStatus(document.getElementById('loginStatus'), err.message, true); }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    localStorage.removeItem('adminUnlocked');
+    await auth.signOut();
+    location.reload();
+  });
+
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  auth.onAuthStateChanged(user => {
+    if(user && user.email === ADMIN_EMAIL && localStorage.getItem('adminUnlocked') === '1'){
+      showApp();
+    } else {
+      document.getElementById('loginWrap').classList.remove('hidden');
+      document.getElementById('appShell').classList.add('hidden');
+    }
+  });
+
+  function showApp(){
+    document.getElementById('loginWrap').classList.add('hidden');
+    document.getElementById('appShell').classList.remove('hidden');
+    loadLibrary();
+    loadBatches();
+    setTimeout(loadBatches, 1200);
   }
 
-  $('studentTableBody').innerHTML = filtered.map((s, i) => {
-    const subjCount = (s.enrolledSubjects || []).length;
-    const lectCount = (s.assignedLectureIds || []).length;
-    const joined = s.createdAt ? fmtDate(s.createdAt) : 'N/A';
-    return `<tr style="cursor:pointer" onclick="showStudentDetail('${s.id}')">
-      <td style="color:#9ca3af;font-size:0.85rem">${i+1}</td>
-      <td><strong style="color:var(--navy);font-size:0.9rem">${esc(s.name || '—')}</strong></td>
-      <td style="font-size:0.85rem;color:#4b5563">${esc(s.email || '—')}</td>
-      <td style="font-size:0.85rem;color:#4b5563">${esc(s.phone || '—')}</td>
-      <td>${s.batchCode ? `<span class="chip">${esc(s.batchCode)}</span>` : '<span style="color:#9ca3af;font-size:0.82rem">—</span>'}</td>
-      <td style="font-size:0.85rem">${subjCount ? subjCount + ' subject' + (subjCount!==1?'s':'') : '<span style="color:#9ca3af">None</span>'}</td>
-      <td style="font-size:0.85rem">${lectCount ? lectCount + ' lecture' + (lectCount!==1?'s':'') : '<span style="color:#9ca3af">Auto</span>'}</td>
-      <td style="font-size:0.82rem;color:#6b7280;white-space:nowrap">${esc(joined)}</td>
-      <td><button class="ghost-btn" style="padding:6px 10px;font-size:0.78rem" onclick="event.stopPropagation();showStudentDetail('${s.id}')">Manage</button></td>
-    </tr>`;
-  }).join('');
-}
+  /* YouTube ID extractor */
+  function getYouTubeId(input) {
+    const raw = String(input || '').trim();
+    if (!raw) return '';
+    const short = raw.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i);
+    if (short) return short[1];
+    const watch = raw.match(/[?&]v=([A-Za-z0-9_-]{6,})/i);
+    if (watch) return watch[1];
+    const embed = raw.match(/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i);
+    if (embed) return embed[1];
+    const shorts = raw.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]{6,})/i);
+    if (shorts) return shorts[1];
+    if (/^[A-Za-z0-9_-]{6,}$/.test(raw)) return raw;
+    return '';
+  }
 
-window.showStudentDetail = function(userId){
-  $('studentDetailPanel').style.display = 'block';
-  $('studentDetailPanel').scrollIntoView({behavior:'smooth'});
-  renderStudentDetail(userId);
-};
+  /* Batch selector renderer */
+  function renderBatchCheckboxList(batches, containerId, selected=[]){
+    const box = document.getElementById(containerId);
+    if(!box) return;
+    if(!batches.length){
+      box.innerHTML = '<div class="empty-box" style="padding:12px;font-size:0.85rem;">No batches found. Create one in Students → Batches.</div>';
+      return;
+    }
+    box.innerHTML = batches.map(b => `
+      <label class="batch-option">
+        <input type="checkbox" value="${esc(b.code)}" ${selected.includes(b.code)?'checked':''}>
+        <span style="word-break:break-word;">${esc(b.code)}<br><span style="font-size:0.75rem;color:var(--muted);font-weight:500;">${esc(b.name||'')}</span></span>
+      </label>
+    `).join('');
+  }
 
-window.closeStudentDetail = function(){ $('studentDetailPanel').style.display = 'none'; };
+  function getSelectedBatchCodes(containerId){
+    return [...document.querySelectorAll(`#${containerId} input:checked`)].map(i => i.value);
+  }
 
-function renderStudentDetail(userId){
-  const user = allStudents.find(u=>u.id===userId);
-  if(!user){ $('detailContent').innerHTML = '<div class="empty-box">Student not found</div>'; return; }
-  
-  const attempts = allAttempts.filter(a => String(a.userId || '') === String(userId));
-  const totalScore = attempts.reduce((sum,a)=>sum + Number(a.score || 0), 0);
-  const totalMarks = attempts.reduce((sum,a)=>sum + Number(a.total || 0), 0);
-  const avg = totalMarks ? Math.round((totalScore/totalMarks)*100) : 0;
-  const availableSubjects = [...new Set([...allTests.map(t=>t.subject), ...allLectures.map(l=>l.subject)].filter(Boolean))].sort();
+  /* Upload */
+  document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const title = val('lecTitle');
+    const subject = val('lecSubject');
+    const section = val('lecSection') || 'General';
+    const date = val('lecDate');
+    const time = val('lecTime');
+    const attachment = val('lecAttachment');
+    const youtubeInput = val('lecYoutube');
+    const batchCodes = getSelectedBatchCodes('lecBatchSelect');
 
-  $('detailName').textContent = user.name || user.email || 'Student';
-  $('detailContent').innerHTML = `
-    <div class="student-detail-header">
-      <div style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:4px">${esc(user.name || user.email || 'Student')}</div>
-      <div style="font-size:0.8rem;opacity:0.8">${esc(user.email || '')}</div>
-      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-        <select id="editBatch-${user.id}" style="padding:6px 10px;border-radius:6px;border:none;color:var(--navy);font-weight:700;flex:1">
-          <option value="">No Batch</option>
-          ${allBatches.map(b=>`<option value="${esc(b.code)}" ${user.batchCode===b.code?'selected':''}>${esc(b.code)} - ${esc(b.name)}</option>`).join('')}
-        </select>
-        <button class="secondary-btn" type="button" onclick="saveBatch('${user.id}')" style="padding:6px 12px;font-size:0.8rem">Save Batch</button>
-      </div>
-    </div>
-    <div class="app-grid-2" style="margin-bottom:14px">
-      <div class="metric"><div class="n">${attempts.length}</div><div class="l">Attempts</div></div>
-      <div class="metric"><div class="n">${avg}%</div><div class="l">Average</div></div>
-    </div>
-    <div class="app-card" style="margin-bottom:14px">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">📚 Subject Enrolments</h4>
-      <p style="margin-bottom:10px;color:var(--muted);font-size:0.85rem">Tick subjects to auto-unlock ALL lectures under that subject.</p>
-      <div class="enrolment-grid">
-        ${availableSubjects.length ? availableSubjects.map(subject=>`
-          <label class="enrolment-option" style="cursor:pointer">
-            <input type="checkbox" class="enrol-subj" value="${esc(subject)}" ${(user.enrolledSubjects || []).includes(subject) ? 'checked' : ''}>
-            <span>${esc(subject)}</span>
-          </label>
-        `).join('') : '<span style="font-size:0.85rem;color:var(--muted)">Add subjects to lectures or tests first.</span>'}
-      </div>
-    </div>
-    <div class="app-card" style="margin-bottom:14px">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">🎬 Individual Lecture Access</h4>
-      <p style="margin-bottom:10px;color:var(--muted);font-size:0.85rem">Override subject access — pick specific lectures. If none checked, subject enrolment above decides visibility.</p>
-      <div class="lecture-access-list">
-        ${allLectures.length ? allLectures.map(lecture=>`
-          <label class="enrolment-option" style="cursor:pointer;justify-content:flex-start;text-align:left">
-            <input type="checkbox" class="enrol-lec" value="${esc(lecture.id)}" ${(user.assignedLectureIds || []).includes(lecture.id) ? 'checked' : ''}>
-            <span style="word-break:break-word"><strong style="color:var(--navy)">${esc(lecture.subject || 'General')}</strong> — ${esc(lecture.title || 'Lecture')} <span style="color:var(--muted);font-size:0.75rem">(${esc(lecture.lectureDate || 'no date')})</span></span>
-          </label>
-        `).join('') : '<span style="font-size:0.85rem;color:var(--muted)">No lectures uploaded yet.</span>'}
-      </div>
-      <button class="primary-btn" type="button" onclick="saveStudentAccess('${user.id}')" style="margin-top:12px;width:100%">💾 Save Access Settings</button>
-      <div style="margin-top:12px;border-top:1px solid #e5e7eb;padding-top:12px">
-        <button class="danger-btn" type="button" onclick="deleteStudent('${user.id}')" style="width:100%">🗑 Delete Student</button>
-      </div>
-    </div>
-    <div class="app-card">
-      <h4 style="margin:0 0 10px;color:var(--navy);font-size:0.95rem">📊 Paper Breakdown</h4>
-      ${getPaperBreakdown(attempts)}
-    </div>
-  `;
-}
+    if(!title || !subject || !date){ setStatus(document.getElementById('uploadStatus'), 'Title, Subject, and Date are required.', true); return; }
 
-function getPaperBreakdown(attempts){
-  const byPaper = {};
-  attempts.forEach(a=>{ const p = a.subject || a.paperTitle || 'General'; if(!byPaper[p]) byPaper[p]={attempts:0,score:0,total:0}; byPaper[p].attempts++; byPaper[p].score+=Number(a.score||0); byPaper[p].total+=Number(a.total||0); });
-  return Object.keys(byPaper).length ? Object.keys(byPaper).sort().map(p=>`
-    <div class="mini-item">
-      <strong>${esc(p)}</strong><br>
-      <span style="font-size:0.82rem;color:#6b7280">Attempts: ${byPaper[p].attempts} · Marks: ${byPaper[p].score}/${byPaper[p].total}</span>
-    </div>
-  `).join('') : '<div class="empty-box">No attempts yet for this student.</div>';
-}
+    let videoURL = null;
+    let videoId = null;
+    if(youtubeInput){
+      videoId = getYouTubeId(youtubeInput);
+      videoURL = videoId ? `https://www.youtube.com/watch?v=${videoId}` : youtubeInput;
+    }
 
-window.saveBatch = async function(userId){
-  const batch = $(`editBatch-${userId}`).value.trim();
-  await db.collection('users').doc(userId).update({batchCode: batch});
-  const u = allStudents.find(x=>x.id===userId); if(u) u.batchCode = batch;
-  alert('Batch code saved');
-  renderStudents();
-};
+    const hasVideo = videoURL && videoURL.trim() !== '';
+    const hasFile = uploadedFileURL && uploadedFileURL.trim() !== '';
+    if(!hasVideo && !hasFile){ setStatus(document.getElementById('uploadStatus'), 'Provide at least a YouTube link or upload a file.', true); return; }
 
-window.saveStudentAccess = async function(userId){
-  const enrolledSubjects = [...document.querySelectorAll('.enrol-subj:checked')].map(i=>i.value);
-  const assignedLectureIds = [...document.querySelectorAll('.enrol-lec:checked')].map(i=>i.value);
-  await db.collection('users').doc(userId).update({
-    enrolledSubjects, assignedLectureIds, 
-    accessUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    try{
+      const payload = {
+        title, subject, section,
+        lectureDate: date,
+        lectureTime: time || '',
+        videoURL: videoURL || null,
+        fileURL: uploadedFileURL || null,
+        attachment: attachment || '',
+        batchCodes,
+        uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      await db.collection('lectures').add(payload);
+      setStatus(document.getElementById('uploadStatus'), 'Lecture uploaded ✅');
+
+      document.getElementById('lecTitle').value = '';
+      document.getElementById('lecSubject').value = '';
+      document.getElementById('lecSection').value = '';
+      document.getElementById('lecDate').value = '';
+      document.getElementById('lecTime').value = '';
+      document.getElementById('lecAttachment').value = '';
+      document.getElementById('lecYoutube').value = '';
+      uploadedFileURL = null;
+      renderBatchCheckboxList(allBatches, 'lecBatchSelect');
+
+      await loadLibrary();
+    }catch(err){ setStatus(document.getElementById('uploadStatus'), err.message || 'Upload failed', true); }
   });
-  const u = allStudents.find(x=>x.id===userId); 
-  if(u){ u.enrolledSubjects = enrolledSubjects; u.assignedLectureIds = assignedLectureIds; }
-  alert('Access settings saved');
-  renderStudents();
-};
 
-window.deleteStudent = async function(userId){
-  if(!confirm('Permanently delete this student record?')) return;
-  await db.collection('users').doc(userId).delete();
-  allStudents = allStudents.filter(s=>s.id!==userId);
-  renderStudents();
-  closeStudentDetail();
-};
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    document.getElementById('lecTitle').value = '';
+    document.getElementById('lecSubject').value = '';
+    document.getElementById('lecSection').value = '';
+    document.getElementById('lecDate').value = '';
+    document.getElementById('lecTime').value = '';
+    document.getElementById('lecAttachment').value = '';
+    document.getElementById('lecYoutube').value = '';
+    uploadedFileURL = null;
+    renderBatchCheckboxList(allBatches, 'lecBatchSelect');
+    setStatus(document.getElementById('uploadStatus'), '');
+  });
+
+  /* Library */
+  let allLectures = [];
+  let allBatches = [];
+
+  async function loadLibrary(){
+    const snap = await db.collection('lectures').orderBy('uploadedAt','desc').limit(200).get();
+    allLectures = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderLibrary();
+  }
+
+  async function loadBatches(){
+    const statusEl = document.getElementById('batchLoadStatus');
+    const filterStatus = document.getElementById('batchFilterStatus');
+    try {
+      if(statusEl) statusEl.textContent = 'Loading...';
+      const snap = await db.collection('batches').orderBy('createdAt','desc').get();
+      const batches = snap.docs.map(d => ({...d.data(), id: d.id}));
+      allBatches = batches;
+      renderBatchCheckboxList(batches, 'lecBatchSelect');
+      const sel = document.getElementById('batchFilter');
+      if(sel){
+        const current = sel.value;
+        sel.innerHTML = '<option value="">All Batches</option>' + 
+          batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name || 'Unnamed')}</option>`).join('');
+        if(current && batches.some(b => b.code === current)) sel.value = current;
+      }
+      if(statusEl) statusEl.textContent = batches.length ? `${batches.length} ready` : 'None';
+      if(filterStatus) filterStatus.textContent = batches.length ? `${batches.length} batch(es) ready` : 'No batches found';
+    } catch(err) {
+      console.error('loadBatches error', err);
+      if(statusEl) statusEl.textContent = 'Error';
+      if(filterStatus) filterStatus.textContent = 'Error loading batches';
+    }
+  }
+  window.loadBatches = loadBatches;
+
+  window.renderLibrary = function(){
+    const box = document.getElementById('lectureLibrary');
+    const q = (document.getElementById('libSearch')?.value || '').toLowerCase();
+    const filterDate = document.getElementById('libFilterDate')?.value || '';
+    const batchFilter = document.getElementById('batchFilter')?.value || '';
+
+    let filtered = allLectures.filter(l => {
+      if(filterDate && l.lectureDate !== filterDate) return false;
+      if(batchFilter && !(l.batchCodes || []).includes(batchFilter)) return false;
+      if(!q) return true;
+      return [l.title, l.subject, l.section, l.attachment, l.lectureDate].join(' ').toLowerCase().includes(q);
+    });
+
+    if(!filtered.length){ box.innerHTML = '<div class="empty-box">No lectures found.</div>'; return; }
+
+    const bySubject = {};
+    filtered.forEach(l => {
+      const sub = l.subject || 'General';
+      if(!bySubject[sub]) bySubject[sub] = {};
+      const sec = l.section || 'General';
+      if(!bySubject[sub][sec]) bySubject[sub][sec] = [];
+      bySubject[sub][sec].push(l);
+    });
+
+    box.innerHTML = Object.keys(bySubject).sort().map(sub => {
+      const subCount = filtered.filter(l => (l.subject||'General')===sub).length;
+      return `<details class="lecture-subject-frame" open>
+        <summary><span>${esc(sub)}</span><small>${subCount} lecture(s)</small></summary>
+        <div class="lecture-course-list">
+          ${Object.keys(bySubject[sub]).sort().map(sec => `
+            <div style="margin:10px 0;padding:10px 12px;background:#f8fafc;border-radius:10px;">
+              <strong style="color:var(--navy);font-size:0.9rem;display:block;margin-bottom:8px;">${esc(sec)}</strong>
+              ${bySubject[sub][sec].sort((a,b) => String(a.lectureDate||'').localeCompare(String(b.lectureDate||''))).map(l => `
+                <div class="mini-item" style="margin:6px 0;padding:10px;border-radius:10px;">
+                  <strong>${esc(l.title || 'Untitled')}</strong><br>
+                  <span style="font-size:0.82rem;color:var(--muted);">${esc(l.lectureDate || 'No date')} ${l.lectureTime ? '· ' + esc(l.lectureTime) : ''}</span><br>
+                  ${l.batchCodes?.length ? `<span style="font-size:0.75rem;color:var(--navy);font-weight:600;">👥 ${esc(l.batchCodes.join(', '))}</span><br>` : ''}
+                  ${l.videoURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">🎥 Video</span>' : l.fileURL ? '<span style="font-size:0.78rem;color:#1e3c72;font-weight:600;">📄 File</span>' : ''}
+                  ${l.attachment ? `<br><a href="${esc(l.attachment)}" target="_blank" style="font-size:0.78rem;color:var(--gold);font-weight:600;">📎 Attachment</a>` : ''}
+                  <div class="btn-row" style="margin-top:8px;">
+                    ${l.videoURL ? `<button class="ghost-btn" type="button" onclick="previewVideo('${esc(l.videoURL)}')">Preview</button>` : ''}
+                    ${l.fileURL ? `<a href="${esc(l.fileURL)}" target="_blank" class="ghost-btn" style="text-decoration:none;display:inline-flex;">Open File</a>` : ''}
+                    <button class="secondary-btn" type="button" onclick="deleteLecture('${l.id}')">Delete</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      </details>`;
+    }).join('');
+  };
+
+  window.previewVideo = function(url){
+    const vid = getYouTubeId(url);
+    if(vid){
+      const modal = document.createElement('div');
+      modal.innerHTML = `<div style="position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:20000;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;" onclick="this.remove()">
+        <button style="position:absolute;top:20px;right:20px;background:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:700;" onclick="this.parentElement.remove()">✕ Close</button>
+        <iframe width="80%" height="80%" style="border-radius:12px;border:none;max-width:900px;" src="https://www.youtube.com/embed/${vid}?autoplay=1&modestbranding=1&rel=0" allowfullscreen></iframe>
+      </div>`;
+      document.body.appendChild(modal.firstElementChild);
+    } else {
+      window.open(url, '_blank');
+    }
+  };
+
+  window.deleteLecture = async function(id){
+    if(!confirm('Delete this lecture?')) return;
+    await db.collection('lectures').doc(id).delete();
+    await loadLibrary();
+  };
+})();
 </script>
 </body>
 </html>
