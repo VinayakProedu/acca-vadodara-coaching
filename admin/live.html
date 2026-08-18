@@ -103,6 +103,11 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .practice-search{width:100%;padding:11px 14px;border:1px solid #d7ddea;border-radius:10px;font:inherit;color:var(--ink);background:#fff;margin-bottom:14px;}
 .practice-search:focus{outline:3px solid rgba(201,146,42,0.22);border-color:var(--gold);}
 
+/* Batch selector in forms */
+.batch-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;max-height:220px;overflow:auto;padding:10px;border:1px solid #e5e7eb;border-radius:12px;background:#fbfdff;}
+.batch-option{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#fff;border:1px solid #e1e7f0;border-radius:10px;font-size:0.85rem;color:var(--navy);font-weight:600;cursor:pointer;}
+.batch-option input{cursor:pointer;}
+
 /* Empty */
 .empty-box{padding:20px;border:1px dashed #d9e2ef;border-radius:14px;background:#fbfdff;color:#5d6e83;text-align:center;font-size:0.9rem;}
 
@@ -186,7 +191,18 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         </div>
 
         <div class="portal-field"><label>Meeting Link *</label><input type="text" id="liveLink" placeholder="https://zoom.us/j/... or https://meet.google.com/..."></div>
-        <div class="portal-field"><label>Batch Codes (comma separated)</label><input type="text" id="liveBatch" placeholder="e.g. ACCA-2026-A, ACCA-2026-B"></div>
+
+        <!-- BATCH SELECTOR -->
+        <div class="portal-field">
+          <label style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Assign to Batches</span>
+            <span id="batchLoadStatus" style="font-size:0.72rem;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500;"></span>
+          </label>
+          <div id="liveBatchSelect" class="batch-select-grid">
+            <div class="empty-box" style="padding:12px;font-size:0.85rem;">Loading batches...</div>
+          </div>
+        </div>
+
         <div class="portal-field"><label>Description (optional)</label><input type="text" id="liveDesc" placeholder="What will be covered in this session?"></div>
 
         <div class="btn-row">
@@ -201,6 +217,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         <h3 class="subject-title">All Live Classes</h3>
         <div class="filter-bar">
           <select id="batchFilter" onchange="renderClasses()"><option value="">All Batches</option></select>
+          <button class="ghost-btn" type="button" onclick="window.loadBatches()" style="padding:8px 12px;font-size:0.85rem;">🔄 Refresh Batches</button>
+          <span id="batchFilterStatus" style="font-size:0.82rem;color:var(--muted);align-self:center;"></span>
           <input type="search" class="practice-search" id="liveSearch" placeholder="Search classes..." oninput="renderClasses()" style="margin:0;flex:1;">
         </div>
         <div id="liveList"></div>
@@ -263,6 +281,27 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('appShell').classList.remove('hidden');
     loadClasses();
     loadBatches();
+    setTimeout(loadBatches, 1200);
+  }
+
+  /* Batch selector renderer */
+  function renderBatchCheckboxList(batches, containerId, selected=[]){
+    const box = document.getElementById(containerId);
+    if(!box) return;
+    if(!batches.length){
+      box.innerHTML = '<div class="empty-box" style="padding:12px;font-size:0.85rem;">No batches found. Create one in Students → Batches.</div>';
+      return;
+    }
+    box.innerHTML = batches.map(b => `
+      <label class="batch-option">
+        <input type="checkbox" value="${esc(b.code)}" ${selected.includes(b.code)?'checked':''}>
+        <span style="word-break:break-word;">${esc(b.code)}<br><span style="font-size:0.75rem;color:var(--muted);font-weight:500;">${esc(b.name||'')}</span></span>
+      </label>
+    `).join('');
+  }
+
+  function getSelectedBatchCodes(containerId){
+    return [...document.querySelectorAll(`#${containerId} input:checked`)].map(i => i.value);
   }
 
   /* Schedule */
@@ -273,6 +312,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     const time = val('liveTime');
     const link = val('liveLink');
     const desc = val('liveDesc');
+    const batchCodes = getSelectedBatchCodes('liveBatchSelect');
 
     if(!title || !subject || !date || !time || !link){ setStatus(document.getElementById('scheduleStatus'), 'Fill all required fields.', true); return; }
 
@@ -283,7 +323,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         lectureTime: time,
         meetingLink: link,
         description: desc || '',
-        batchCodes: val('liveBatch').split(',').map(s=>s.trim()).filter(Boolean),
+        batchCodes,
         uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
       await db.collection('lectures').add(payload);
@@ -294,8 +334,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
       document.getElementById('liveDate').value = '';
       document.getElementById('liveTime').value = '';
       document.getElementById('liveLink').value = '';
-      document.getElementById('liveBatch').value = '';
       document.getElementById('liveDesc').value = '';
+      renderBatchCheckboxList(allBatches, 'liveBatchSelect');
 
       await loadClasses();
     }catch(err){ setStatus(document.getElementById('scheduleStatus'), err.message || 'Failed to schedule', true); }
@@ -307,13 +347,14 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('liveDate').value = '';
     document.getElementById('liveTime').value = '';
     document.getElementById('liveLink').value = '';
-    document.getElementById('liveBatch').value = '';
     document.getElementById('liveDesc').value = '';
+    renderBatchCheckboxList(allBatches, 'liveBatchSelect');
     setStatus(document.getElementById('scheduleStatus'), '');
   });
 
   /* Load & Render */
   let allClasses = [];
+  let allBatches = [];
 
   async function loadClasses(){
     const snap = await db.collection('lectures').where('meetingLink','!=','').orderBy('uploadedAt','desc').limit(200).get();
@@ -322,19 +363,30 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
   }
 
   async function loadBatches(){
+    const statusEl = document.getElementById('batchLoadStatus');
+    const filterStatus = document.getElementById('batchFilterStatus');
     try {
-        const snap = await db.collection('batches').orderBy('createdAt','desc').get().catch(()=>null);
-        const batches = snap ? snap.docs.map(d => d.data()) : [];
-        const sel = document.getElementById('batchFilter');
-        if(!sel) return; // safety
+      if(statusEl) statusEl.textContent = 'Loading...';
+      const snap = await db.collection('batches').orderBy('createdAt','desc').get();
+      const batches = snap.docs.map(d => ({...d.data(), id: d.id}));
+      allBatches = batches;
+      renderBatchCheckboxList(batches, 'liveBatchSelect');
+      const sel = document.getElementById('batchFilter');
+      if(sel){
         const current = sel.value;
         sel.innerHTML = '<option value="">All Batches</option>' + 
-            batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
+          batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name || 'Unnamed')}</option>`).join('');
         if(current && batches.some(b => b.code === current)) sel.value = current;
+      }
+      if(statusEl) statusEl.textContent = batches.length ? `${batches.length} ready` : 'None';
+      if(filterStatus) filterStatus.textContent = batches.length ? `${batches.length} batch(es) ready` : 'No batches found';
     } catch(err) {
-        console.error('loadBatches failed', err);
+      console.error('loadBatches error', err);
+      if(statusEl) statusEl.textContent = 'Error';
+      if(filterStatus) filterStatus.textContent = 'Error loading batches';
     }
-}
+  }
+  window.loadBatches = loadBatches;
 
   window.renderClasses = function(){
     const box = document.getElementById('liveList');
