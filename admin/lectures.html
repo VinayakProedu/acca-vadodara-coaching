@@ -208,6 +208,8 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
         <h3 class="subject-title">Lecture Library</h3>
         <div class="filter-bar">
           <select id="batchFilter" onchange="renderLibrary()"><option value="">All Batches</option></select>
+          <button class="ghost-btn" type="button" onclick="window.loadBatches()" style="padding:8px 12px;font-size:0.85rem;">🔄 Refresh Batches</button>
+          <span id="batchLoadStatus" style="font-size:0.82rem;color:var(--muted);align-self:center;"></span>
           <input type="search" class="practice-search" id="libSearch" placeholder="Search lectures, subjects, attachments..." oninput="renderLibrary()" style="margin:0;flex:1;">
         </div>
         <div class="portal-field"><label>Filter by Date</label><input type="date" id="libFilterDate" onchange="renderLibrary()"></div>
@@ -285,6 +287,7 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     document.getElementById('appShell').classList.remove('hidden');
     loadLibrary();
     loadBatches();
+    setTimeout(loadBatches, 1200); // safety fallback in case first call races DOM
   }
 
   /* YouTube ID extractor */
@@ -378,20 +381,27 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     renderLibrary();
   }
 
-async function loadBatches(){
+  async function loadBatches(){
+    const statusEl = document.getElementById('batchLoadStatus');
     try {
-        const snap = await db.collection('batches').orderBy('createdAt','desc').get().catch(()=>null);
-        const batches = snap ? snap.docs.map(d => d.data()) : [];
-        const sel = document.getElementById('batchFilter');
-        if(!sel) return; // safety
-        const current = sel.value;
-        sel.innerHTML = '<option value="">All Batches</option>' + 
-            batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name)}</option>`).join('');
-        if(current && batches.some(b => b.code === current)) sel.value = current;
+      if(statusEl) statusEl.textContent = 'Loading batches...';
+      const snap = await db.collection('batches').orderBy('createdAt','desc').get();
+      const batches = snap.docs.map(d => ({...d.data(), id: d.id}));
+      allBatches = batches;
+      const sel = document.getElementById('batchFilter');
+      if(!sel){ if(statusEl) statusEl.textContent = 'Batch dropdown not found'; return; }
+      const current = sel.value;
+      sel.innerHTML = '<option value="">All Batches</option>' + 
+        batches.map(b => `<option value="${esc(b.code)}">${esc(b.code)} - ${esc(b.name || 'Unnamed')}</option>`).join('');
+      if(current && batches.some(b => b.code === current)) sel.value = current;
+      if(statusEl) statusEl.textContent = batches.length ? `${batches.length} batch(es) ready` : 'No batches found. Create one in Students → Batches.';
     } catch(err) {
-        console.error('loadBatches failed', err);
+      console.error('loadBatches error', err);
+      if(statusEl) statusEl.textContent = 'Error loading batches: ' + err.message;
     }
-}
+  }
+  window.loadBatches = loadBatches;
+
   window.renderLibrary = function(){
     const box = document.getElementById('lectureLibrary');
     const q = (document.getElementById('libSearch')?.value || '').toLowerCase();
