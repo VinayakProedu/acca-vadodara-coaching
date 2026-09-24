@@ -666,7 +666,7 @@ const state = {
   editingQuestionId: null, questionImageUrl: '', startTime: 0,
   timer: null, editingPaperId: null, paperMode: 'new',
   sidebarCollapsed: false, examNavOpen: false, loginIntent: false,
-  studentName: '', pendingStartPaperId: '', centerModalAction: null
+  studentName: '', pendingStartPaperId: '', centerModalAction: null, uiPromptOpen: false
 };
 
 /* ================= DOM ================= */
@@ -772,6 +772,7 @@ async function doLogin() {
     const pw = el.loginPassword.value;
     if (!email || !pw) throw new Error('Email and password required.');
     state.loginIntent = true;
+    sessionStorage.setItem('vp_login_intent','1');
     await auth.signInWithEmailAndPassword(email, pw);
   } catch (err) {
     el.loginStatus.textContent = err.message;
@@ -792,7 +793,8 @@ function closeApp() {
 auth.onAuthStateChanged(async user => {
   state.user = user || null;
   if (user) {
-    if (!state.loginIntent) { state.role='student'; closeApp(); auth.signOut().catch(()=>{}); return; }
+    if (!state.loginIntent && sessionStorage.getItem('vp_login_intent')!=='1') { state.role='student'; closeApp(); auth.signOut().catch(()=>{}); return; }
+    state.loginIntent = true;
     state.role = isAdminEmail(user.email) ? 'admin' : 'student';
     el.roleBadge.textContent = 'Role: ' + state.role;
     el.roleText.textContent = state.role === 'admin' ? 'Admin Panel' : 'Student Portal';
@@ -811,7 +813,7 @@ auth.onAuthStateChanged(async user => {
 });
 
 el.loginBtn.addEventListener('click', doLogin);
-el.logoutBtn.addEventListener('click', async () => { state.loginIntent=false; await auth.signOut(); location.reload(); });
+el.logoutBtn.addEventListener('click', async () => { state.loginIntent=false; sessionStorage.removeItem('vp_login_intent'); await auth.signOut(); location.reload(); });
 el.closeBtn.addEventListener('click', () => { window.location.href='index.html'; });
 
 /* ================= DATA ================= */
@@ -1551,9 +1553,10 @@ function confirmStartMock(paperId){
 
 function requestSubmitMock(){
   if(!state.examActive||state.submitting)return;
+  const hasCR=state.activeQuestions.some(q=>q.type==='word'||q.type==='excel');
   openCenterModal({
     title:'Are you sure?',
-    message:'Once submitted, this attempt will be scored and saved automatically.',
+    message:hasCR?'Objective-test questions will be auto-marked now. Word / Spreadsheet constructed responses are NOT auto-marked — they will be sent to the tutor for manual marking.':'Once submitted, this attempt will be scored and saved automatically.',
     confirmText:'Submit Paper',
     onConfirm:()=>{closeCenterModal();submitMock(true);return true;}
   });
@@ -1670,7 +1673,7 @@ function updateExamHeaderStats(){
   const answered=state.activeQuestions.filter(questionHasAnswer).length;
   const progress=total?Math.round((answered/total)*100):0;
   if(el.examQuestionPill)el.examQuestionPill.textContent=`Question ${Math.min(state.currentIndex+1,total||1)} of ${total||1}`;
-  if(el.examMarksPill)el.examMarksPill.textContent=`${Number(q?.marks||0)} marks`;
+  if(el.examMarksPill)el.examMarksPill.textContent=`${q?questionTotalMarks(q):0} marks`;
   if(el.examProgressLabel)el.examProgressLabel.textContent=`${progress}% complete`;
   if(el.examProgressFill)el.examProgressFill.style.width=`${progress}%`;
 }
@@ -1956,7 +1959,7 @@ window.nextQ=function(){captureAnswer();if(state.currentIndex<state.activeQuesti
 window.prevQ=function(){captureAnswer();if(state.currentIndex>0){state.currentIndex--;renderMockQuestion();}};
 window.toggleReviewFlag=function(){const q=state.activeQuestions[state.currentIndex];if(!q)return;state.reviewed[q.id]=!state.reviewed[q.id];renderMockQuestion();};
 
-function lockExam(reason){if(!state.examActive||state.examLocked||!state.examProtectionArmed)return;state.examLocked=true;state.lockReason=reason||'Focus changed';renderMockQuestion();}
+function lockExam(reason){if(!state.examActive||state.examLocked||!state.examProtectionArmed||state.uiPromptOpen)return;state.examLocked=true;state.lockReason=reason||'Focus changed';renderMockQuestion();}
 function enterFullscreen(){const root=document.documentElement;const request=root.requestFullscreen||root.webkitRequestFullscreen||root.msRequestFullscreen;if(!request)return;try{const result=request.call(root);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch(err){}}
 function exitFullscreen(){const exit=document.exitFullscreen||document.webkitExitFullscreen||document.msRequestFullscreen;if(!document.fullscreenElement||!exit)return;try{const result=exit.call(document);if(result&&typeof result.catch==='function')result.catch(()=>{});}catch(err){}}
 
@@ -2140,20 +2143,37 @@ el.centerModalInput.addEventListener('keydown',e=>{if(e.key==='Enter')el.centerM
 
 /* ================= ACCA CBE TOOLBAR ================= */
 window.toggleScratchpad=function(){document.getElementById('scratchpad')?.classList.toggle('hidden');};
+window._uiPrompt=function(fn){state.uiPromptOpen=true;try{return fn();}finally{setTimeout(()=>{state.uiPromptOpen=false;},400);}};
 window.insertSymbol=function(){
-  const sym=prompt('Enter symbol to insert (e.g. $, €, £, %, :',' $ '.trim());if(!sym)return;
-  const ae=document.activeElement;if(!ae)return;
-  if(ae.isContentEditable){document.execCommand('insertText',false,sym);return;}
-  if(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT'){
+  const sym=window._uiPrompt(()=>prompt('Enter symbol to insert (e.g. $, €, £, %)','$'));if(!sym)return;
+  const ae=document.activeElement;
+  if(ae&&ae.isContentEditable){document.execCommand('insertText',false,sym);return;}
+  if(ae&&(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT')){
     const s=ae.selectionStart??ae.value.length,e=ae.selectionEnd??s;
     ae.value=ae.value.slice(0,s)+sym+ae.value.slice(e);
     ae.dispatchEvent(new Event('input',{bubbles:true}));
-  }else{alert('Click inside an answer box first, then insert the symbol.');}
+    return;
+  }
+  const ed=document.getElementById('wordAnswer');
+  if(ed){ed.focus();document.execCommand('insertText',false,sym);ed.dispatchEvent(new Event('input',{bubbles:true}));return;}
+  const cell=document.querySelector('.cr-cell');
+  if(cell){cell.focus();document.execCommand('insertText',false,sym);cell.dispatchEvent(new Event('input',{bubbles:true}));return;}
+  window._uiPrompt(()=>alert('Open a Word/Spreadsheet answer or the Scratch Pad, place the cursor, then insert the symbol.'));
 };
 window.applyFormat=function(cmd,val){
   const sel=window.getSelection();
-  if(!sel||!sel.rangeCount||sel.isCollapsed){alert('Select some text in the scenario/answer first, then apply.');return;}
-  document.execCommand(cmd,false,val||null);
+  if(!sel||!sel.rangeCount||sel.isCollapsed){window._uiPrompt(()=>alert('Select some text in the scenario or answer first, then apply.'));return;}
+  try{
+    if(cmd==='strikeThrough'||cmd==='hiliteColor'){
+      const span=document.createElement('span');
+      if(cmd==='strikeThrough')span.style.textDecoration='line-through';
+      else span.style.background=val||'yellow';
+      sel.getRangeAt(0).surroundContents(span);
+      sel.removeAllRanges();
+    }else{
+      document.execCommand(cmd,false,val||null);
+    }
+  }catch(e){try{document.execCommand(cmd,false,val||null);}catch(_){}}
   const ae=document.activeElement;if(ae)ae.dispatchEvent(new Event('input',{bubbles:true}));
 };
 window.toggleCalculator=function(){
@@ -2193,7 +2213,9 @@ window.openMarking=function(attemptId){
     const pre=a.manualScores&&a.manualScores[q.id]!=null?Number(a.manualScores[q.id]):'';
     return`<div class="marking-q">
       <div class="question-number-badge"><span class="badge">Q${i+1}</span><span class="badge">${Number(q.marks||0)} marks</span><span class="badge">${q.type==='excel'?'Spreadsheet':'Word'}</span></div>
-      <div class="question-text-block">${renderPastedText(q.mainQuestion||q.question||'')}</div>
+      <div class="question-text-block"><strong>Requirement:</strong> ${renderPastedText(q.mainQuestion||'(see scenario)')}</div>
+      ${q.question?`<div class="question-text-block"><strong>Scenario:</strong> ${renderPastedText(q.question)}</div>`:''}
+      ${q.imageUrl?`<div class="question-image"><img src="${esc(q.imageUrl)}" alt="Exhibit"></div>`:''}
       ${q.explanation?`<div class="sb-scheme"><strong>Marking guide:</strong> ${esc(q.explanation)}</div>`:''}
       <div class="marking-answer">${renderCrAnswerReadonly(q,given)}</div>
       <label>Awarded marks (max ${Number(q.marks||0)})</label>
