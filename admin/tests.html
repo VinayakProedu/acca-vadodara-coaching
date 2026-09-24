@@ -288,6 +288,35 @@ textarea{min-height:110px;resize:vertical}
 
 .hidden{display:none !important}
 
+
+/* ACCA CBE style additions */
+.exam-acca-bar{grid-column:1 / -1;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;background:#f1f3f6;border-top:1px solid #d8dee9;border-bottom:1px solid #d8dee9;}
+.exam-acca-bar button{border:1px solid #c9d2e0;background:#fff;color:#1f2d3d;border-radius:6px;padding:6px 12px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.exam-acca-bar button:hover{background:#eef4ff;}
+.cr-layout{align-items:stretch;}
+.cr-word{min-height:220px;border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:#fff;outline:none;font-size:.95rem;line-height:1.6;}
+.cr-word:focus{border-color:#b8c7ea;box-shadow:0 0 0 3px rgba(30,60,114,.07);}
+.cr-editor-toolbar{display:flex;gap:6px;margin-bottom:8px;}
+.cr-editor-toolbar button{border:1px solid var(--border);background:#f8fafc;border-radius:8px;padding:5px 12px;cursor:pointer;font-weight:700;}
+.cr-grid-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px;background:#fff;}
+.cr-grid{border-collapse:collapse;width:100%;min-width:520px;}
+.cr-grid th{background:#eef2f8;border:1px solid #dbe2ee;font-size:.75rem;padding:4px 6px;color:var(--navy);width:96px;}
+.cr-grid td{border:1px solid #e2e8f0;min-width:96px;height:28px;padding:3px 6px;font-size:.88rem;outline:none;}
+.cr-grid td:focus{background:#f8fbff;box-shadow:inset 0 0 0 2px rgba(30,60,114,.25);}
+.cr-note{margin-top:8px;}
+.scratchpad{position:fixed;right:18px;bottom:96px;width:300px;z-index:9999;background:#fffbe6;border:1px solid #e5d9a0;border-radius:14px;box-shadow:var(--shadow-md);padding:12px;display:grid;gap:8px;}
+.scratchpad textarea{min-height:140px;margin:0;background:#fffdf2;font-family:'DM Sans',sans-serif;}
+.calc-pop{position:fixed;right:18px;bottom:96px;width:240px;z-index:9999;background:#111827;border-radius:14px;padding:12px;box-shadow:var(--shadow-md);display:grid;gap:8px;}
+.calc-pop input{width:100%;margin:0;text-align:right;font-weight:800;background:#1f2937;color:#fff;border:1px solid #374151;}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.calc-keys button{padding:10px 0;border:none;border-radius:8px;background:#374151;color:#fff;font-weight:800;cursor:pointer;}
+.calc-keys button.op{background:var(--gold);color:var(--navy);}
+.marking-card{width:min(860px,100%);max-height:88vh;overflow:auto;background:#f5f7fb;border-radius:18px;border:1px solid var(--border);box-shadow:0 24px 70px rgba(15,23,42,.28);display:flex;flex-direction:column;}
+.marking-head{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;border-radius:18px 18px 0 0;position:sticky;top:0;z-index:2;}
+.marking-body{padding:16px 20px;display:grid;gap:14px;}
+.marking-q{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;}
+.marking-answer{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px;margin:10px 0;max-height:260px;overflow:auto;}
+.marking-foot{padding:0 20px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
 @media (max-width: 980px){
   .app-main{margin-left:0;}
   .app-sidebar{position:relative;height:auto;width:100%;}
@@ -307,7 +336,6 @@ textarea{min-height:110px;resize:vertical}
   .exam-shell{padding:16px 14px 24px;}
 }
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -432,7 +460,7 @@ textarea{min-height:110px;resize:vertical}
               </div>
             </div>
             <label>Section Layout</label>
-            <textarea id="paperSections" placeholder="A - Objective Test&#10;B - Case"></textarea>
+            <textarea id="paperSections" placeholder="Leave blank for ACCA defaults. Applied Skills:&#10;Section A - Objective Test&#10;Section B - Objective Test (Case)&#10;Section C - Constructed Response"></textarea>
             <div class="btn-row">
               <button class="btn btn-primary" id="savePaperBtn">Save Paper</button>
               <button class="btn btn-ghost" id="clearPaperBtn">Clear</button>
@@ -455,7 +483,8 @@ textarea{min-height:110px;resize:vertical}
               <option value="fill">Fill in the Blank / Screenshot FIB</option>
               <option value="dropdown">Dropdown</option>
               <option value="otcase">OT Case</option>
-              <option value="word">Constructed Response – Word</option>
+              <option value="word">Constructed Response – Word (manual marking)</option>
+              <option value="excel">Constructed Response – Spreadsheet / Excel (manual marking)</option>
             </select>
             <label>Main Question / Scenario Heading</label>
             <textarea id="mainQuestionText" placeholder="This appears in the black highlighted exam heading. Use it for the main requirement, scenario title, or instruction."></textarea>
@@ -554,8 +583,43 @@ textarea{min-height:110px;resize:vertical}
         <button class="btn btn-gold" id="submitMockBtn">Submit</button>
       </div>
     </div>
+    <div class="exam-acca-bar">
+      <button type="button" onclick="toggleScratchpad()">🗒 Scratch Pad</button>
+      <button type="button" onclick="insertSymbol()">$ Symbol</button>
+      <button type="button" onclick="applyFormat('hiliteColor','yellow')">🖍 Highlight</button>
+      <button type="button" onclick="applyFormat('strikeThrough')">➕ Strikethrough</button>
+      <button type="button" onclick="toggleCalculator()">🧮 Calculator</button>
+      <button type="button" onclick="toggleExamNavigator()">▦ Navigator</button>
+      <button type="button" onclick="toggleReviewFlag()">🚩 Flag for Review</button>
+      <button type="button" onclick="requestSubmitMock()">Close All</button>
+    </div>
     <div class="mock-body">
       <div id="overlayBody"></div>
+    </div>
+    <div id="scratchpad" class="scratchpad hidden">
+      <strong style="font-size:.85rem;color:var(--navy);">Scratch Pad</strong>
+      <textarea id="scratchpadText" placeholder="Type notes here — kept during this exam only."></textarea>
+      <button class="btn btn-ghost" type="button" onclick="document.getElementById('scratchpad').classList.add('hidden')" style="justify-self:end;">Close</button>
+    </div>
+    <div id="calcPop" class="calc-pop hidden">
+      <input id="calcDisplay" value="0" readonly>
+      <div class="calc-keys" id="calcKeys"></div>
+      <button class="btn btn-ghost" type="button" onclick="document.getElementById('calcPop').classList.add('hidden')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MARKING OVERLAY (admin manual marking of constructed responses) -->
+<div id="markingOverlay" class="mock-overlay hidden">
+  <div class="marking-card">
+    <div class="marking-head">
+      <div><div style="font-size:.72rem;letter-spacing:1.6px;text-transform:uppercase;opacity:.75;">Manual Marking · Constructed Response</div><h3 id="markingTitle" style="margin:2px 0 0;font-size:1.05rem;">Attempt</h3></div>
+      <button class="btn btn-gold" type="button" onclick="closeMarking()">Close</button>
+    </div>
+    <div class="marking-body" id="markingBody"></div>
+    <div class="marking-foot">
+      <div class="small" id="markingStatus"></div>
+      <button class="btn btn-gold" type="button" onclick="saveMarking()">💾 Save Marks & Finalise</button>
     </div>
   </div>
 </div>
@@ -823,7 +887,9 @@ function renderAttempts() {
           <span class="pill">Marks ${Number(a.score||0)}/${Number(a.total||0)}</span>
           <span class="pill">${Number(a.percentage||0)}%</span>
           <span class="pill">Time ${fmtTime(Number(a.timeTakenSec||0))}</span>
+          ${a.status==='pending_marking'?'<span class="pill" style="background:#fef3c7;color:#92400e;">Awaiting manual marking</span>':(a.status==='marked'?'<span class="pill" style="background:#d1fae5;color:#166534;">Manually marked</span>':'')}
         </div>
+        ${state.role==='admin'&&a.status==='pending_marking'?`<div class="btn-row" style="margin-top:10px;"><button class="btn btn-gold" type="button" onclick="openMarking('${a.id}')">✍️ Mark Constructed Responses</button></div>`:''}
         <div class="small">${esc(created)}</div>
       </div>`;
   }).join('') : '<div class="empty">No attempts yet.</div>';
@@ -899,7 +965,12 @@ async function savePaper() {
     const locked=!!el.paperLocked?.checked;
     const sectionsText=getVal('paperSections');
     if (!code||!title) throw new Error('Paper code and title are required.');
-    const sections=sectionsText?sectionsText.split('\n').map(s=>s.trim()).filter(Boolean):[];
+    const accaDefaults={
+      'Applied Knowledge':['Section A - Objective Test'],
+      'Applied Skills':['Section A - Objective Test','Section B - Objective Test (Case)','Section C - Constructed Response'],
+      'Strategic Professional':['Section A - Objective Test','Section B - Constructed Response']
+    };
+    const sections=sectionsText?sectionsText.split('\n').map(s=>s.trim()).filter(Boolean):(accaDefaults[level]||[]);
     const payload={code,title,level,timeLimit,totalMarks,locked,attemptLimit:Math.max(1,Number(getVal('paperAttempts')||1)),sections,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
     const shouldUpdate=state.paperMode==='edit'&&state.editingPaperId;
     if (shouldUpdate) {
@@ -1235,6 +1306,13 @@ function buildDynamicEditor(){
     el.dynamicFields.innerHTML=`<label>Section B Screenshot URLs (one per line)</label><textarea id="sbImageUrlsX" placeholder="https://ucarecdn.com/..."></textarea><label>Section B Answer Fields</label><textarea id="sbRowsX" placeholder="calcTable|Calculation of goodwill&#10;row|Fair value of consideration transferred|input|660000|1&#10;row|Fair value of NCI at acquisition|input|165000|1"></textarea><label>Section B Marking Scheme</label><textarea id="sbSchemeX" placeholder="Auto-mark each row by its marks..."></textarea>`;
     return;
   }
+  if(type==='word'||type==='excel'){
+    updateUploadcarePanelVisibility();
+    el.optionsWrap.style.display='none';el.addOptionBtn.style.display='none';
+    el.questionCorrect.placeholder='Leave blank – marked manually by admin';
+    el.dynamicFields.innerHTML=`<div class="small">ACCA constructed response: students answer in a ${type==='excel'?'spreadsheet-style grid (Excel)':'word-style editor'} in a split scenario/answer screen. It is <strong>not auto-marked</strong> — the attempt is saved as “pending manual marking” and the admin awards marks from the Attempts screen. Put the marking guide in the Explanation box. Use the Main Question box for the requirement (e.g. “(a) Evaluate… (4 marks)”).</div>`;
+    return;
+  }
   if(type==='mcq'||type==='multi'||type==='screenshot'){
     for(let i=0;i<4;i++)addOptionRow('');
     if(type==='screenshot')el.dynamicFields.insertAdjacentHTML('beforeend','<div class="small">Upload a screenshot below. This behaves like an MCQ with an image.</div>');
@@ -1292,6 +1370,7 @@ async function saveQuestion(){
     const imageUrl=state.questionImageUrl||(existingQ&&existingQ.imageUrl?existingQ.imageUrl:'');
     if(type==='screenshot'&&!imageUrl)throw new Error('Screenshot image is required for screenshot MCQ.');
     let correct=getVal('questionCorrect');
+    if(type==='word'||type==='excel')correct='';
     if(type==='mcq'||type==='screenshot')correct=Number(correct);
     else if(type==='multi')correct=String(correct).split(',').map(v=>Number(v.trim())).filter(v=>!Number.isNaN(v));
     else if(type==='fill'){
@@ -1329,7 +1408,7 @@ async function saveQuestion(){
       sectionBRows:type==='sectionb'?dyn.sectionBRows:undefined,
       sectionBHtml:type==='sectionb'?generateSectionBHtmlFromRows(dyn.sectionBRows||[],{layout:dyn.sectionBLayout||'',title:dyn.sectionBTitle||mainQuestion||''}):undefined,
       sectionBMarkingScheme:type==='sectionb'?(dyn.sectionBMarkingScheme||''):undefined,
-      correct,explanation,marks:type==='sectionb'?Number(marks||0):marks,
+      correct,explanation,requiresManualMark:(type==='word'||type==='excel'),marks:type==='sectionb'?Number(marks||0):marks,
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     };
     Object.keys(payload).forEach(key=>{if(payload[key]===undefined)delete payload[key];});
@@ -1507,6 +1586,8 @@ function questionHasAnswer(q){
   const type=q.type||'mcq';
   if(type==='fill'){const arr=Array.isArray(ans)?ans:[];return arr.some(v=>String(v??'').trim()!=='');}
   if(type==='sectionb'){const arr=Array.isArray(ans)?ans:[];return arr.some(v=>String(v??'').trim()!=='');}
+  if(type==='word')return String(ans||'').replace(/<[^>]*>/g,'').trim()!=='';
+  if(type==='excel')return Array.isArray(ans)&&ans.some(row=>Array.isArray(row)&&row.some(v=>String(v??'').trim()!==''));
   if(type==='multi')return Array.isArray(ans)?ans.length>0:false;
   if(type==='mcq'||type==='dropdown')return ans!==undefined&&ans!==null&&String(ans)!=='';
   return Array.isArray(ans)?ans.length>0:String(ans||'').trim()!=='';
@@ -1717,6 +1798,49 @@ function renderSectionBHtmlBlock(q,selected,readonly=false,mode='student'){
   return`<div class="sb-layout"><div class="sb-exhibit"><h4 class="sb-title">Exhibit</h4>${exhibitHtml}</div><div class="sb-panel"><h4 class="sb-title">Answer Area</h4>${markingScheme?`<div class="sb-scheme"><strong>Marking scheme:</strong> ${esc(markingScheme)}</div>`:''}<div class="sb-custom-html">${tmp.innerHTML}</div></div></div>`;
 }
 
+/* ================= CONSTRUCTED RESPONSE (WORD / EXCEL) ================= */
+const CR_COLS=['A','B','C','D','E'];
+const CR_ROWS=10;
+function renderCrScenario(q){
+  const mediaUrls=Array.isArray(q.imageUrls)&&q.imageUrls.length?q.imageUrls:(q.imageUrl?[q.imageUrl]:[]);
+  const media=mediaUrls.length?`<div class="sb-exhibit-stack">${mediaUrls.map((url,idx)=>`<div class="question-image"><img src="${esc(url)}" alt="${esc(q.imageAlt||'Exhibit')} ${idx+1}"></div>`).join('')}</div>`:'';
+  return`<div class="sb-exhibit"><h4 class="sb-title">Scenario</h4><div class="question-text-block">${renderPastedText(q.question||'')}</div>${media}</div>`;
+}
+function renderWordResponse(q,selected){
+  const value=String(selected||'');
+  return`<div class="sb-layout cr-layout">${renderCrScenario(q)}
+    <div class="sb-panel"><h4 class="sb-title">Answer Area (Word)</h4>
+      <div class="cr-editor-toolbar"><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><button type="button" data-cmd="insertUnorderedList">• List</button></div>
+      <div id="wordAnswer" class="cr-word" contenteditable="true">${value}</div>
+      <div class="small cr-note">Constructed response — <strong>not auto-marked</strong>. Your answer will be sent to the tutor for manual marking.</div>
+    </div></div>`;
+}
+function renderExcelResponse(q,selected){
+  const grid=Array.isArray(selected)&&selected.length?selected:Array.from({length:CR_ROWS},()=>Array(CR_COLS.length).fill(''));
+  const head=`<tr><th></th>${CR_COLS.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+  const body=Array.from({length:CR_ROWS},(_,r)=>`<tr><th>${r+1}</th>${CR_COLS.map((_,c)=>{const v=grid[r]&&grid[r][c]!=null?grid[r][c]:'';return`<td class="cr-cell" contenteditable="true" data-r="${r}" data-c="${c}">${esc(v)}</td>`;}).join('')}</tr>`).join('');
+  return`<div class="sb-layout cr-layout">${renderCrScenario(q)}
+    <div class="sb-panel"><h4 class="sb-title">Answer Area (Spreadsheet)</h4>
+      <div class="cr-grid-wrap"><table class="cr-grid">${head}${body}</table></div>
+      <div class="small cr-note">Constructed response — <strong>not auto-marked</strong>. Use Scratch Pad / Calculator if needed; your workings will be manually marked.</div>
+    </div></div>`;
+}
+function renderCrAnswerReadonly(q,ans){
+  const type=q.type||'mcq';
+  if(type==='excel'){
+    const grid=Array.isArray(ans)?ans:[];
+    const head=`<tr><th></th>${CR_COLS.map(c=>`<th>${c}</th>`).join('')}</tr>`;
+    const rows=Math.max(CR_ROWS,grid.length);
+    const body=Array.from({length:rows},(_,r)=>`<tr><th>${r+1}</th>${CR_COLS.map((_,c)=>{const v=grid[r]&&grid[r][c]!=null?grid[r][c]:'';return`<td>${esc(v)}</td>`;}).join('')}</tr>`).join('');
+    return`<div class="cr-grid-wrap"><table class="cr-grid">${head}${body}</table></div>`;
+  }
+  if(type==='word'){
+    const html=String(ans||'');
+    const text=html.replace(/<[^>]*>/g,'').trim();
+    return text?`<div class="question-text-block">${html}</div>`:'<div class="empty">No answer submitted.</div>';
+  }
+  return'<div class="empty">—</div>';
+}
 function renderQuestionBody(q){
   const selected=state.selected[q.id];
   const type=q.type||'mcq';
@@ -1727,6 +1851,8 @@ function renderQuestionBody(q){
   if(type==='fill')return`${media}${renderFillInline(q,selected)}`;
   if(type==='sectionb')return`${renderSectionBHtmlBlock(q,selected)}`;
   if(type==='dropdown')return`${media}${renderDropdownInline(q,selected)}`;
+  if(type==='word')return renderWordResponse(q,selected);
+  if(type==='excel')return renderExcelResponse(q,selected);
   return`${media}<textarea id="freeAnswer" placeholder="Type your answer here">${esc(selected||'')}</textarea>`;
 }
 
@@ -1753,6 +1879,14 @@ function wireQuestionInputs(){
       field.addEventListener('change',()=>{captureAnswer();updateNavigatorVisuals();});
     });
   }
+  if(type==='word'){
+    const ed=document.getElementById('wordAnswer');
+    if(ed){ed.addEventListener('input',()=>{captureAnswer();updateNavigatorVisuals();});
+      document.querySelectorAll('.cr-editor-toolbar [data-cmd]').forEach(btn=>btn.addEventListener('mousedown',e=>{e.preventDefault();document.execCommand(btn.dataset.cmd,false,null);ed.focus();}));}
+  }
+  if(type==='excel'){
+    document.querySelectorAll('.cr-cell').forEach(cell=>{cell.addEventListener('input',()=>{captureAnswer();updateNavigatorVisuals();});});
+  }
   const free=document.getElementById('freeAnswer');
   if(free){free.addEventListener('input',()=>{captureAnswer();});}
 }
@@ -1769,7 +1903,8 @@ function renderMockQuestion(){
   const body=renderQuestionBody(q);
   const reviewed=!!state.reviewed[q.id];
   const mainQuestion=getDisplayMainQuestion(q);
-  const normalQuestion=String(q.question||'').trim();
+  const crType=(q.type==='word'||q.type==='excel');
+  const normalQuestion=crType?'':String(q.question||'').trim();
   updateExamHeaderStats();
   el.overlayBody.innerHTML=`
     <div class="exam-shell">
@@ -1810,6 +1945,8 @@ function captureAnswer(){
   else if(type==='fill'){const inputs=[...document.querySelectorAll('.fib-input')];if(!inputs.length)return;answer=inputs.map(i=>i.value.trim());}
   else if(type==='sectionb'){const fields=sectionBAnswerFields(document);if(!fields.length)return;answer=fields.map(field=>normalizeFieldValue(field));}
   else if(type==='dropdown'){const node=document.getElementById('dropAnswer');if(!node)return;answer=node&&node.value!==''?Number(node.value):null;}
+  else if(type==='word'){const node=document.getElementById('wordAnswer');if(!node)return;answer=node.innerHTML.trim();}
+  else if(type==='excel'){const cells=[...document.querySelectorAll('.cr-cell')];if(!cells.length)return;const grid=[];cells.forEach(c=>{const r=Number(c.dataset.r),col=Number(c.dataset.c);if(!grid[r])grid[r]=[];grid[r][col]=c.textContent.trim();});answer=grid.map(row=>row||[]);}
   else{const node=document.getElementById('freeAnswer');if(!node)return;answer=node?node.value.trim():'';}
   state.selected[q.id]=answer;
 }
@@ -1906,7 +2043,7 @@ async function submitMock(){
   state.submitting=true;
   captureAnswer();
   clearInterval(state.timer);
-  let score=0,total=0;
+  let score=0,total=0,hasPendingManual=false;
   for(let i=0;i<state.activeQuestions.length;i++){
     const q=state.activeQuestions[i];
     const marks=questionTotalMarks(q);
@@ -1929,6 +2066,8 @@ async function submitMock(){
       const scored=scoreSectionBHtml(q,Array.isArray(ans)?ans:[]);
       correct=scored.total>0&&scored.gained===scored.total;
       gained=scored.gained;
+    }else if(type==='word'||type==='excel'){
+      correct=false;gained=0;hasPendingManual=true;
     }else{
       correct=answerMatches(ans||'',q.correct||q.answer||'',Array.isArray(q.altAnswers)?q.altAnswers:[]);
       gained=correct?marks:0;
@@ -1946,10 +2085,12 @@ async function submitMock(){
     userId:state.user?state.user.uid:'',userEmail:state.user?state.user.email||'':'',studentName,
     paperId:state.activePaper.id,paperCode:state.activePaper.code||'',paperTitle:state.activePaper.title||'',
     score,total:totalForResult,percentage,answered,reviewedCount:reviewed,timeTakenSec,
+    status:hasPendingManual?'pending_marking':'auto_marked',
+    autoScore:score,autoTotal:totalForResult,pendingManualMarking:hasPendingManual,
     answers:state.selected,reviewed:state.reviewed,createdAt:firebase.firestore.FieldValue.serverTimestamp()
   });
   state.examActive=false;state.submitting=false;
-  state.resultData={paperCode:state.activePaper.code||'',paperTitle:state.activePaper.title||'',studentName,score,total:totalForResult,percentage,answered,reviewed,timeTakenSec};
+  state.resultData={paperCode:state.activePaper.code||'',paperTitle:state.activePaper.title||'',studentName,score,total:totalForResult,percentage,answered,reviewed,timeTakenSec,pending:hasPendingManual};
   state.activeQuestions=[];state.currentIndex=0;
   el.mockOverlay.classList.remove('hidden');
   document.body.style.overflow='hidden';
@@ -1980,6 +2121,7 @@ function renderResultPage(){
           <div class="result-card"><h3>Answered</h3><div style="font-size:2rem;font-weight:900;">${rd.answered}</div></div>
           <div class="result-card"><h3>Student</h3><div style="font-size:1.35rem;font-weight:900;word-break:break-word;">${esc(rd.studentName||'Student')}</div></div>
           <div class="result-card"><h3>Time Taken</h3><div style="font-size:2rem;font-weight:900;">${fmtTime(rd.timeTakenSec||0)}</div></div>
+          ${rd.pending?'<div class="result-card" style="grid-column:1/-1;background:#fef3c7;border-color:#f3d18b;"><h3>⏳ Manual Marking Pending</h3><div style="font-weight:700;">Constructed-response (Word / Spreadsheet) answers are not auto-marked in ACCA Skills & Professional papers. Your objective-test score is shown above; the final score will be updated after the tutor manually marks your constructed responses.</div></div>':''}
         </div>
       </div>
     </div>`;
@@ -1995,6 +2137,106 @@ el.submitMockBtn.addEventListener('click',requestSubmitMock);
 el.centerModalCancelBtn.addEventListener('click',closeCenterModal);
 el.centerModalConfirmBtn.addEventListener('click',()=>{if(typeof state.centerModalAction==='function'){const ok=state.centerModalAction();if(ok===false)return;}closeCenterModal();});
 el.centerModalInput.addEventListener('keydown',e=>{if(e.key==='Enter')el.centerModalConfirmBtn.click();});
+
+/* ================= ACCA CBE TOOLBAR ================= */
+window.toggleScratchpad=function(){document.getElementById('scratchpad')?.classList.toggle('hidden');};
+window.insertSymbol=function(){
+  const sym=prompt('Enter symbol to insert (e.g. $, €, £, %, :',' $ '.trim());if(!sym)return;
+  const ae=document.activeElement;if(!ae)return;
+  if(ae.isContentEditable){document.execCommand('insertText',false,sym);return;}
+  if(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT'){
+    const s=ae.selectionStart??ae.value.length,e=ae.selectionEnd??s;
+    ae.value=ae.value.slice(0,s)+sym+ae.value.slice(e);
+    ae.dispatchEvent(new Event('input',{bubbles:true}));
+  }else{alert('Click inside an answer box first, then insert the symbol.');}
+};
+window.applyFormat=function(cmd,val){
+  const sel=window.getSelection();
+  if(!sel||!sel.rangeCount||sel.isCollapsed){alert('Select some text in the scenario/answer first, then apply.');return;}
+  document.execCommand(cmd,false,val||null);
+  const ae=document.activeElement;if(ae)ae.dispatchEvent(new Event('input',{bubbles:true}));
+};
+window.toggleCalculator=function(){
+  const pop=document.getElementById('calcPop');if(!pop)return;
+  pop.classList.toggle('hidden');
+  if(!pop.dataset.built){
+    pop.dataset.built='1';
+    const box=document.getElementById('calcKeys');
+    ['C','(',')','/','7','8','9','*','4','5','6','-','1','2','3','+','0','.','=','⌫'].forEach(k=>{
+      const b=document.createElement('button');b.type='button';b.textContent=k;
+      if('/*-+'.includes(k)||k==='=')b.classList.add('op');
+      b.onclick=()=>calcKey(k);box.appendChild(b);
+    });
+  }
+};
+window.calcKey=function(k){
+  const d=document.getElementById('calcDisplay');if(!d)return;
+  if(k==='C'){d.value='0';return;}
+  if(k==='⌫'){d.value=d.value.length>1?d.value.slice(0,-1):'0';return;}
+  if(k==='='){try{const r=Function('"use strict";return('+d.value+')')();d.value=String(r);}catch(e){d.value='Error';}return;}
+  d.value=(d.value==='0'||d.value==='Error')?k:d.value+k;
+};
+
+/* ================= MANUAL MARKING (ADMIN) ================= */
+let markingAttemptId=null;
+window.openMarking=function(attemptId){
+  if(state.role!=='admin')return;
+  const a=state.attempts.find(x=>x.id===attemptId);
+  if(!a)return;
+  markingAttemptId=attemptId;
+  const qs=state.questions.filter(q=>String(q.paperId)===String(a.paperId)&&(q.type==='word'||q.type==='excel'));
+  document.getElementById('markingTitle').textContent=`${a.paperCode||''} ${a.paperTitle||''} — ${a.studentName||a.userEmail||'Student'}`;
+  const body=document.getElementById('markingBody');
+  if(!qs.length){body.innerHTML='<div class="empty">No constructed-response questions found for this paper.</div>';}
+  else body.innerHTML=qs.map((q,i)=>{
+    const given=a.answers?a.answers[q.id]:null;
+    const pre=a.manualScores&&a.manualScores[q.id]!=null?Number(a.manualScores[q.id]):'';
+    return`<div class="marking-q">
+      <div class="question-number-badge"><span class="badge">Q${i+1}</span><span class="badge">${Number(q.marks||0)} marks</span><span class="badge">${q.type==='excel'?'Spreadsheet':'Word'}</span></div>
+      <div class="question-text-block">${renderPastedText(q.mainQuestion||q.question||'')}</div>
+      ${q.explanation?`<div class="sb-scheme"><strong>Marking guide:</strong> ${esc(q.explanation)}</div>`:''}
+      <div class="marking-answer">${renderCrAnswerReadonly(q,given)}</div>
+      <label>Awarded marks (max ${Number(q.marks||0)})</label>
+      <input type="number" min="0" max="${Number(q.marks||0)}" step="0.5" class="mark-input" data-qid="${q.id}" value="${pre}">
+    </div>`;
+  }).join('');
+  document.getElementById('markingStatus').textContent=`Auto-marked OT score: ${Number(a.autoScore??a.score??0)} · Award constructed-response marks below, then Save & Finalise.`;
+  document.getElementById('markingOverlay').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+};
+window.closeMarking=function(){
+  document.getElementById('markingOverlay').classList.add('hidden');
+  if(!state.examActive)document.body.style.overflow='';
+  markingAttemptId=null;
+};
+window.saveMarking=async function(){
+  if(state.role!=='admin'||!markingAttemptId)return;
+  const a=state.attempts.find(x=>x.id===markingAttemptId);
+  if(!a)return;
+  const qs=state.questions.filter(q=>String(q.paperId)===String(a.paperId)&&(q.type==='word'||q.type==='excel'));
+  const manualScores={};let manualSum=0;
+  document.querySelectorAll('.mark-input').forEach(inp=>{
+    const q=qs.find(x=>x.id===inp.dataset.qid);if(!q)return;
+    let v=Number(inp.value);if(Number.isNaN(v)||v<0)v=0;
+    if(v>Number(q.marks||0))v=Number(q.marks||0);
+    manualScores[q.id]=v;manualSum+=v;
+  });
+  const autoScore=Number(a.autoScore??a.score??0);
+  const total=Number(a.total||0);
+  const finalScore=Math.round((autoScore+manualSum)*100)/100;
+  const percentage=total?Math.round((finalScore/total)*100):0;
+  try{
+    await db.collection('mockAttempts').doc(markingAttemptId).update({
+      manualScores,manualScore:manualSum,
+      score:finalScore,percentage,
+      status:'marked',markedAt:firebase.firestore.FieldValue.serverTimestamp(),
+      markedBy:state.user?state.user.email:'admin'
+    });
+    closeMarking();
+    await refreshAll();
+    alert('Marks saved. Attempt finalised: '+finalScore+'/'+total+' ('+percentage+'%).');
+  }catch(err){document.getElementById('markingStatus').textContent=err.message;}
+};
 
 /* ================= INIT ================= */
 buildDynamicEditor();
