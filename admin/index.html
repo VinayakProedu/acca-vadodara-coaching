@@ -87,7 +87,6 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
 .hidden{display:none !important;}
 </style>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
 
@@ -199,23 +198,23 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2;}
     try{
       const cred = await auth.signInWithEmailAndPassword(email, pw);
       if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); document.getElementById('loginStatus').textContent = 'Not authorized.'; document.getElementById('loginStatus').className = 'login-status error'; return; }
-      sessionStorage.setItem('adminUnlocked', '1');
+      sessionStorage.setItem('adminUnlocked', '1'); localStorage.setItem('adminUnlocked', '1');
       showApp();
     }catch(err){ document.getElementById('loginStatus').textContent = err.message; document.getElementById('loginStatus').className = 'login-status error'; }
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async () => {
-    sessionStorage.removeItem('adminUnlocked');
+    sessionStorage.removeItem('adminUnlocked'); localStorage.removeItem('adminUnlocked');
     await auth.signOut();
     location.reload();
   });
 
   document.getElementById('closeBtn').addEventListener('click', () => {
-    window.location.href = '../index.html';
+    window.location.href = 'index.html';
   });
 
   auth.onAuthStateChanged(user => {
-    if(user && user.email === ADMIN_EMAIL && sessionStorage.getItem('adminUnlocked') === '1'){
+    if(user && user.email === ADMIN_EMAIL && (sessionStorage.getItem('adminUnlocked') === '1' || localStorage.getItem('adminUnlocked') === '1')){
       showApp();
     } else {
       document.getElementById('loginWrap').classList.remove('hidden');
